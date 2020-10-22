@@ -28,6 +28,10 @@ fun criticalPath(tasks: Set<Task>) {
             val prevEarlyFinish = if(dependencies.size > 0 ) dependencies.maxOf { t -> t.earlyFinish } else 0
             computed[next] = Calculations(prevEarlyFinish + 1, prevEarlyFinish + next.duration)
             toCompute.removeAt(0)
+        } else {
+            // This task cannot be computed now, move on to next task by moving this task to the end of the array.
+            toCompute.removeAt(0)
+            toCompute.add(next)
         }
     }
     println(computed)
