@@ -1,3 +1,14 @@
+fun main() {
+    val a = Task("a", 6)
+    val b = Task("b", 11, arrayListOf(a))
+    val c = Task("c", 7, arrayListOf(a))
+    val d = Task("d", 3, arrayListOf(c))
+    val e = Task("e", 2, arrayListOf(b, d))
+
+    val allTasks = arrayOf(a, b, c, d, e)
+    criticalPath(allTasks.toSet())
+}
+
 data class Calculations(var earlyStart: Int, var earlyFinish: Int) {}
 
 fun criticalPath(tasks: Set<Task>) {
