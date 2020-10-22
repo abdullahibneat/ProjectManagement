@@ -9,11 +9,11 @@ fun main() {
     criticalPath(allTasks.toSet())
 }
 
-data class Calculations(var earlyStart: Int, var earlyFinish: Int) {}
+data class Calculations(var earlyStart: Int, var earlyFinish: Int, var lateStart: Int? = null, var lateFinish: Int? = null) {}
 
 fun criticalPath(tasks: Set<Task>) {
     val computed = HashMap<Task, Calculations>()
-    val toCompute = tasks.toMutableList()
+    var toCompute = tasks.toMutableList()
 
     // Forward pass
     while(toCompute.isNotEmpty()) {
@@ -34,5 +34,27 @@ fun criticalPath(tasks: Set<Task>) {
             toCompute.add(next)
         }
     }
+
+    // Backward pass
+    toCompute = tasks.toMutableList()
+    while (toCompute.isNotEmpty()) {
+        val next = toCompute[0]
+
+        // Find all the successor tasks that have been computed (by checking if lateStart and lateFinish are defined)
+        val dependencies = arrayListOf<Calculations>()
+        for(t in next.nextTasks) computed[t]?.let { if(it.lateStart !== null && it.lateFinish !== null) dependencies.add(it) }
+
+        // If all successor tasks have been computed, this task can also be computed
+        if(dependencies.size == next.nextTasks.size) {
+            val nextLateFinish = if(dependencies.size > 0 ) dependencies.minOf { t -> t.lateStart!! } else computed[next]!!.earlyFinish + 1
+            computed[next]!!.lateFinish = nextLateFinish - 1
+            computed[next]!!.lateStart = nextLateFinish - next.duration
+            toCompute.removeAt(0)
+        } else {
+            toCompute.removeAt(0)
+            toCompute.add(next)
+        }
+    }
+
     println(computed)
 }
