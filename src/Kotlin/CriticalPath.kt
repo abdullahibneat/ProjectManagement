@@ -6,12 +6,12 @@ fun main() {
     val e = Task("e", 2, arrayListOf(b, d))
 
     val allTasks = arrayOf(a, b, c, d, e)
-    println(criticalPath(allTasks.toSet()))
+    println(forwardBackwardPass(allTasks.toSet()))
 }
 
 data class Calculations(var earlyStart: Int, var earlyFinish: Int, var lateStart: Int? = null, var lateFinish: Int? = null) {}
 
-fun criticalPath(tasks: Set<Task>): HashMap<Task, Calculations> {
+fun forwardBackwardPass(tasks: Set<Task>): HashMap<Task, Calculations> {
     val computed = HashMap<Task, Calculations>()
     val toCompute = tasks.toMutableList()
 
