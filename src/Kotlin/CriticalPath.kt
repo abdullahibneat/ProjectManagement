@@ -60,24 +60,15 @@ fun forwardBackwardPass(tasks: Set<Task>): HashMap<Task, Calculations> {
             //    Like in the forward pass, this is simplified to:   nextLateStart - current.duration
 
             val nextLateStart = if(dependencies.size > 0 ) dependencies.minOf { t -> t.lateStart!! } else computed[current]!!.earlyFinish + 1
-            computed[current]!!.lateFinish = nextLateStart - 1
-            computed[current]!!.lateStart = nextLateStart - current.duration
 
-
-            //float and ciriticalPath
-            computed[current]!!.float = (computed[current]!!.lateFinish)?.minus((computed[current]!!.earlyFinish))
-            if (computed[current]!!.float == 0) {computed[current]!!.onCriticalPath = true
+            computed[current]!!.apply {
+                lateFinish = nextLateStart - 1
+                lateStart = nextLateStart - current.duration
+                float = lateFinish!! - earlyFinish
+                onCriticalPath = float == 0
             }
         }
     }
 
     return computed
-
-
-}
-
-fun findCriticalPath(tasks: Set<Task>) {
-    val computedValues = forwardBackwardPass(tasks)
-
-
 }
