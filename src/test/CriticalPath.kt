@@ -15,4 +15,11 @@ class CriticalPath {
         val actual = forwardBackwardPass(tasks.toSet())
         assertEquals(expected, actual)
     }
+
+    @Test
+    fun `Forward and backward passes on sample project C are correct`() {
+        val (tasks, expected) = getSampleProjectC()
+        val actual = forwardBackwardPass(tasks.toSet())
+        assertEquals(expected, actual)
+    }
 }

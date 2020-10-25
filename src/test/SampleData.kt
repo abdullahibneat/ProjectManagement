@@ -87,3 +87,55 @@ fun getSampleProjectB(): Pair<Array<Task>, HashMap<Task, Calculations>> {
 
     return Pair(allTasks, allCalculations)
 }
+
+fun getSampleProjectC(): Pair<Array<Task>, HashMap<Task, Calculations>> {
+    /**
+         +-------+     +-------+     +-------+
+         | 1    6|     | 7    9|     |10   11|
+         |   A   +---->+   C   +--+->+   H   |
+         | 3    8|     | 9   11|  ^  |12   13|
+         +-------+     +-------+  |  +-------+
+                                  |
+         +-------+     +-------+  |
+         | 1    4|     | 5    8|  |
+         |   B   +--+->+   D   +--+
+         | 4    7|  |  | 8   11|
+         +-------+  |  +-------+
+                    |
+                    |  +-------+     +-------+
+                    |  | 5    7|     |11   13|
+                    +->+   E   +--+->+   G   |
+                       | 8   10|  ^  |11   13|
+                       +-------+  |  +-------+
+                                  |
+         +-------+                |
+         | 1   10|                |
+         |   F   +----------------+
+         | 1   10|
+         +-------+
+     */
+
+    val a = Task("a", 6)
+    val b = Task("b", 4)
+    val c = Task("c", 3, arrayListOf(a))
+    val d = Task("d", 4, arrayListOf(b))
+    val e = Task("e", 3, arrayListOf(b))
+    val f = Task("f", 10)
+    val g = Task("g", 3, arrayListOf(e, f))
+    val h = Task("h", 2, arrayListOf(c, d))
+
+    val allTasks = arrayOf(a, b, c, d, e, f, g, h)
+
+    val allCalculations = hashMapOf(
+            a to Calculations(1, 6, 3, 8),
+            b to Calculations(1, 4, 4, 7),
+            c to Calculations(7, 9, 9, 11),
+            d to Calculations(5, 8, 8, 11),
+            e to Calculations(5, 7, 8, 10),
+            f to Calculations(1, 10, 1, 10),
+            g to Calculations(11, 13, 11, 13),
+            h to Calculations(10, 11, 12, 13)
+    )
+
+    return Pair(allTasks, allCalculations)
+}
