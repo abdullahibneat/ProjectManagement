@@ -12,10 +12,13 @@ fun main() {
 data class Calculations(var earlyStart: Int, var earlyFinish: Int, var lateStart: Int? = null, var lateFinish: Int? = null) {}
 
 fun forwardBackwardPass(tasks: Set<Task>): HashMap<Task, Calculations> {
+    val numberOfTasks = tasks.size
     val computed = HashMap<Task, Calculations>()
     val toCompute = tasks.toMutableList()
 
     var forwardPass = true // Begin with forward pass
+    var highestEarlyFinish = 0 // Keep track of task that has highest early finish
+                               // Used for whenever there are multiple end tasks (e.g. sampleProjectC).
 
     while(toCompute.isNotEmpty()) {
         val current = toCompute.removeAt(0)
@@ -43,22 +46,24 @@ fun forwardBackwardPass(tasks: Set<Task>): HashMap<Task, Calculations> {
             //                                                      = prevEarlyFinish + this.duration
 
             val prevEarlyFinish = if (dependencies.size > 0) dependencies.maxOf { t -> t.earlyFinish } else 0
-            computed[current] = Calculations(prevEarlyFinish + 1, prevEarlyFinish + current.duration)
+            val currentEarlyFinish = prevEarlyFinish + current.duration
+            computed[current] = Calculations(prevEarlyFinish + 1, currentEarlyFinish)
 
-            if(current.nextTasks.isEmpty() && computed.contains(current)) forwardPass = false   // If this is the END task (no successor tasks)
-                                                                                                // AND it's early start and finish values have been computed, forward pass is completed.
+            if(currentEarlyFinish > highestEarlyFinish) highestEarlyFinish = currentEarlyFinish
+
+            if(computed.size == numberOfTasks) forwardPass = false // If earlyStart and earlyFinish for ALL tasks have been computed, forward pass is completed.
 
             toCompute.add(current) // Add task to end of list to compute the backward pass.
         } else {
             // Backward pass requires the successor tasks' late start times.
-            // NOTE: Since the very last task has no successor tasks, set the value to: earlyFinish + 1
+            // NOTE: Since the very last task(s) has no successor tasks, set the value to: HIGHEST earlyFinish + 1 (refer to var highestEarlyFinish above)
             // For the current task:
             //  - the late finish time is calculated by subtracting 1 from whichever successor task
             //    finishes first.
             //  - the late start time is computed with the equation: this.lateFinish - this.duration + 1
             //    Like in the forward pass, this is simplified to:   nextLateStart - current.duration
 
-            val nextLateStart = if(dependencies.size > 0 ) dependencies.minOf { t -> t.lateStart!! } else computed[current]!!.earlyFinish + 1
+            val nextLateStart = if(dependencies.size > 0 ) dependencies.minOf { t -> t.lateStart!! } else highestEarlyFinish + 1
             computed[current]!!.lateFinish = nextLateStart - 1
             computed[current]!!.lateStart = nextLateStart - current.duration
         }
