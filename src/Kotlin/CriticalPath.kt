@@ -7,9 +7,10 @@ fun main() {
 
     val allTasks = arrayOf(a, b, c, d, e)
     println(forwardBackwardPass(allTasks.toSet()))
+
 }
 
-data class Calculations(var earlyStart: Int, var earlyFinish: Int, var lateStart: Int? = null, var lateFinish: Int? = null) {}
+data class Calculations(var earlyStart: Int, var earlyFinish: Int, var lateStart: Int? = null, var lateFinish: Int? = null, var float: Int? = null ,var onCriticalPath: Boolean? = false) {}
 
 fun forwardBackwardPass(tasks: Set<Task>): HashMap<Task, Calculations> {
     val computed = HashMap<Task, Calculations>()
@@ -59,8 +60,13 @@ fun forwardBackwardPass(tasks: Set<Task>): HashMap<Task, Calculations> {
             //    Like in the forward pass, this is simplified to:   nextLateStart - current.duration
 
             val nextLateStart = if(dependencies.size > 0 ) dependencies.minOf { t -> t.lateStart!! } else computed[current]!!.earlyFinish + 1
-            computed[current]!!.lateFinish = nextLateStart - 1
-            computed[current]!!.lateStart = nextLateStart - current.duration
+
+            computed[current]!!.apply {
+                lateFinish = nextLateStart - 1
+                lateStart = nextLateStart - current.duration
+                float = lateFinish!! - earlyFinish
+                onCriticalPath = float == 0
+            }
         }
     }
 
