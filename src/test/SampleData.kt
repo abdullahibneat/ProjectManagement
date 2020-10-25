@@ -32,11 +32,11 @@ fun getSampleProjectA(): Pair<Array<Task>, HashMap<Task, Calculations>> {
     val allTasks = arrayOf(a, b, c, d, e)
 
     val allCalculations = hashMapOf(
-            a to Calculations(1, 6, 1, 6),
-            b to Calculations(7, 17, 7, 17),
-            c to Calculations(7, 13, 8, 14),
-            d to Calculations(14, 16, 15, 17),
-            e to Calculations(18, 19, 18, 19)
+            a to Calculations(1, 6, 1, 6, 0, true),
+            b to Calculations(7, 17, 7, 17, 0, true),
+            c to Calculations(7, 13, 8, 14, 1, false),
+            d to Calculations(14, 16, 15, 17, 1, false),
+            e to Calculations(18, 19, 18, 19, 0, true)
     )
 
     return Pair(allTasks, allCalculations)
@@ -75,14 +75,14 @@ fun getSampleProjectB(): Pair<Array<Task>, HashMap<Task, Calculations>> {
     val allTasks = arrayOf(a, b, c, d, e, f, g, h)
 
     val allCalculations = hashMapOf(
-            a to Calculations(1, 3, 1, 3),
-            b to Calculations(4, 7, 4, 7),
-            c to Calculations(4, 5, 10, 11),
-            d to Calculations(8, 12, 8, 12),
-            e to Calculations(6, 6, 12, 12),
-            f to Calculations(6, 7, 15, 16),
-            g to Calculations(13, 16, 13, 16),
-            h to Calculations(17, 19, 17, 19)
+            a to Calculations(1, 3, 1, 3, 0, true),
+            b to Calculations(4, 7, 4, 7, 0, true),
+            c to Calculations(4, 5, 10, 11, 6, false),
+            d to Calculations(8, 12, 8, 12, 0, true),
+            e to Calculations(6, 6, 12, 12, 6, false),
+            f to Calculations(6, 7, 15, 16, 9, false),
+            g to Calculations(13, 16, 13, 16, 0, true),
+            h to Calculations(17, 19, 17, 19, 0, true)
     )
 
     return Pair(allTasks, allCalculations)
@@ -127,14 +127,14 @@ fun getSampleProjectC(): Pair<Array<Task>, HashMap<Task, Calculations>> {
     val allTasks = arrayOf(a, b, c, d, e, f, g, h)
 
     val allCalculations = hashMapOf(
-            a to Calculations(1, 6, 3, 8),
-            b to Calculations(1, 4, 4, 7),
-            c to Calculations(7, 9, 9, 11),
-            d to Calculations(5, 8, 8, 11),
-            e to Calculations(5, 7, 8, 10),
-            f to Calculations(1, 10, 1, 10),
-            g to Calculations(11, 13, 11, 13),
-            h to Calculations(10, 11, 12, 13)
+            a to Calculations(1, 6, 3, 8, 2, false),
+            b to Calculations(1, 4, 4, 7, 3, false),
+            c to Calculations(7, 9, 9, 11, 2, false),
+            d to Calculations(5, 8, 8, 11, 3, false),
+            e to Calculations(5, 7, 8, 10, 3, false),
+            f to Calculations(1, 10, 1, 10, 0, true),
+            g to Calculations(11, 13, 11, 13, 0, true),
+            h to Calculations(10, 11, 12, 13, 2, false)
     )
 
     return Pair(allTasks, allCalculations)
