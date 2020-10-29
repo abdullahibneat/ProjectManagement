@@ -7,7 +7,7 @@ fun main() {
 
     val allTasks = arrayOf(a, b, c, d, e)
     println(forwardBackwardPass(allTasks.toSet()))
-
+    findCriticalPath(allTasks.toSet())
 }
 
 data class Calculations(var earlyStart: Int, var earlyFinish: Int, var lateStart: Int? = null, var lateFinish: Int? = null, var float: Int? = null ,var onCriticalPath: Boolean? = false) {}
@@ -78,6 +78,38 @@ fun forwardBackwardPass(tasks: Set<Task>): HashMap<Task, Calculations> {
 
 fun findCriticalPath(tasks: Set<Task>) {
     val computedValues = forwardBackwardPass(tasks)
+    val criticalTasks = arrayListOf<Task>()
+    val checkFloat = tasks.toMutableList()
 
+    while (checkFloat.isNotEmpty()) {
+
+        //computedValues.keys.find {t -> t.previousTasks.isEmpty() && computedValues[t]!!.float == 0 }
+        for (t in computedValues.keys) {
+            if (t.previousTasks.isEmpty() && computedValues[t]!!.float == 0) {
+                criticalTasks.add(t)
+                checkFloat.remove(t)
+            }
+
+            if (t.previousTasks.isNotEmpty() && t.nextTasks.isNotEmpty() && computedValues[t]!!.float == 0) {
+                criticalTasks.add(t)
+                checkFloat.remove(t)
+
+            }
+
+            if (t.nextTasks.isEmpty() && computedValues[t]!!.float == 0){
+                criticalTasks.add(t)
+                checkFloat.remove(t)
+            }
+        }
+        break
+
+    }
+
+
+    println(checkFloat)
+    println(criticalTasks)
+
+    //if(forwardPass) for(t in current.previousTasks) computed[t]?.let { dependencies.add(it) } ?: break
+    //else for(t in current.nextTasks) computed[t]?.let { if(it.lateStart !== null && it.lateFinish !== null) dependencies.add(it) } ?: break
 
 }
