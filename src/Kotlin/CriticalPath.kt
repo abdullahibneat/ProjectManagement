@@ -92,8 +92,6 @@ fun findCriticalPath(tasks: Set<Task>): ArrayList<Task> {
     }
 
 
-
-
     while (current != null && current.nextTasks.isNotEmpty()){
 
         current = current.nextTasks.find { t -> computedValues[t]!!.float== 0 }
@@ -108,14 +106,5 @@ fun findCriticalPath(tasks: Set<Task>): ArrayList<Task> {
 
     }
     return criticalTasks
-
-
-
-
-
-    //println(checkFloat)
-    //println(criticalTasks)
-    //computedValues.keys.find {t -> t.previousTasks.isEmpty() && computedValues[t]!!.float == 0 }
-
 
 }
