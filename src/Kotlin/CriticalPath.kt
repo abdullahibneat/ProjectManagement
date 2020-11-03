@@ -1,5 +1,3 @@
-import com.sun.source.util.TaskListener
-
 fun main() {
     val a = Task("a", 6)
     val b = Task("b", 11, arrayListOf(a))
@@ -81,7 +79,6 @@ fun forwardBackwardPass(tasks: Set<Task>): HashMap<Task, Calculations> {
 fun findCriticalPath(tasks: Set<Task>): ArrayList<Task> {
     val computedValues = forwardBackwardPass(tasks)
     val criticalTasks = arrayListOf<Task>()
-
 
     var current = computedValues.keys.find { t -> t.previousTasks.isEmpty() }
 
