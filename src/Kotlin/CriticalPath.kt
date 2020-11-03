@@ -78,30 +78,17 @@ fun forwardBackwardPass(tasks: Set<Task>): HashMap<Task, Calculations> {
 
 fun findCriticalPath(tasks: Set<Task>): ArrayList<Task> {
     val computedValues = forwardBackwardPass(tasks)
-    val criticalTasks = arrayListOf<Task>()
 
-    var current = computedValues.keys.find { t -> t.previousTasks.isEmpty() }
+    var current = computedValues.keys.find { t -> t.previousTasks.isEmpty() } ?: return arrayListOf()
 
-    if (current == null) {
-        return criticalTasks
-    } else {
-        criticalTasks.add(current)
-    }
+    val criticalTasks = arrayListOf(current)
+    val error = criticalTasks.isEmpty()
 
+    while (!error && current.nextTasks.isNotEmpty())
+        current.nextTasks.find { t -> computedValues[t]?.float == 0 }
+                ?.let { criticalTasks.add(it); current = it }
+                ?: criticalTasks.clear()
 
-    while (current != null && current.nextTasks.isNotEmpty()){
-
-        current = current.nextTasks.find { t -> computedValues[t]!!.float== 0 }
-        if (current == null){
-            criticalTasks.clear()
-            break
-
-        } else {
-            criticalTasks.add(current)
-        }
-
-
-    }
     return criticalTasks
 
 }
