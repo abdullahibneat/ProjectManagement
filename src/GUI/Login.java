@@ -3,7 +3,7 @@ package GUI;
 import javax.swing.*;
 
 public class Login {
-    private JPanel panel1;
+    private JPanel BasePanel;
     private JTextField UsernameTextField;
     private JPasswordField PasswordField;
     private JButton LoginButton;
@@ -14,7 +14,7 @@ public class Login {
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("LoginButton");
-        frame.setContentPane(new Login().panel1);
+        frame.setContentPane(new Login().BasePanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
