@@ -7,6 +7,8 @@ fun main() {
 
     val allTasks = arrayOf(a, b, c, d, e)
     println(forwardBackwardPass(allTasks.toSet()))
+    println(findCriticalPath(allTasks.toSet()))
+
 }
 
 data class Calculations(var earlyStart: Int, var earlyFinish: Int, var lateStart: Int? = null, var lateFinish: Int? = null, var float: Int? = null ,var onCriticalPath: Boolean? = false) {}
@@ -75,4 +77,20 @@ fun forwardBackwardPass(tasks: Set<Task>): HashMap<Task, Calculations> {
     }
 
     return computed
+}
+
+fun findCriticalPath(tasks: Set<Task>): ArrayList<Task> {
+    val computedValues = forwardBackwardPass(tasks)
+
+    var current = computedValues.keys.find { t -> t.previousTasks.isEmpty() } ?: return arrayListOf() // Find the starting task, if not found return empty array.
+
+    val criticalTasks = arrayListOf(current)
+    val error = criticalTasks.isEmpty() // An error is indicated by the array being empty.
+
+    while (!error && current.nextTasks.isNotEmpty()) // current.nextTasks.isNotEmpty() stops the while loop when end task is reached
+        current.nextTasks.find { t -> computedValues[t]?.float == 0 }
+                ?.let { criticalTasks.add(it); current = it } // If next critical task is found, add it to array...
+                ?: criticalTasks.clear() // Otherwise clear the array
+
+    return criticalTasks
 }
