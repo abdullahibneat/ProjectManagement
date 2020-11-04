@@ -10,7 +10,7 @@ public class MainMenu {
     private JButton ProjectsAddButton;
     private JButton TeamsAddButton;
     private JScrollPane ProjectsScrollPane;
-    private JLabel PorjectsLabel;
+    private JLabel ProjectsLabel;
     private JPanel ProjectsSubPanel;
     private JPanel TeamsSubPanel;
     private JLabel TeamsLabel;
