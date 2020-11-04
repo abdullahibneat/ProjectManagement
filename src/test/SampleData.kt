@@ -9,7 +9,7 @@
  *    +---------------------------+
  */
 
-fun getSampleProjectA(): Pair<Array<Task>, HashMap<Task, Calculations>> {
+fun getSampleProjectA(): Triple<Array<Task>, HashMap<Task, Calculations>, Array<Task>> {
     /**
         +-------+     +-------+                   +-------+
         | 1    6|     | 7   17|                   |18   19|
@@ -31,6 +31,8 @@ fun getSampleProjectA(): Pair<Array<Task>, HashMap<Task, Calculations>> {
 
     val allTasks = arrayOf(a, b, c, d, e)
 
+
+
     val allCalculations = hashMapOf(
             a to Calculations(1, 6, 1, 6, 0, true),
             b to Calculations(7, 17, 7, 17, 0, true),
@@ -39,10 +41,15 @@ fun getSampleProjectA(): Pair<Array<Task>, HashMap<Task, Calculations>> {
             e to Calculations(18, 19, 18, 19, 0, true)
     )
 
-    return Pair(allTasks, allCalculations)
+    val criticalPath = arrayOf(a,b,e)
+
+    return Triple(allTasks, allCalculations, criticalPath)
+
 }
 
-fun getSampleProjectB(): Pair<Array<Task>, HashMap<Task, Calculations>> {
+
+
+fun getSampleProjectB(): Triple<Array<Task>, HashMap<Task, Calculations>, Array<Task>> {
     /**
         +-------+     +-------+     +-------+     +-------+     +-------+
         | 1    3|     | 4    7|     | 8   12|     |13   16|     |17   19|
@@ -85,10 +92,12 @@ fun getSampleProjectB(): Pair<Array<Task>, HashMap<Task, Calculations>> {
             h to Calculations(17, 19, 17, 19, 0, true)
     )
 
-    return Pair(allTasks, allCalculations)
+    val criticalPath = arrayOf(a,b,d,g,h)
+
+    return Triple(allTasks, allCalculations, criticalPath)
 }
 
-fun getSampleProjectC(): Pair<Array<Task>, HashMap<Task, Calculations>> {
+fun getSampleProjectC(): Triple<Array<Task>, HashMap<Task, Calculations>, Array<Task>> {
     /**
          +-------+     +-------+     +-------+
          | 1    6|     | 7    9|     |10   11|
@@ -137,5 +146,7 @@ fun getSampleProjectC(): Pair<Array<Task>, HashMap<Task, Calculations>> {
             h to Calculations(10, 11, 12, 13, 2, false)
     )
 
-    return Pair(allTasks, allCalculations)
+    val criticalPath = arrayOf(f,g)
+
+    return Triple(allTasks, allCalculations, criticalPath)
 }
