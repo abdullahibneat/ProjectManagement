@@ -4,16 +4,16 @@ import javax.swing.*;
 
 public class MainMenu {
     private JPanel BasePanel;
-    private JButton ProjectsAddButton;
-    private JButton TeamsAddButton;
     private JPanel GreetingPanel;
     private JPanel ProjectsPanel;
     private JPanel TeamsPanel;
-    private JPanel TeamsSubPanel;
-    private JPanel ProjectsSubPanel;
-    private JLabel ProjectsLabel;
-    private JLabel TeamsLabel;
+    private JButton ProjectsAddButton;
+    private JButton TeamsAddButton;
     private JScrollPane ProjectsScrollPane;
+    private JLabel PorjectsLabel;
+    private JPanel ProjectsSubPanel;
+    private JPanel TeamsSubPanel;
+    private JLabel TeamsLabel;
     private JScrollPane TeamsScrollPane;
 
     public static void main(String[] args) {
