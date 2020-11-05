@@ -8,7 +8,6 @@ class CriticalPath {
         val (tasks, expected) = getSampleProjectA()
         val actual = forwardBackwardPass(tasks.toSet())
         assertEquals(expected, actual)
-
     }
 
     @Test
@@ -29,21 +28,21 @@ class CriticalPath {
     fun `CriticalPath test passes on sample project A are correct`() {
         val (tasks, _, criticalExpected) = getSampleProjectA()
         val actualCriticalPath = findCriticalPath(tasks.toSet())
-        assertTrue { criticalExpected.contentEquals(actualCriticalPath) }
+        assertTrue(criticalExpected.contentEquals(actualCriticalPath))
     }
 
     @Test
     fun `CriticalPath test passes on sample project B are correct`() {
         val (tasks, _, criticalExpected) = getSampleProjectB()
         val actualCriticalPath = findCriticalPath(tasks.toSet())
-        assertTrue { criticalExpected.contentEquals(actualCriticalPath) }
+        assertTrue(criticalExpected.contentEquals(actualCriticalPath))
     }
 
     @Test
     fun `CriticalPath test passes on sample project C are correct`() {
         val (tasks, _, criticalExpected) = getSampleProjectC()
         val actualCriticalPath = findCriticalPath(tasks.toSet())
-        assertTrue { criticalExpected.contentEquals(actualCriticalPath) }
+        assertTrue(criticalExpected.contentEquals(actualCriticalPath))
     }
 
 
