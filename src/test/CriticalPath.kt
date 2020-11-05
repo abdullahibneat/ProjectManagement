@@ -25,26 +25,23 @@ class CriticalPath {
     }
 
     @Test
-    fun `CriticalPath test passes on sample project A are correct`() {
+    fun `Critical path on Sample Project A is correct`() {
         val (tasks, _, criticalExpected) = getSampleProjectA()
         val actualCriticalPath = findCriticalPath(tasks.toSet())
         assertTrue(criticalExpected.contentEquals(actualCriticalPath))
     }
 
     @Test
-    fun `CriticalPath test passes on sample project B are correct`() {
+    fun `Critical path on Sample Project B is correct`() {
         val (tasks, _, criticalExpected) = getSampleProjectB()
         val actualCriticalPath = findCriticalPath(tasks.toSet())
         assertTrue(criticalExpected.contentEquals(actualCriticalPath))
     }
 
     @Test
-    fun `CriticalPath test passes on sample project C are correct`() {
+    fun `Critical path on Sample Project C is correct`() {
         val (tasks, _, criticalExpected) = getSampleProjectC()
         val actualCriticalPath = findCriticalPath(tasks.toSet())
         assertTrue(criticalExpected.contentEquals(actualCriticalPath))
     }
-
-
-
 }
