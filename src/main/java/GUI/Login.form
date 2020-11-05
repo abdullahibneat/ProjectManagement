@@ -56,7 +56,7 @@
         </constraints>
         <properties>
           <alignmentX value="0.0"/>
-          <text value="Project Management APP"/>
+          <text value="Project Management App"/>
         </properties>
       </component>
       <component id="7b500" class="javax.swing.JButton" binding="LoginButton">

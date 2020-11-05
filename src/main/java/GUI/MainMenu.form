@@ -20,30 +20,35 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="3cc86" class="javax.swing.JLabel">
+          <component id="3cc86" class="javax.swing.JLabel" binding="GreetingLabel">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                <preferred-size width="118" height="16"/>
+                <preferred-size width="187" height="16"/>
               </grid>
             </constraints>
             <properties>
+              <alignmentX value="0.0"/>
               <text value="Hello Project Manager!"/>
             </properties>
           </component>
-          <component id="13ad4" class="javax.swing.JLabel">
+          <component id="13ad4" class="javax.swing.JLabel" binding="TimeLabel" custom-create="true">
             <constraints>
-              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="147" height="16"/>
+              </grid>
             </constraints>
             <properties>
               <text value="Time: 00:00AM"/>
             </properties>
           </component>
-          <component id="25591" class="javax.swing.JLabel">
+          <component id="25591" class="javax.swing.JLabel" binding="DateLabel" custom-create="true">
             <constraints>
-              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="143" height="16"/>
+              </grid>
             </constraints>
             <properties>
-              <text value="Date: 02/12/20"/>
+              <text value="Date: 00/00/00"/>
             </properties>
           </component>
         </children>
@@ -69,7 +74,7 @@
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Label"/>
+                  <text value="Projects"/>
                 </properties>
               </component>
               <hspacer id="b182e">
@@ -120,7 +125,7 @@
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Label"/>
+                  <text value="Teams"/>
                 </properties>
               </component>
               <hspacer id="3c134">
