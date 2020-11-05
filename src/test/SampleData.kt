@@ -31,8 +31,6 @@ fun getSampleProjectA(): Triple<Array<Task>, HashMap<Task, Calculations>, Array<
 
     val allTasks = arrayOf(a, b, c, d, e)
 
-
-
     val allCalculations = hashMapOf(
             a to Calculations(1, 6, 1, 6, 0, true),
             b to Calculations(7, 17, 7, 17, 0, true),
@@ -44,7 +42,6 @@ fun getSampleProjectA(): Triple<Array<Task>, HashMap<Task, Calculations>, Array<
     val criticalPath = arrayOf(a,b,e)
 
     return Triple(allTasks, allCalculations, criticalPath)
-
 }
 
 

@@ -8,7 +8,6 @@ fun main() {
     val allTasks = arrayOf(a, b, c, d, e)
     println(forwardBackwardPass(allTasks.toSet()))
     println(findCriticalPath(allTasks.toSet()))
-
 }
 
 data class Calculations(var earlyStart: Int, var earlyFinish: Int, var lateStart: Int? = null, var lateFinish: Int? = null, var float: Int? = null ,var onCriticalPath: Boolean? = false) {}
