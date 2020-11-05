@@ -30,7 +30,8 @@ public class MainMenu {
         ProjectsAddButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("testing");
-                AddProject ap = new AddProject();
+
+//                AddProject ap = new AddProject();
 //                ap.setVisible(true);
 
             }
@@ -62,6 +63,7 @@ public class MainMenu {
         });
         timer.setInitialDelay(0);
         timer.start();
+
     }
 }
 
