@@ -1,5 +1,16 @@
-class Project(var name: String) {
+class Project(projectName: String) {
+    // Make sure name is never empty
+    var name = ""
+        set(value) {
+            if(value.trim().isEmpty()) throw Exception("Name cannot be empty.")
+            field = value.trim()
+        }
+
     val tasks = mutableSetOf<Task>()
+
+    init {
+        name = projectName
+    }
 
     fun addTask(name: String, duration: Int, vararg previousTasks: String) {
         if(tasks.find { t -> t.name === name } !== null)
