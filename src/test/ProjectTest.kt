@@ -77,6 +77,12 @@ class ProjectTest {
     }
 
     @Test
+    fun `Deleting task with no name causes exception`() {
+        val project = Project("Sample Project A")
+        assertThrows<Exception> { project.deleteTask("") }
+    }
+
+    @Test
     fun `Deleting non-existing task causes exception`() {
         val project = Project("Sample Project A")
         assertThrows<Exception> { project.deleteTask("z") }
