@@ -1,5 +1,5 @@
-class Task(var name: String, var duration: Int, val previousTasks: ArrayList<Task> = arrayListOf()) {
-    val nextTasks = arrayListOf<Task>()
+class Task(var name: String, var duration: Int, val previousTasks: MutableSet<Task> = mutableSetOf()) {
+    val nextTasks = mutableSetOf<Task>()
 
     init {
         previousTasks.forEach { t -> t.nextTasks.add(this) }
