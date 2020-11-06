@@ -1,13 +1,13 @@
 fun main() {
     val a = Task("a", 6)
-    val b = Task("b", 11, arrayListOf(a))
-    val c = Task("c", 7, arrayListOf(a))
-    val d = Task("d", 3, arrayListOf(c))
-    val e = Task("e", 2, arrayListOf(b, d))
+    val b = Task("b", 11, mutableSetOf(a))
+    val c = Task("c", 7, mutableSetOf(a))
+    val d = Task("d", 3, mutableSetOf(c))
+    val e = Task("e", 2, mutableSetOf(b, d))
 
-    val allTasks = arrayOf(a, b, c, d, e)
-    println(forwardBackwardPass(allTasks.toSet()))
-    println(findCriticalPath(allTasks.toSet()))
+    val allTasks = setOf(a, b, c, d, e)
+    println(forwardBackwardPass(allTasks))
+    println(findCriticalPath(allTasks))
 }
 
 data class Calculations(var earlyStart: Int, var earlyFinish: Int, var lateStart: Int? = null, var lateFinish: Int? = null, var float: Int? = null) {}
@@ -25,7 +25,7 @@ fun forwardBackwardPass(tasks: Set<Task>): HashMap<Task, Calculations> {
         val current = toCompute.removeAt(0)
 
         val expectedNumberOfDependencies = if(forwardPass) current.previousTasks.size else current.nextTasks.size
-        val dependencies = arrayListOf<Calculations>()
+        val dependencies = mutableSetOf<Calculations>()
 
         // Try to find all previous/successor tasks that have been already computed
         if(forwardPass) for(t in current.previousTasks) computed[t]?.let { dependencies.add(it) } ?: break
@@ -77,18 +77,18 @@ fun forwardBackwardPass(tasks: Set<Task>): HashMap<Task, Calculations> {
     return computed
 }
 
-fun findCriticalPath(tasks: Set<Task>): Array<Task> {
+fun findCriticalPath(tasks: Set<Task>): Set<Task> {
     val computedValues = forwardBackwardPass(tasks)
 
-    var current = computedValues.keys.find { t -> t.previousTasks.isEmpty() && computedValues[t]?.float == 0 } ?: return arrayOf() // Find the starting task, if not found return empty array.
+    var current = computedValues.keys.find { t -> t.previousTasks.isEmpty() && computedValues[t]?.float == 0 } ?: return setOf() // Find the starting task, if not found return empty set.
 
-    val criticalTasks = arrayListOf(current)
-    val error = criticalTasks.isEmpty() // An error is indicated by the array being empty.
+    val criticalTasks = mutableSetOf(current)
+    val error = criticalTasks.isEmpty() // An error is indicated by the set being empty.
 
     while (!error && current.nextTasks.isNotEmpty()) // current.nextTasks.isNotEmpty() stops the while loop when end task is reached
         current.nextTasks.find { t -> computedValues[t]?.float == 0 }
-                ?.let { criticalTasks.add(it); current = it } // If next critical task is found, add it to array...
-                ?: criticalTasks.clear() // Otherwise clear the array
+                ?.let { criticalTasks.add(it); current = it } // If next critical task is found, add it to set...
+                ?: criticalTasks.clear() // Otherwise clear the set
 
-    return criticalTasks.toTypedArray()
+    return criticalTasks
 }
