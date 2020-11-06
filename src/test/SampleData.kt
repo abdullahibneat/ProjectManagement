@@ -9,7 +9,7 @@
  *    +---------------------------+
  */
 
-fun getSampleProjectA(): Triple<Array<Task>, HashMap<Task, Calculations>, Array<Task>> {
+fun getSampleProjectA(): Triple<Set<Task>, HashMap<Task, Calculations>, Set<Task>> {
     /**
         +-------+     +-------+                   +-------+
         | 1    6|     | 7   17|                   |18   19|
@@ -24,12 +24,12 @@ fun getSampleProjectA(): Triple<Array<Task>, HashMap<Task, Calculations>, Array<
     */
 
     val a = Task("a", 6)
-    val b = Task("b", 11, arrayListOf(a))
-    val c = Task("c", 7, arrayListOf(a))
-    val d = Task("d", 3, arrayListOf(c))
-    val e = Task("e", 2, arrayListOf(b, d))
+    val b = Task("b", 11, mutableSetOf(a))
+    val c = Task("c", 7, mutableSetOf(a))
+    val d = Task("d", 3, mutableSetOf(c))
+    val e = Task("e", 2, mutableSetOf(b, d))
 
-    val allTasks = arrayOf(a, b, c, d, e)
+    val allTasks = setOf(a, b, c, d, e)
 
     val allCalculations = hashMapOf(
             a to Calculations(1, 6, 1, 6, 0),
@@ -39,14 +39,14 @@ fun getSampleProjectA(): Triple<Array<Task>, HashMap<Task, Calculations>, Array<
             e to Calculations(18, 19, 18, 19, 0)
     )
 
-    val criticalPath = arrayOf(a,b,e)
+    val criticalPath = setOf(a,b,e)
 
     return Triple(allTasks, allCalculations, criticalPath)
 }
 
 
 
-fun getSampleProjectB(): Triple<Array<Task>, HashMap<Task, Calculations>, Array<Task>> {
+fun getSampleProjectB(): Triple<Set<Task>, HashMap<Task, Calculations>, Set<Task>> {
     /**
         +-------+     +-------+     +-------+     +-------+     +-------+
         | 1    3|     | 4    7|     | 8   12|     |13   16|     |17   19|
@@ -68,15 +68,15 @@ fun getSampleProjectB(): Triple<Array<Task>, HashMap<Task, Calculations>, Array<
     */
 
     val a = Task("a", 3)
-    val b = Task("b", 4, arrayListOf(a))
-    val c = Task("c", 2, arrayListOf(a))
-    val d = Task("d", 5, arrayListOf(b))
-    val e = Task("e", 1, arrayListOf(c))
-    val f = Task("f", 2, arrayListOf(c))
-    val g = Task("g", 4, arrayListOf(d, e))
-    val h = Task("h", 3, arrayListOf(f, g))
+    val b = Task("b", 4, mutableSetOf(a))
+    val c = Task("c", 2, mutableSetOf(a))
+    val d = Task("d", 5, mutableSetOf(b))
+    val e = Task("e", 1, mutableSetOf(c))
+    val f = Task("f", 2, mutableSetOf(c))
+    val g = Task("g", 4, mutableSetOf(d, e))
+    val h = Task("h", 3, mutableSetOf(f, g))
 
-    val allTasks = arrayOf(a, b, c, d, e, f, g, h)
+    val allTasks = setOf(a, b, c, d, e, f, g, h)
 
     val allCalculations = hashMapOf(
             a to Calculations(1, 3, 1, 3, 0),
@@ -89,12 +89,12 @@ fun getSampleProjectB(): Triple<Array<Task>, HashMap<Task, Calculations>, Array<
             h to Calculations(17, 19, 17, 19, 0)
     )
 
-    val criticalPath = arrayOf(a,b,d,g,h)
+    val criticalPath = setOf(a,b,d,g,h)
 
     return Triple(allTasks, allCalculations, criticalPath)
 }
 
-fun getSampleProjectC(): Triple<Array<Task>, HashMap<Task, Calculations>, Array<Task>> {
+fun getSampleProjectC(): Triple<Set<Task>, HashMap<Task, Calculations>, Set<Task>> {
     /**
          +-------+     +-------+     +-------+
          | 1    6|     | 7    9|     |10   11|
@@ -123,14 +123,14 @@ fun getSampleProjectC(): Triple<Array<Task>, HashMap<Task, Calculations>, Array<
 
     val a = Task("a", 6)
     val b = Task("b", 4)
-    val c = Task("c", 3, arrayListOf(a))
-    val d = Task("d", 4, arrayListOf(b))
-    val e = Task("e", 3, arrayListOf(b))
+    val c = Task("c", 3, mutableSetOf(a))
+    val d = Task("d", 4, mutableSetOf(b))
+    val e = Task("e", 3, mutableSetOf(b))
     val f = Task("f", 10)
-    val g = Task("g", 3, arrayListOf(e, f))
-    val h = Task("h", 2, arrayListOf(c, d))
+    val g = Task("g", 3, mutableSetOf(e, f))
+    val h = Task("h", 2, mutableSetOf(c, d))
 
-    val allTasks = arrayOf(a, b, c, d, e, f, g, h)
+    val allTasks = setOf(a, b, c, d, e, f, g, h)
 
     val allCalculations = hashMapOf(
             a to Calculations(1, 6, 3, 8, 2),
@@ -143,7 +143,7 @@ fun getSampleProjectC(): Triple<Array<Task>, HashMap<Task, Calculations>, Array<
             h to Calculations(10, 11, 12, 13, 2)
     )
 
-    val criticalPath = arrayOf(f,g)
+    val criticalPath = setOf(f,g)
 
     return Triple(allTasks, allCalculations, criticalPath)
 }
