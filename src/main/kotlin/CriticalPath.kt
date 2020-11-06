@@ -10,7 +10,7 @@ fun main() {
     println(findCriticalPath(allTasks.toSet()))
 }
 
-data class Calculations(var earlyStart: Int, var earlyFinish: Int, var lateStart: Int? = null, var lateFinish: Int? = null, var float: Int? = null ,var onCriticalPath: Boolean? = false) {}
+data class Calculations(var earlyStart: Int, var earlyFinish: Int, var lateStart: Int? = null, var lateFinish: Int? = null, var float: Int? = null) {}
 
 fun forwardBackwardPass(tasks: Set<Task>): HashMap<Task, Calculations> {
     val numberOfTasks = tasks.size
@@ -70,7 +70,6 @@ fun forwardBackwardPass(tasks: Set<Task>): HashMap<Task, Calculations> {
                 lateFinish = nextLateStart - 1
                 lateStart = nextLateStart - current.duration
                 float = lateFinish!! - earlyFinish
-                onCriticalPath = float == 0
             }
         }
     }
