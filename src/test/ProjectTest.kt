@@ -40,6 +40,19 @@ class ProjectTest {
     }
 
     @Test
+    fun `A project with no name cannot be created`() {
+        assertThrows<Exception> { Project("") }
+        assertThrows<Exception> { Project(" ") }
+    }
+
+    @Test
+    fun `A project's name cannot be set to empty after creation`() {
+        val project = Project("Test")
+        assertThrows<Exception> { project.name = "" }
+        assertThrows<Exception> { project.name = " " }
+    }
+
+    @Test
     fun `An end task can be deleted successfully`() {
         val project = Project("Sample Project A")
         project.addTask("a", 6)
