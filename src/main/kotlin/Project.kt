@@ -18,6 +18,9 @@ class Project(projectName: String) {
         if(trimmedName.isEmpty())
             throw Exception("Task name cannot be empty")
 
+        if(duration < 1)
+            throw Exception("Task must have a duration greater than 1")
+
         if(tasks.find { t -> t.name === trimmedName } !== null)
             throw Exception("Task name must be unique")
 
