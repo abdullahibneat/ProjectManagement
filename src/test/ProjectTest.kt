@@ -60,6 +60,13 @@ class ProjectTest {
     }
 
     @Test
+    fun `A task with duration of less than 1 cannot be added to a project`() {
+        val project = Project("Test")
+        assertThrows<Exception> { project.addTask("a", 0) }
+        assertThrows<Exception> { project.addTask("b", -1) }
+    }
+
+    @Test
     fun `An end task can be deleted successfully`() {
         val project = Project("Sample Project A")
         project.addTask("a", 6)
