@@ -13,23 +13,18 @@ class Project(projectName: String) {
     }
 
     fun addTask(name: String, duration: Int, vararg previousTasks: String) {
-        val trimmedName = name.trim()
+        var newTask = Task(name, duration) // Create task here to perform error checking
 
-        if(trimmedName.isEmpty())
-            throw Exception("Task name cannot be empty")
-
-        if(duration < 1)
-            throw Exception("Task must have a duration greater than 1")
-
-        if(tasks.find { t -> t.name === trimmedName } !== null)
+        if(tasks.find { t -> t.name === newTask.name } !== null)
             throw Exception("Task name must be unique")
 
-        val dependencies = tasks.filter { t -> previousTasks.contains(t.name) }.toMutableSet()
+        val dependencies = tasks.filter { t -> previousTasks.contains(t.name) }
 
         if(dependencies.size != previousTasks.size)
             throw Exception("Some or all dependent tasks do not exist")
 
-        val newTask = Task(trimmedName, duration, dependencies)
+        newTask = Task(name, duration, dependencies.toMutableSet())
+
         tasks.add(newTask)
     }
 
