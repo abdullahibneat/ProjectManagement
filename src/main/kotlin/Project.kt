@@ -51,6 +51,7 @@ class Project(projectName: String) {
         } catch (e: Exception) {
             task.name = originalName
             task.duration = originalDuration
+            throw Exception("Invalid name or duration.")
         }
     }
 
