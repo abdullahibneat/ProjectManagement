@@ -25,22 +25,43 @@ public class MainMenu {
     private JLabel TimeLabel;
     private JLabel DateLabel;
 
+    private static JFrame frame;
+
 
     public MainMenu() {
         ProjectsAddButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("testing");
-
-//                AddProject ap = new AddProject();
-//                ap.setVisible(true);
-
+                Object[] options = {"New",
+                        "Import",};
+                int n = JOptionPane.showOptionDialog(frame,
+                        "Please select an option",
+                        "",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.INFORMATION_MESSAGE,
+                        null,
+                        options,
+                        options[0]);
+                if (n == 0){                                            // NEED TO CONTINUE THE IF STATEMENT
+                    System.out.println("NEW");
+                } else{
+                    System.out.println("IMPORT");
+                }
             }
         });
     }
 
+    public MainMenu(JFrame frame){
+        frame.setContentPane(new MainMenu().BasePanel);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
+    }
+
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("MainMenu");
+        frame = new JFrame("MainMenu");
         frame.setContentPane(new MainMenu().BasePanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();

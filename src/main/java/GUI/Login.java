@@ -1,6 +1,8 @@
 package GUI;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Login {
     private JPanel BasePanel;
@@ -12,8 +14,19 @@ public class Login {
     private JLabel ApplicationTitleLabel;
     private JPanel CedentialsPanel;
 
+    private static JFrame frame;
+
+    public Login() {
+        LoginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new MainMenu(frame); // *NEEDS TO OPEN UNDER THE CONDITIONS THAT THE USERNAME & PASSWORD ARE CORRECT*
+            }
+        });
+    }
+
     public static void main(String[] args) {
-        JFrame frame = new JFrame("LoginButton");
+        frame = new JFrame("LoginButton");
         frame.setContentPane(new Login().BasePanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();

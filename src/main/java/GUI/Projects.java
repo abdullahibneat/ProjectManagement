@@ -13,9 +13,6 @@ public class Projects {
     private JLabel DueLabel;
     private JLabel TasksLabel;
 
-
-
-
     public static void main(String[] args) {
         JFrame frame = new JFrame("Projects");
         frame.setContentPane(new Projects().BasePanel);
@@ -24,4 +21,5 @@ public class Projects {
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
     }
+
 }
