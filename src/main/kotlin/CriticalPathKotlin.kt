@@ -11,9 +11,9 @@ fun main() {
 }
 
 object CriticalPathKotlin: CriticalPath {
-    fun forwardBackwardPass(tasks: Set<Task>): HashMap<Task, Calculations> {
+    fun forwardBackwardPass(tasks: Set<Task>): HashMap<Task, CriticalCalculations> {
         val numberOfTasks = tasks.size
-        val computed = HashMap<Task, Calculations>()
+        val computed = HashMap<Task, CriticalCalculations>()
         val toCompute = tasks.toMutableList()
 
         var forwardPass = true // Begin with forward pass
@@ -24,7 +24,7 @@ object CriticalPathKotlin: CriticalPath {
             val current = toCompute.removeAt(0)
 
             val expectedNumberOfDependencies = if(forwardPass) current.previousTasks.size else current.nextTasks.size
-            val dependencies = mutableSetOf<Calculations>()
+            val dependencies = mutableSetOf<CriticalCalculations>()
 
             // Try to find all previous/successor tasks that have been already computed
             if(forwardPass) for(t in current.previousTasks) computed[t]?.let { dependencies.add(it) } ?: break
@@ -47,7 +47,7 @@ object CriticalPathKotlin: CriticalPath {
 
                 val prevEarlyFinish = if (dependencies.size > 0) dependencies.maxOf { t -> t.earlyFinish } else 0
                 val currentEarlyFinish = prevEarlyFinish + current.duration
-                computed[current] = Calculations(prevEarlyFinish + 1, currentEarlyFinish)
+                computed[current] = CriticalCalculations(prevEarlyFinish + 1, currentEarlyFinish)
 
                 if(currentEarlyFinish > highestEarlyFinish) highestEarlyFinish = currentEarlyFinish
 
