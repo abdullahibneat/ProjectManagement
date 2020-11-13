@@ -2,7 +2,7 @@ import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class CriticalPath {
+class CriticalPathKotlinTest {
     @Test
     fun `Forward and backward passes on sample project A are correct`() {
         val (tasks, expected) = getSampleProjectA()
