@@ -10,8 +10,6 @@ fun main() {
     println(CriticalPathKotlin.findCriticalPath(allTasks))
 }
 
-data class Calculations(var earlyStart: Int, var earlyFinish: Int, var lateStart: Int? = null, var lateFinish: Int? = null, var float: Int? = null) {}
-
 object CriticalPathKotlin: CriticalPath {
     fun forwardBackwardPass(tasks: Set<Task>): HashMap<Task, Calculations> {
         val numberOfTasks = tasks.size
