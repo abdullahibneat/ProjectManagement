@@ -2,7 +2,7 @@ fun main() {
     val a = Task("a", 6)
     val b = Task("b", 11, mutableSetOf(a))
     val c = Task("c", 7, mutableSetOf(a))
-    val d = Task("d", 3, mutableSetOf(c))
+    val d = Task("d", 3, mutableSetOf(c), 2)
     val e = Task("e", 2, mutableSetOf(b, d))
 
     val allTasks = setOf(a, b, c, d, e)
@@ -47,7 +47,7 @@ fun forwardBackwardPass(tasks: Set<Task>): HashMap<Task, Calculations> {
             //                                                      = prevEarlyFinish + this.duration
 
             val prevEarlyFinish = if (dependencies.size > 0) dependencies.maxOf { t -> t.earlyFinish } else 0
-            val currentEarlyFinish = prevEarlyFinish + current.duration
+            val currentEarlyFinish = prevEarlyFinish + current.lag + current.duration
             computed[current] = Calculations(prevEarlyFinish + 1, currentEarlyFinish)
 
             if(currentEarlyFinish > highestEarlyFinish) highestEarlyFinish = currentEarlyFinish
@@ -68,7 +68,7 @@ fun forwardBackwardPass(tasks: Set<Task>): HashMap<Task, Calculations> {
 
             computed[current]!!.apply {
                 lateFinish = nextLateStart - 1
-                lateStart = nextLateStart - current.duration
+                lateStart = nextLateStart - current.lag - current.duration
                 float = lateFinish!! - earlyFinish
             }
         }
