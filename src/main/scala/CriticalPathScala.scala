@@ -9,7 +9,8 @@ object CriticalPathScala {
         val d = new Task("d", 3, Set(c).asJava)
         val e = new Task("e", 2, Set(b, d).asJava)
 
-        println(forwardPass(a))
+        val forward = forwardPass(a)
+        println(backwardPass(forward))
     }
 
     def forwardPass(task: Task, calculations: Map[Task, CriticalCalculations] = Map(), single: Boolean = false): Map[Task, CriticalCalculations] = {
@@ -45,5 +46,43 @@ object CriticalPathScala {
         if(single || task.getNextTasks.isEmpty) currentTaskCalculations
 
         else currentTaskCalculations ++ task.getNextTasks.asScala.map(t => forwardPass(t, calculations ++ currentTaskCalculations)).reduce(_ ++ _)
+    }
+
+    def backwardPass(calculations: Map[Task, CriticalCalculations], task: Task = null, single: Boolean = false): Map[Task, CriticalCalculations] = {
+        // Start backward pass from the task with the largest earlyFinish (i.e. the critical end task)
+        if(task == null) return backwardPass(calculations, calculations.maxBy(_._2.getEarlyFinish)._1)
+
+        // Extract current early values
+        val currentCalculations = calculations(task)
+
+        val earlyStart = currentCalculations.getEarlyStart
+        val earlyFinish = currentCalculations.getEarlyFinish
+
+        // The late finish time is computed with the equation: next.lateStart - 1
+        val lateFinish = {
+            if(task.getNextTasks.isEmpty) calculations.maxBy(_._2.getEarlyFinish)._2.getEarlyFinish // Task doesn't have successors, i.e. this is an end task. Find the highest early finish time
+            else  {
+                val nextTasksComputed = task.getNextTasks.asScala
+                    .filter(t => calculations(t).getLateStart != null)
+                    .map(t => Map(t -> calculations(t)))
+
+                task.getNextTasks.asScala
+                    .filter(t => calculations(t).getLateStart == null) // Find all non-computed successor tasks
+                    .map(t => backwardPass(calculations, t, single = true)) // Recursively compute critical values
+                    .++(nextTasksComputed) // Add all the tasks that have already been computed
+                    .reduce(_ ++ _) // Merge maps into one map
+                    .minBy(_._2.getLateStart)._2.getLateStart // Find the smallest late start date
+                    .-(1)
+            }
+        }
+        // The late start time is computed with the equation: this.lateFinish - this.duration + 1
+        val lateStart = lateFinish - task.getDuration + 1
+        val float = lateFinish - earlyFinish
+
+        val currentTaskCalculations = Map(task -> new CriticalCalculations(earlyStart, earlyFinish, lateStart, lateFinish, float))
+
+        if(single || task.getPreviousTasks.isEmpty) currentTaskCalculations
+
+        else currentTaskCalculations ++ task.getPreviousTasks.asScala.map(t => backwardPass(calculations ++ currentTaskCalculations, t)).reduce(_ ++ _)
     }
 }
