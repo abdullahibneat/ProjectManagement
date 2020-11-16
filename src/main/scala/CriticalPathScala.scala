@@ -91,14 +91,18 @@ object CriticalPathScala extends CriticalPath {
     }
 
     def forwardBackwardPass(tasks: JSet[Task]): JMap[Task, CriticalCalculations] = {
-        // Forward pass must be computed for all starting tasks
-        // in case a project has multiple starting tasks (e.g. SampleProjectC)
+        // Forward and backward passes must be computed for all starting and ending tasks
+        // in case a project has multiple starting and/or ending tasks (e.g. SampleProjectC)
         val forward = tasks.asScala
             .filter(t => t.getPreviousTasks.isEmpty)
             .map(t => forwardPass(t))
             .reduce(_ ++ _)
 
-        backwardPass(forward).asJava
+        tasks.asScala
+            .filter(t => t.getNextTasks.isEmpty)
+            .map(t => backwardPass(forward, t))
+            .reduce(_ ++ _)
+            .asJava
     }
 
     def findCriticalPathRecursively(calculations: Map[Task, CriticalCalculations], criticalPath: Set[Task] = null): Set[Task] = {
