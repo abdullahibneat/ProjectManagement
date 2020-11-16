@@ -1,6 +1,6 @@
-import java.util.{ Set => JSet }
-import scala.jdk.CollectionConverters.SetHasAsJava
-import scala.jdk.CollectionConverters.SetHasAsScala
+import java.util.{Map => JMap, Set => JSet}
+
+import scala.jdk.CollectionConverters.{MapHasAsJava, MapHasAsScala, SetHasAsJava, SetHasAsScala}
 
 object CriticalPathScala extends CriticalPath {
     def main(args: Array[String]): Unit = {
@@ -90,6 +90,17 @@ object CriticalPathScala extends CriticalPath {
         else currentTaskCalculations ++ task.getPreviousTasks.asScala.map(t => backwardPass(calculations ++ currentTaskCalculations, t)).reduce(_ ++ _)
     }
 
+    def forwardBackwardPass(tasks: JSet[Task]): JMap[Task, CriticalCalculations] = {
+        // Forward pass must be computed for all starting tasks
+        // in case a project has multiple starting tasks (e.g. SampleProjectC)
+        val forward = tasks.asScala
+            .filter(t => t.getPreviousTasks.isEmpty)
+            .map(t => forwardPass(t))
+            .reduce(_ ++ _)
+
+        backwardPass(forward).asJava
+    }
+
     def findCriticalPathRecursively(calculations: Map[Task, CriticalCalculations], criticalPath: Set[Task] = null): Set[Task] = {
         // Start critical path by finding starting task
         if(criticalPath == null) {
@@ -116,15 +127,7 @@ object CriticalPathScala extends CriticalPath {
     }
 
     override def findCriticalPath(tasks: JSet[Task]): JSet[Task] = {
-        // Forward pass must be computed for all starting tasks
-        // in case a project has multiple starting tasks (e.g. SampleProjectC)
-        val forward = tasks.asScala
-            .filter(t => t.getPreviousTasks.isEmpty)
-            .map(t => forwardPass(t))
-            .reduce(_ ++ _)
-
-        val calculations = backwardPass(forward)
-
+        val calculations = forwardBackwardPass(tasks).asScala.toMap
         findCriticalPathRecursively(calculations).asJava
     }
 }
