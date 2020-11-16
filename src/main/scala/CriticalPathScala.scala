@@ -1,14 +1,14 @@
-import java.util.{ Set => JSet }
-import scala.jdk.CollectionConverters.SetHasAsJava
-import scala.jdk.CollectionConverters.SetHasAsScala
+import java.util.{Map => JMap, Set => JSet}
+
+import scala.jdk.CollectionConverters.{MapHasAsJava, MapHasAsScala, SetHasAsJava, SetHasAsScala}
 
 object CriticalPathScala extends CriticalPath {
     def main(args: Array[String]): Unit = {
-        val a = new Task("a", 6, Set[Task]().asJava)
-        val b = new Task("b", 11, Set(a).asJava)
-        val c = new Task("c", 7, Set(a).asJava)
-        val d = new Task("d", 3, Set(c).asJava)
-        val e = new Task("e", 2, Set(b, d).asJava)
+        val a = new Task("a", 6, Set[Task]().asJava, 0)
+        val b = new Task("b", 11, Set(a).asJava, 0)
+        val c = new Task("c", 7, Set(a).asJava, 0)
+        val d = new Task("d", 3, Set(c).asJava, 2)
+        val e = new Task("e", 2, Set(b, d).asJava, 0)
 
         val allTasks = Set(a, b, c, d, e).asJava
 
@@ -38,11 +38,12 @@ object CriticalPathScala extends CriticalPath {
         // If this is a root task, set value to 0, otherwise find the dependency with the highest earlyFinish value
         val prevEarlyFinish = if(dependencies.isEmpty) 0 else dependencies.values.maxBy(t => t.getEarlyFinish).getEarlyFinish
 
-        //  The early start time is computed with the equation: prev.earlyFinish + 1
+        //  The early start time is computed with the equation: prev.earlyFinish + this.lag + 1
         //  The early finish time is computed with the equation: this.earlyStart + this.duration - 1
-        //                              This can be simplified: = (prevEarlyFinish + 1) + this.duration - 1 (cancel out the 1s: 1-1=0)
-        //                                                      = prevEarlyFinish + this.duration
-        val currentTaskCalculations = Map(task -> new CriticalCalculations(prevEarlyFinish + 1, prevEarlyFinish + task.getDuration, null, null, null))
+        val earlyStart = prevEarlyFinish + task.getLag + 1
+        val earlyFinish = earlyStart + task.getDuration - 1
+
+        val currentTaskCalculations = Map(task -> new CriticalCalculations(earlyStart, earlyFinish, null, null, null))
 
         // Return only this task's computation if it's an end node, or a dependency needed to be calculated
         if(single || task.getNextTasks.isEmpty) currentTaskCalculations
@@ -60,7 +61,7 @@ object CriticalPathScala extends CriticalPath {
         val earlyStart = currentCalculations.getEarlyStart
         val earlyFinish = currentCalculations.getEarlyFinish
 
-        // The late finish time is computed with the equation: next.lateStart - 1
+        // The late finish time is computed with the equation: next.lateStart - next.lag - 1
         val lateFinish = {
             if(task.getNextTasks.isEmpty) calculations.maxBy(_._2.getEarlyFinish)._2.getEarlyFinish // Task doesn't have successors, i.e. this is an end task. Find the highest early finish time
             else  {
@@ -68,13 +69,14 @@ object CriticalPathScala extends CriticalPath {
                     .filter(t => calculations(t).getLateStart != null)
                     .map(t => Map(t -> calculations(t)))
 
-                task.getNextTasks.asScala
+                val nextTask = task.getNextTasks.asScala
                     .filter(t => calculations(t).getLateStart == null) // Find all non-computed successor tasks
                     .map(t => backwardPass(calculations, t, single = true)) // Recursively compute critical values
                     .++(nextTasksComputed) // Add all the tasks that have already been computed
                     .reduce(_ ++ _) // Merge maps into one map
-                    .minBy(_._2.getLateStart)._2.getLateStart // Find the smallest late start date
-                    .-(1)
+                    .minBy(_._2.getLateStart) // Return map object
+
+                nextTask._2.getLateStart - nextTask._1.getLag - 1
             }
         }
         // The late start time is computed with the equation: this.lateFinish - this.duration + 1
@@ -86,6 +88,21 @@ object CriticalPathScala extends CriticalPath {
         if(single || task.getPreviousTasks.isEmpty) currentTaskCalculations
 
         else currentTaskCalculations ++ task.getPreviousTasks.asScala.map(t => backwardPass(calculations ++ currentTaskCalculations, t)).reduce(_ ++ _)
+    }
+
+    def forwardBackwardPass(tasks: JSet[Task]): JMap[Task, CriticalCalculations] = {
+        // Forward and backward passes must be computed for all starting and ending tasks
+        // in case a project has multiple starting and/or ending tasks (e.g. SampleProjectC)
+        val forward = tasks.asScala
+            .filter(t => t.getPreviousTasks.isEmpty)
+            .map(t => forwardPass(t))
+            .reduce(_ ++ _)
+
+        tasks.asScala
+            .filter(t => t.getNextTasks.isEmpty)
+            .map(t => backwardPass(forward, t))
+            .reduce(_ ++ _)
+            .asJava
     }
 
     def findCriticalPathRecursively(calculations: Map[Task, CriticalCalculations], criticalPath: Set[Task] = null): Set[Task] = {
@@ -114,15 +131,7 @@ object CriticalPathScala extends CriticalPath {
     }
 
     override def findCriticalPath(tasks: JSet[Task]): JSet[Task] = {
-        // Forward pass must be computed for all starting tasks
-        // in case a project has multiple starting tasks (e.g. SampleProjectC)
-        val forward = tasks.asScala
-            .filter(t => t.getPreviousTasks.isEmpty)
-            .map(t => forwardPass(t))
-            .reduce(_ ++ _)
-
-        val calculations = backwardPass(forward)
-
+        val calculations = forwardBackwardPass(tasks).asScala.toMap
         findCriticalPathRecursively(calculations).asJava
     }
 }
