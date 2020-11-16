@@ -2,7 +2,7 @@ fun main() {
     val a = Task("a", 6)
     val b = Task("b", 11, mutableSetOf(a))
     val c = Task("c", 7, mutableSetOf(a))
-    val d = Task("d", 3, mutableSetOf(c))
+    val d = Task("d", 3, mutableSetOf(c), 2)
     val e = Task("e", 2, mutableSetOf(b, d))
 
     val allTasks = setOf(a, b, c, d, e)
@@ -39,15 +39,16 @@ object CriticalPathKotlin: CriticalPath {
                 // Forward pass requires previous tasks' early finish times.
                 // NOTE: Since the starting task (A) has no dependencies, set the value to 0.
                 // For the current task:
-                //  - the early start time is calculated by adding 1 to the whichever dependant task
-                //    will finish last.
+                //  - the early start time is computed with the equation: prev.earlyFinish + this.lag + 1
                 //  - the early finish time is computed with the equation: this.earlyStart + this.duration - 1
                 //                              This can be simplified: = (prevEarlyFinish + 1) + this.duration - 1 (cancel out the 1s: 1-1=0)
                 //                                                      = prevEarlyFinish + this.duration
 
                 val prevEarlyFinish = if (dependencies.size > 0) dependencies.maxOf { t -> t.earlyFinish } else 0
-                val currentEarlyFinish = prevEarlyFinish + current.duration
-                computed[current] = CriticalCalculations(prevEarlyFinish + 1, currentEarlyFinish)
+                val currentEarlyStart = prevEarlyFinish + current.lag + 1
+                val currentEarlyFinish = currentEarlyStart + current.duration - 1
+
+                computed[current] = CriticalCalculations(currentEarlyStart, currentEarlyFinish)
 
                 if(currentEarlyFinish > highestEarlyFinish) highestEarlyFinish = currentEarlyFinish
 
@@ -58,17 +59,18 @@ object CriticalPathKotlin: CriticalPath {
                 // Backward pass requires the successor tasks' late start times.
                 // NOTE: Since the very last task(s) has no successor tasks, set the value to: HIGHEST earlyFinish + 1 (refer to var highestEarlyFinish above)
                 // For the current task:
-                //  - the late finish time is calculated by subtracting 1 from whichever successor task
-                //    finishes first.
+                //  - the late finish time is computed with the equation: next.lateStart - next.lag - 1
                 //  - the late start time is computed with the equation: this.lateFinish - this.duration + 1
-                //    Like in the forward pass, this is simplified to:   nextLateStart - current.duration
 
-                val nextLateStart = if(dependencies.size > 0 ) dependencies.minOf { t -> t.lateStart!! } else highestEarlyFinish + 1
+                val nextTask = current.nextTasks.minByOrNull { t -> computed[t]?.lateStart!! }
+                val nextLateStart = computed[nextTask]?.lateStart ?: highestEarlyFinish + 1
+
+                val currentLateFinish = nextLateStart - (nextTask?.lag ?: 0) - 1
 
                 computed[current]!!.apply {
-                    lateFinish = nextLateStart - 1
-                    lateStart = nextLateStart - current.duration
-                    float = lateFinish!! - earlyFinish
+                    lateFinish = currentLateFinish
+                    lateStart = currentLateFinish - current.duration + 1
+                    float = currentLateFinish - earlyFinish
                 }
             }
         }

@@ -1,4 +1,4 @@
-class Task(taskName: String, taskDuration: Int, val previousTasks: MutableSet<Task> = mutableSetOf()) {
+class Task(taskName: String, taskDuration: Int, val previousTasks: MutableSet<Task> = mutableSetOf(), var lag: Int = 0) {
     // Make sure name is never empty
     var name = ""
         set(value) {
