@@ -3,8 +3,8 @@
  *
  * Diagrams provided in the following format:
  *    +---------------------------+
- *    |  earlyStart   earlyFinish |
- *    |         TASK NAME         |
+ *    |  earlyStart   earlyFinish |    lAG
+ *    |         TASK NAME         |------------
  *    |   lateStart    lateFinish |
  *    +---------------------------+
  */
@@ -144,6 +144,111 @@ fun getSampleProjectC(): Triple<Set<Task>, HashMap<Task, Calculations>, Set<Task
     )
 
     val criticalPath = setOf(f,g)
+
+    return Triple(allTasks, allCalculations, criticalPath)
+}
+
+fun getSampleProjectD(): Triple<Set<Task>, HashMap<Task, Calculations>, Set<Task>> {
+    /**
+
+    +--=---+      +------+        +------+      +------+
+    | 1   5|      | 6  17|        |18  19|      |23  25|
+    |  A   +------+  B   +-------+  E    +---+--+  F   |
+    | 1   5|      | 9  20|        |21  22|   |  |23  25|
+    +--+--+      +-------+        +------+   |  +------+
+       |                                     |
+       |                                     |
+       |                                     |
+       |                                     |
+       |  +------+      +------+             |
+       |  |6  11 |  4   |16  22|             |
+       +--+ C    +------+  D   +-------------+
+          |6  11 |      |16  22|
+          +------+      +------+
+
+
+
+     */
+    val a = Task("a", 5)
+    val b = Task("b", 12, mutableSetOf(a))
+    val c = Task("c", 6, mutableSetOf(a))
+    val d = Task("d", 7, mutableSetOf(c), 4)
+    val e = Task("e", 2, mutableSetOf(b))
+    val f = Task("f", 3, mutableSetOf(e,d))
+
+    val allTasks = setOf(a, b, c, d, e, f)
+
+    val allCalculations = hashMapOf(
+            a to Calculations(1, 5, 1, 5, 0),
+            b to Calculations(6, 17, 9, 20, 3),
+            c to Calculations(6, 11, 6, 11, 0),
+            d to Calculations(16, 22, 16, 22, 0),
+            e to Calculations(18, 19, 21, 22, 3),
+            f to Calculations(23, 25, 23, 25, 0)
+    )
+
+    val criticalPath = setOf(a,c,d,f)
+
+    return Triple(allTasks, allCalculations, criticalPath)
+}
+
+fun getSampleProjectE(): Triple<Set<Task>, HashMap<Task, Calculations>, Set<Task>> {
+    /**
+    +-------+     +-------+     +-------+     +-------+
+    |1     2|     |3     6|  5  |12   22|     |34   35|
+    |   A   +-----+   B   +-----+   C   +--+--+   J   |
+    |1    13|     |14   17|     |23   33|  |  |34   35|
+    +-------+     +-------+     +-------+  |  +-------+
+                                           |
+    +-------+     +-------+     +-------+  |
+    |1     7|  4  |12   24|     |25   33|  |
+    |   D   +--+--+   E   +-----+   F   +--+
+    |1     7|  |  |12   24|     |25   33|  |
+    +-------+  |  +-------+     +-------+  |
+               |                           |
+               |                           |
+               |  +-------+     +-------+  |
+               |  |1     2|  3  |13   17|  |
+               +--+   G   +--+--+   H   +--+
+                  |1    13|  |  |29   33|  |
+                  +-------+  |  +-------+  |
+                             |             |
+                             |             |
+                             |  +-------+  |
+                             |  |10   15|  |
+                             +--+   I   +--+
+                                |28   33|
+                                +-------+
+
+
+     */
+    val a = Task("a", 2)
+    val b = Task("b", 4, mutableSetOf(a))
+    val c = Task("c", 11, mutableSetOf(b),5)
+    val d = Task("d", 7)
+    val e = Task("e", 13, mutableSetOf(d),4)
+    val f = Task("f", 9, mutableSetOf(e))
+    val g = Task("g", 2, mutableSetOf(d))
+    val h = Task("h", 5, mutableSetOf(g),3)
+    val i = Task("i", 6, mutableSetOf(g))
+    val j = Task("j", 2, mutableSetOf(c,f,h,i))
+
+    val allTasks = setOf(a, b, c, d, e, f, g , h , i, j)
+
+    val allCalculations = hashMapOf(
+            a to Calculations(1, 2, 12, 13, 11),
+            b to Calculations(3, 6, 14, 17, 11),
+            c to Calculations(12, 22, 23, 33, 11),
+            d to Calculations(1, 7, 1, 7, 0),
+            e to Calculations(12, 24, 12, 24, 0),
+            f to Calculations(25, 33, 25, 33, 0),
+            g to Calculations(8, 9, 26, 27, 18),
+            h to Calculations(13, 17, 29, 33, 16),
+            i to Calculations(10, 15, 28, 33, 18),
+            j to Calculations(34, 35, 34, 35, 0)
+    )
+
+    val criticalPath = setOf(d,e,f,j)
 
     return Triple(allTasks, allCalculations, criticalPath)
 }
