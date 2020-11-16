@@ -55,8 +55,8 @@ class CriticalPathScalaTest {
         val criticalExpected = sampleData.component3()
 
         val actualCriticalPath = CriticalPathScala.findCriticalPath(tasks)
-        assertEquals(criticalExpected.size, actualCriticalPath.size)
-        criticalExpected.asScala.zip(actualCriticalPath.asScala).foreach(t => assertEquals(t._1, t._2))
+        assertEquals(criticalExpected.length, actualCriticalPath.length)
+        criticalExpected.zip(actualCriticalPath).foreach(t => assertEquals(t._1, t._2))
     }
 
     @Test
@@ -66,8 +66,8 @@ class CriticalPathScalaTest {
         val criticalExpected = sampleData.component3()
 
         val actualCriticalPath = CriticalPathScala.findCriticalPath(tasks)
-        assertEquals(criticalExpected.size, actualCriticalPath.size)
-        criticalExpected.asScala.zip(actualCriticalPath.asScala).foreach(t => assertEquals(t._1, t._2))
+        assertEquals(criticalExpected.length, actualCriticalPath.length)
+        criticalExpected.zip(actualCriticalPath).foreach(t => assertEquals(t._1, t._2))
     }
 
     @Test
@@ -77,8 +77,8 @@ class CriticalPathScalaTest {
         val criticalExpected = sampleData.component3()
 
         val actualCriticalPath = CriticalPathScala.findCriticalPath(tasks)
-        assertEquals(criticalExpected.size, actualCriticalPath.size)
-        criticalExpected.asScala.zip(actualCriticalPath.asScala).foreach(t => assertEquals(t._1, t._2))
+        assertEquals(criticalExpected.length, actualCriticalPath.length)
+        criticalExpected.zip(actualCriticalPath).foreach(t => assertEquals(t._1, t._2))
     }
 
     @Test
@@ -88,8 +88,8 @@ class CriticalPathScalaTest {
         val criticalExpected = sampleData.component3()
 
         val actualCriticalPath = CriticalPathScala.findCriticalPath(tasks)
-        assertEquals(criticalExpected.size, actualCriticalPath.size)
-        criticalExpected.asScala.zip(actualCriticalPath.asScala).foreach(t => assertEquals(t._1, t._2))
+        assertEquals(criticalExpected.length, actualCriticalPath.length)
+        criticalExpected.zip(actualCriticalPath).foreach(t => assertEquals(t._1, t._2))
     }
 
     @Test
@@ -99,7 +99,7 @@ class CriticalPathScalaTest {
         val criticalExpected = sampleData.component3()
 
         val actualCriticalPath = CriticalPathScala.findCriticalPath(tasks)
-        assertEquals(criticalExpected.size, actualCriticalPath.size)
-        criticalExpected.asScala.zip(actualCriticalPath.asScala).foreach(t => assertEquals(t._1, t._2))
+        assertEquals(criticalExpected.length, actualCriticalPath.length)
+        criticalExpected.zip(actualCriticalPath).foreach(t => assertEquals(t._1, t._2))
     }
 }

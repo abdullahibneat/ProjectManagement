@@ -12,7 +12,7 @@ object CriticalPathScala extends CriticalPath {
 
         val allTasks = Set(a, b, c, d, e).asJava
 
-        println(findCriticalPath(allTasks))
+        println(findCriticalPath(allTasks).mkString("Array(", ", ", ")")) // Print out task names
     }
 
     def forwardPass(task: Task, calculations: Map[Task, CriticalCalculations] = Map(), single: Boolean = false): Map[Task, CriticalCalculations] = {
@@ -105,33 +105,33 @@ object CriticalPathScala extends CriticalPath {
             .asJava
     }
 
-    def findCriticalPathRecursively(calculations: Map[Task, CriticalCalculations], criticalPath: Set[Task] = null): Set[Task] = {
+    def findCriticalPathRecursively(calculations: Map[Task, CriticalCalculations], criticalPath: Array[Task] = null): Array[Task] = {
         // Start critical path by finding starting task
         if(criticalPath == null) {
             val root = calculations
                 .find(t => t._2.getEarlyStart == 1 && t._2.getFloat == 0) // Start task has earlyStart of 1 and float 0
-                .map(t => t._1).toSet // Get the task wrapped in a Set
+                .map(t => t._1).toArray // Get the task wrapped in an Array
             return findCriticalPathRecursively(calculations, root)
         }
 
         val lastTask = criticalPath
             .maxBy(t => calculations(t).getEarlyFinish) // Find the task that has been added last
 
-        if(lastTask.getNextTasks.isEmpty) Set(lastTask) // Exit recursion when end task is found
+        if(lastTask.getNextTasks.isEmpty) Array(lastTask) // Exit recursion when end task is found
 
         else {
             // Find next critical task
             val nextTask = lastTask
                 .getNextTasks.asScala
                 .find(t => calculations(t).getFloat == 0)
-                .toSet // Wrap task within a Set
+                .toArray // Wrap task within an Array
 
             criticalPath ++ findCriticalPathRecursively(calculations, nextTask)
         }
     }
 
-    override def findCriticalPath(tasks: JSet[Task]): JSet[Task] = {
+    override def findCriticalPath(tasks: JSet[Task]): Array[Task] = {
         val calculations = forwardBackwardPass(tasks).asScala.toMap
-        findCriticalPathRecursively(calculations).asJava
+        findCriticalPathRecursively(calculations)
     }
 }

@@ -7,7 +7,7 @@ fun main() {
 
     val allTasks = setOf(a, b, c, d, e)
     println(CriticalPathKotlin.forwardBackwardPass(allTasks))
-    println(CriticalPathKotlin.findCriticalPath(allTasks))
+    println(CriticalPathKotlin.findCriticalPath(allTasks).toList()) // Use toList to print out task names
 }
 
 object CriticalPathKotlin: CriticalPath {
@@ -76,12 +76,12 @@ object CriticalPathKotlin: CriticalPath {
         return computed
     }
 
-    override fun findCriticalPath(tasks: Set<Task>): Set<Task> {
+    override fun findCriticalPath(tasks: Set<Task>): Array<Task> {
         val computedValues = forwardBackwardPass(tasks)
 
-        var current = computedValues.keys.find { t -> t.previousTasks.isEmpty() && computedValues[t]?.float == 0 } ?: return setOf() // Find the starting task, if not found return empty set.
+        var current = computedValues.keys.find { t -> t.previousTasks.isEmpty() && computedValues[t]?.float == 0 } ?: return arrayOf() // Find the starting task, if not found return empty set.
 
-        val criticalTasks = mutableSetOf(current)
+        val criticalTasks = mutableListOf(current)
         val error = criticalTasks.isEmpty() // An error is indicated by the set being empty.
 
         while (!error && current.nextTasks.isNotEmpty()) // current.nextTasks.isNotEmpty() stops the while loop when end task is reached
@@ -89,6 +89,6 @@ object CriticalPathKotlin: CriticalPath {
                     ?.let { criticalTasks.add(it); current = it } // If next critical task is found, add it to set...
                     ?: criticalTasks.clear() // Otherwise clear the set
 
-        return criticalTasks
+        return criticalTasks.toTypedArray()
     }
 }

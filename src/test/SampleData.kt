@@ -9,7 +9,7 @@
  *    +---------------------------+
  */
 
-fun getSampleProjectA(): Triple<Set<Task>, HashMap<Task, CriticalCalculations>, Set<Task>> {
+fun getSampleProjectA(): Triple<Set<Task>, HashMap<Task, CriticalCalculations>, Array<Task>> {
     /**
         +-------+     +-------+                   +-------+
         | 1    6|     | 7   17|                   |18   19|
@@ -39,14 +39,14 @@ fun getSampleProjectA(): Triple<Set<Task>, HashMap<Task, CriticalCalculations>, 
             e to CriticalCalculations(18, 19, 18, 19, 0)
     )
 
-    val criticalPath = setOf(a,b,e)
+    val criticalPath = arrayOf(a,b,e)
 
     return Triple(allTasks, allCalculations, criticalPath)
 }
 
 
 
-fun getSampleProjectB(): Triple<Set<Task>, HashMap<Task, CriticalCalculations>, Set<Task>> {
+fun getSampleProjectB(): Triple<Set<Task>, HashMap<Task, CriticalCalculations>, Array<Task>> {
     /**
         +-------+     +-------+     +-------+     +-------+     +-------+
         | 1    3|     | 4    7|     | 8   12|     |13   16|     |17   19|
@@ -89,12 +89,12 @@ fun getSampleProjectB(): Triple<Set<Task>, HashMap<Task, CriticalCalculations>, 
             h to CriticalCalculations(17, 19, 17, 19, 0)
     )
 
-    val criticalPath = setOf(a,b,d,g,h)
+    val criticalPath = arrayOf(a,b,d,g,h)
 
     return Triple(allTasks, allCalculations, criticalPath)
 }
 
-fun getSampleProjectC(): Triple<Set<Task>, HashMap<Task, CriticalCalculations>, Set<Task>> {
+fun getSampleProjectC(): Triple<Set<Task>, HashMap<Task, CriticalCalculations>, Array<Task>> {
     /**
          +-------+     +-------+     +-------+
          | 1    6|     | 7    9|     |10   11|
@@ -143,12 +143,12 @@ fun getSampleProjectC(): Triple<Set<Task>, HashMap<Task, CriticalCalculations>, 
             h to CriticalCalculations(10, 11, 12, 13, 2)
     )
 
-    val criticalPath = setOf(f,g)
+    val criticalPath = arrayOf(f,g)
 
     return Triple(allTasks, allCalculations, criticalPath)
 }
 
-fun getSampleProjectD(): Triple<Set<Task>, HashMap<Task, CriticalCalculations>, Set<Task>> {
+fun getSampleProjectD(): Triple<Set<Task>, HashMap<Task, CriticalCalculations>, Array<Task>> {
     /**
 
     +--=---+      +------+        +------+      +------+
@@ -187,12 +187,12 @@ fun getSampleProjectD(): Triple<Set<Task>, HashMap<Task, CriticalCalculations>, 
             f to CriticalCalculations(23, 25, 23, 25, 0)
     )
 
-    val criticalPath = setOf(a,c,d,f)
+    val criticalPath = arrayOf(a,c,d,f)
 
     return Triple(allTasks, allCalculations, criticalPath)
 }
 
-fun getSampleProjectE(): Triple<Set<Task>, HashMap<Task, CriticalCalculations>, Set<Task>> {
+fun getSampleProjectE(): Triple<Set<Task>, HashMap<Task, CriticalCalculations>, Array<Task>> {
     /**
     +-------+     +-------+     +-------+     +-------+
     |1     2|     |3     6|  5  |12   22|     |34   35|
@@ -248,7 +248,7 @@ fun getSampleProjectE(): Triple<Set<Task>, HashMap<Task, CriticalCalculations>, 
             j to CriticalCalculations(34, 35, 34, 35, 0)
     )
 
-    val criticalPath = setOf(d,e,f,j)
+    val criticalPath = arrayOf(d,e,f,j)
 
     return Triple(allTasks, allCalculations, criticalPath)
 }
