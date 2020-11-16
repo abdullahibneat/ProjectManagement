@@ -41,8 +41,6 @@ object CriticalPathKotlin: CriticalPath {
                 // For the current task:
                 //  - the early start time is computed with the equation: prev.earlyFinish + this.lag + 1
                 //  - the early finish time is computed with the equation: this.earlyStart + this.duration - 1
-                //                              This can be simplified: = (prevEarlyFinish + 1) + this.duration - 1 (cancel out the 1s: 1-1=0)
-                //                                                      = prevEarlyFinish + this.duration
 
                 val prevEarlyFinish = if (dependencies.size > 0) dependencies.maxOf { t -> t.earlyFinish } else 0
                 val currentEarlyStart = prevEarlyFinish + current.lag + 1
