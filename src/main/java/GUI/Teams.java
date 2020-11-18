@@ -13,6 +13,9 @@ public class Teams {
     private JLabel TaskLabel;
     private JLabel MemebersLabel;
 
+
+
+
     public static void main(String[] args) {
         JFrame frame = new JFrame("Teams");
         frame.setContentPane(new Teams().BasePanel);

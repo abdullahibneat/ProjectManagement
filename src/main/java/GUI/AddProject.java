@@ -4,9 +4,11 @@ import com.sun.javaws.util.JfxHelper;
 import javafx.stage.PopupWindow;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class AddProject {                                  // NOT BEING USED RIGHT NOW
-    private JPanel BasePanel;
+public class AddProject extends JFrame {                                  // NOT BEING USED RIGHT NOW
+    protected JPanel BasePanel;
     private JButton newProjectButton;
     private JButton importProjectButton;
     private JLabel SelectionLabel;
@@ -14,6 +16,13 @@ public class AddProject {                                  // NOT BEING USED RIG
     private static JFrame frame;
 
     public AddProject(){
+        newProjectButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("New Project");
+//                new ProjectFields(frame);
+            }
+        });
     }
 
     public AddProject(JFrame frame){

@@ -27,6 +27,8 @@ public class MainMenu {
 
     private static JFrame frame;
 
+    private ProjectFields projectfields = new ProjectFields();
+
 
     public MainMenu() {
         ProjectsAddButton.addActionListener(new ActionListener() {
@@ -44,9 +46,19 @@ public class MainMenu {
                         options[0]);
                 if (n == 0){                                            // NEED TO CONTINUE THE IF STATEMENT
                     System.out.println("NEW");
+
+                    frame = new JFrame("Project Fields");
+                    frame.setContentPane(new ProjectFields().basepanel);
+                    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    frame.pack();
+                    frame.setVisible(true);
+                    frame.setResizable(false);
+                    frame.setLocationRelativeTo(null);
+
                 } else{
                     System.out.println("IMPORT");
                 }
+
             }
         });
     }
