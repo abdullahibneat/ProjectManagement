@@ -161,6 +161,30 @@ class ProjectTest {
     }
 
     @Test
+    fun `Add Projects to JSON File`() {
+
+        val project = Project("Sample Project")
+        project.addTask("a", 6)
+        project.addTask("b", 11, "a")
+        project.addTask("c", 7, "a")
+        project.addTask("d", 3, "c")
+        project.addTask("e", 2, "b", "d")
+
+        val project2 = Project("Sample Project 2")
+        project2.addTask("a 2", 6)
+        project2.addTask("b 2", 11, "a 2")
+        project2.addTask("c 2", 7, "a 2")
+        project2.addTask("d 2", 3, "c 2")
+        project2.addTask("e 2", 2, "b 2", "d 2")
+
+        Persistence.addJSON(project)
+        Persistence.addJSON(project2)
+
+        Persistence.saveJSON()
+    }
+
+
+    @Test
     fun `Task duration cannot be changed to be less than 1`() {
         val project = Project("Sample Project")
         project.addTask("a", 6)
