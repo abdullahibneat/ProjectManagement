@@ -12,7 +12,7 @@ class Project(projectName: String) {
         name = projectName
     }
 
-    fun addTask(name: String, duration: Int, vararg previousTasks: String, lag: Int) {
+    fun addTask(name: String, duration: Int, vararg previousTasks: String, lag: Int = 0) {
         var newTask = Task(name, duration, lag=lag) // Create task here to perform error checking
 
         if(tasks.find { t -> t.name === newTask.name } !== null)
