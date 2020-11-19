@@ -2,6 +2,8 @@ package GUI;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Projects extends JFrame{
     protected JPanel BasePanel;
@@ -13,17 +15,22 @@ public class Projects extends JFrame{
     private JLabel TimeLeftLabel;
     private JLabel DueLabel;
     private JLabel TasksLabel;
+    private JButton AddTask;
 
     private static JFrame frame;
 
-    ProjectFields pf = new ProjectFields();
-
     public Projects(){
-        String a = pf.t;
-        String b = pf.d;
-        ProjectProgressLabel.setText(pf.t);
-        TimeLeftLabel.setText(pf.d);
 
+        AddTask.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame frame = new JFrame("AddTask");
+                frame.setContentPane(new AddTask().panel1);
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.pack();
+                frame.setVisible(true);
+            }
+        });
     }
 
     public Projects(JFrame frame){

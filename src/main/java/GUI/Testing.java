@@ -1,33 +1,35 @@
 package GUI;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLOutput;
 
-public class Testing extends JFrame {
-    protected JPanel panel1;
-    private JTree tree1;
-    private JButton button1;
-    private JLabel testlabel1;
-
-    private static JFrame frame;
-
-    public Testing () {
-
-    }
-
+public class Testing {
     public static void main(String[] args) {
-        frame = new JFrame("Testing");
-        frame.setContentPane(new Testing().panel1);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
 
-    }
+        GridLayout layout0x2 = new GridLayout(0,2);
 
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
+        JPanel TeamsBasePanel = new JPanel();
+        JTextField TeamNameField = new JTextField(5);
+        JTextField TeamLeaderField = new JTextField(5);
+        JComboBox Projectlist = new JComboBox();
 
-        testlabel1 = new JLabel("PLS JUSTWORK");
-        testlabel1.setText("TESTING 12345");
+        TeamsBasePanel.setLayout(layout0x2);
+        TeamsBasePanel.add(new JLabel("Team Name:"));
+        TeamsBasePanel.add(TeamNameField);
+        TeamsBasePanel.add(new JLabel("Team Leader:"));
+        TeamsBasePanel.add(TeamLeaderField);
+        TeamsBasePanel.add(new JLabel("Project:"));
+        TeamsBasePanel.add(Projectlist);
+
+
+        int result = JOptionPane.showConfirmDialog(null, TeamsBasePanel,
+                "Please Enter X and Y Values", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+            System.out.println("Team Name: " + TeamNameField.getText());
+            System.out.println("Team Leader: " + TeamLeaderField.getText());
+        }
     }
 }

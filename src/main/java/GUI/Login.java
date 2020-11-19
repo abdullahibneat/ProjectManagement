@@ -17,7 +17,6 @@ public class Login {
     private static JFrame frame;
 
     private Testing t = new Testing(); // *TESTING*
-    private ProjectFields pf = new ProjectFields();
 
     public Login() {
         LoginButton.addActionListener(new ActionListener() {
