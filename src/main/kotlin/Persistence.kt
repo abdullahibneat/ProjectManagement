@@ -1,5 +1,4 @@
 import java.io.File
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 
 class taskJSON(
@@ -34,12 +33,11 @@ object Persistence{
 
     open fun saveJSON(){
 
-
         val jsonFormatted = GsonBuilder().setPrettyPrinting().create()
 
         val jsonOutput: String = jsonFormatted.toJson(ProjectList.toList())
 
-        File("Project.json").writeText(jsonOutput)
+        File("Data.json").writeText(jsonOutput)
 
     }
 }
