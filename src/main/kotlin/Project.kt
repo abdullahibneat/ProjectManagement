@@ -12,8 +12,8 @@ class Project(projectName: String) {
         name = projectName
     }
 
-    fun addTask(name: String, duration: Int, vararg previousTasks: String) {
-        var newTask = Task(name, duration) // Create task here to perform error checking
+    fun addTask(name: String, duration: Int, vararg previousTasks: String, lag: Int) {
+        var newTask = Task(name, duration, lag=lag) // Create task here to perform error checking
 
         if(tasks.find { t -> t.name === newTask.name } !== null)
             throw Exception("Task name must be unique")
@@ -23,7 +23,7 @@ class Project(projectName: String) {
         if(dependencies.size != previousTasks.size)
             throw Exception("Some or all dependent tasks do not exist")
 
-        newTask = Task(name, duration, dependencies.toMutableSet())
+        newTask = Task(name, duration, dependencies.toMutableSet(), lag)
 
         tasks.add(newTask)
     }
