@@ -1,4 +1,4 @@
-class Project(projectName: String) {
+class Project(projectName: String, val team: Team? = null) {
     // Make sure name is never empty
     var name = ""
         set(value) {
