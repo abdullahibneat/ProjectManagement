@@ -27,11 +27,12 @@ data class TaskJSON(
 
 data class ProjectJSON(
         val name: String,
+        val team: String,
         val tasks: List<TaskJSON>
 )
 
 fun Task.toJSON() = TaskJSON(name, previousTasks.map { t -> t.name }, nextTasks.map { t -> t.name }, duration, lag)
-fun Project.toJSON() = ProjectJSON(name, tasks.map { t -> t.toJSON() } )
+fun Project.toJSON() = ProjectJSON(name, team?.name ?: "", tasks.map { t -> t.toJSON() } )
 
 object Persistence{
 
