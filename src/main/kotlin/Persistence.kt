@@ -19,7 +19,7 @@ fun main() {
 
 data class TaskJSON(
         val name: String,
-        val PreviousTasks: List<String>,
+        val previousTasks: List<String>,
         val nextTasks: List<String>,
         val duration: Int,
         val lag: Int
