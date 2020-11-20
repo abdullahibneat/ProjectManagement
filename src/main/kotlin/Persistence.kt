@@ -19,11 +19,11 @@ fun Project.toJSON() = ProjectJSON(name, tasks.map { t -> t.toJSON() } )
 
 object Persistence{
 
-    var ProjectList = mutableListOf<ProjectJSON>()
+    val projects = mutableListOf<ProjectJSON>()
 
     open fun addJSON(projects: Project) {
 
-        ProjectList.add(projects.toJSON())
+        this.projects.add(projects.toJSON())
 
 
     }
@@ -32,7 +32,7 @@ object Persistence{
 
         val jsonFormatted = GsonBuilder().setPrettyPrinting().create()
 
-        val jsonOutput: String = jsonFormatted.toJson(ProjectList.toList())
+        val jsonOutput: String = jsonFormatted.toJson(projects.toList())
 
         File("Data.json").writeText(jsonOutput)
 
