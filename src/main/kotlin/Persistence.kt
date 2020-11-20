@@ -19,7 +19,7 @@ fun main() {
     Persistence.addProject(project)
     Persistence.addProject(project2)
 
-    Persistence.saveJSON()
+    Persistence.save()
 }
 
 data class TaskJSON(
@@ -48,7 +48,7 @@ object Persistence{
 
     fun updateProject(project: Project) = projects.forEachIndexed { i, p -> if(p.name == project.name) projects[i] = project.toJSON() }
 
-    fun saveJSON(){
+    fun save() {
 
         val jsonFormatted = GsonBuilder().setPrettyPrinting().create()
 
