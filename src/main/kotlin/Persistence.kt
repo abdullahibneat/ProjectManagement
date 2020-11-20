@@ -46,6 +46,8 @@ object Persistence{
 
     fun addProject(project: Project) = projects.add(project.toJSON())
 
+    fun updateProject(project: Project) = projects.forEachIndexed { i, p -> if(p.name == project.name) projects[i] = project.toJSON() }
+
     fun saveJSON(){
 
         val jsonFormatted = GsonBuilder().setPrettyPrinting().create()
