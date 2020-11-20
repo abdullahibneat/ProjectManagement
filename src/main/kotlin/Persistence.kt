@@ -57,8 +57,8 @@ object Persistence{
         save()
     }
 
-    fun updateProject(project: Project) {
-        projects.forEachIndexed { i, p -> if(p.name == project.name) projects[i] = project }
+    fun updateProject(name: String, project: Project) {
+        projects.forEachIndexed { i, p -> if(p.name == name) projects[i] = project }
         save()
     }
 
@@ -67,8 +67,8 @@ object Persistence{
         save()
     }
 
-    fun updateTeam(team: Team) {
-        teams.forEachIndexed { i, t -> if(t.name == team.name) teams[i] = t }
+    fun updateTeam(name: String, team: Team) {
+        teams.forEachIndexed { i, t -> if(t.name == name) teams[i] = team }
         save()
     }
 
@@ -77,8 +77,8 @@ object Persistence{
         save()
     }
 
-    fun updateMember(member: Member) {
-        members.forEachIndexed { i, m -> if(m.name == member.name) members[i] = m }
+    fun updateMember(name: String, member: Member) {
+        members.forEachIndexed { i, m -> if(m.name == name) members[i] = member }
         save()
     }
 

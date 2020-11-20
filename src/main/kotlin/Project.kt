@@ -3,13 +3,15 @@ class Project(projectName: String, projectTeam: Team? = null) {
     var name = ""
         set(value) {
             if(value.trim().isEmpty()) throw Exception("Name cannot be empty.")
+            val oldName = name
             field = value.trim()
+            Persistence.updateProject(oldName, this)
         }
 
     var team = projectTeam
         set(value) {
             field = value
-            Persistence.updateProject(this)
+            Persistence.updateProject(name, this)
         }
 
     val tasks = mutableSetOf<Task>()
@@ -33,7 +35,7 @@ class Project(projectName: String, projectTeam: Team? = null) {
         newTask = Task(name, duration, dependencies.toMutableSet())
 
         tasks.add(newTask)
-        Persistence.updateProject(this)
+        Persistence.updateProject(name, this)
     }
 
     fun editTask(name: String, newName: String? = null, newDuration: Int? = null) {
@@ -61,7 +63,7 @@ class Project(projectName: String, projectTeam: Team? = null) {
             task.duration = originalDuration
             throw Exception("Invalid name or duration.")
         }
-        Persistence.updateProject(this)
+        Persistence.updateProject(name, this)
     }
 
     fun deleteTask(name: String) {
@@ -79,6 +81,6 @@ class Project(projectName: String, projectTeam: Team? = null) {
         task.previousTasks.forEach { t -> t.nextTasks.remove(task) }
 
         tasks.remove(task)
-        Persistence.updateProject(this)
+        Persistence.updateProject(name, this)
     }
 }
