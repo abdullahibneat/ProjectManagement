@@ -52,6 +52,16 @@ object Persistence{
         save()
     }
 
+    fun addTeam(team: Team) {
+        teams.add(team)
+        save()
+    }
+
+    fun updateTeam(team: Team) {
+        teams.forEachIndexed { i, t -> if(t.name == team.name) teams[i] = t }
+        save()
+    }
+
     fun save() {
 
         val jsonFormatted = GsonBuilder().setPrettyPrinting().create()
