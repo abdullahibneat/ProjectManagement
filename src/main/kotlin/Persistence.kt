@@ -37,8 +37,14 @@ data class ProjectJSON(
         val tasks: List<TaskJSON>
 )
 
+data class TeamJSON(
+        val name: String,
+        val members: List<String>
+)
+
 fun Task.toJSON() = TaskJSON(name, previousTasks.map { t -> t.name }, nextTasks.map { t -> t.name }, duration, lag)
 fun Project.toJSON() = ProjectJSON(name, team?.name ?: "", tasks.map { t -> t.toJSON() } )
+fun Team.toJSON() = TeamJSON(name, members.map { m -> m.name })
 
 object Persistence{
 
@@ -79,7 +85,7 @@ object Persistence{
     fun save() {
         val jsonFormatted = GsonBuilder().setPrettyPrinting().create()
 
-        val toOutput = mapOf("projects" to projects.toList(), "members" to members.toList(), "teams" to teams.toList())
+        val toOutput = mapOf("projects" to projects.toList(), "members" to members.toList(), "teams" to teams.map { it.toJSON() }.toList())
 
         val jsonOutput: String = jsonFormatted.toJson(toOutput)
 
