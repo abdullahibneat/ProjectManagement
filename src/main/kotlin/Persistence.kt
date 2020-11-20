@@ -15,11 +15,6 @@ fun main() {
     project2.addTask("c 2", 7, "a 2")
     project2.addTask("d 2", 3, "c 2")
     project2.addTask("e 2", 2, "b 2", "d 2")
-
-    Persistence.addProject(project)
-    Persistence.addProject(project2)
-
-    Persistence.save()
 }
 
 data class TaskJSON(

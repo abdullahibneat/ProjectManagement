@@ -10,6 +10,7 @@ class Project(projectName: String) {
 
     init {
         name = projectName
+        Persistence.addProject(this)
     }
 
     fun addTask(name: String, duration: Int, vararg previousTasks: String) {
@@ -26,6 +27,7 @@ class Project(projectName: String) {
         newTask = Task(name, duration, dependencies.toMutableSet())
 
         tasks.add(newTask)
+        Persistence.updateProject(this)
     }
 
     fun editTask(name: String, newName: String? = null, newDuration: Int? = null) {
@@ -53,6 +55,7 @@ class Project(projectName: String) {
             task.duration = originalDuration
             throw Exception("Invalid name or duration.")
         }
+        Persistence.updateProject(this)
     }
 
     fun deleteTask(name: String) {
@@ -70,5 +73,6 @@ class Project(projectName: String) {
         task.previousTasks.forEach { t -> t.nextTasks.remove(task) }
 
         tasks.remove(task)
+        Persistence.updateProject(this)
     }
 }
