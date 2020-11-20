@@ -48,17 +48,17 @@ fun Team.toJSON() = TeamJSON(name, members.map { m -> m.name })
 
 object Persistence{
 
-    val projects = mutableListOf<ProjectJSON>()
+    val projects = mutableListOf<Project>()
     val members = mutableListOf<Member>()
     val teams = mutableListOf<Team>()
 
     fun addProject(project: Project) {
-        projects.add(project.toJSON())
+        projects.add(project)
         save()
     }
 
     fun updateProject(project: Project) {
-        projects.forEachIndexed { i, p -> if(p.name == project.name) projects[i] = project.toJSON() }
+        projects.forEachIndexed { i, p -> if(p.name == project.name) projects[i] = project }
         save()
     }
 
@@ -85,7 +85,7 @@ object Persistence{
     fun save() {
         val jsonFormatted = GsonBuilder().setPrettyPrinting().create()
 
-        val toOutput = mapOf("projects" to projects.toList(), "members" to members.toList(), "teams" to teams.map { it.toJSON() }.toList())
+        val toOutput = mapOf("projects" to projects.map { it.toJSON() }, "members" to members, "teams" to teams.map { it.toJSON() })
 
         val jsonOutput: String = jsonFormatted.toJson(toOutput)
 
