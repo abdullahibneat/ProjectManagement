@@ -6,6 +6,7 @@ class Team(teamName: String) {
             field = value.trim()
         }
 
+    val members = mutableListOf<Member>()
 
     init {
         name = teamName
