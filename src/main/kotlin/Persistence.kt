@@ -1,5 +1,7 @@
 import java.io.File
 import com.google.gson.GsonBuilder
+import com.google.gson.Gson
+import java.io.FileReader
 
 fun main() {
     val team = Team("0+0=0")
@@ -97,10 +99,11 @@ object Persistence{
 
     fun load(){
 
+        val json = File("data.json").toString()
 
-//        val project = Gson().fromJson("data.json", projects::class.java)
-
-//        println(project)
+        val gson = Gson()
+        val projectsJson = gson.fromJson(FileReader("data.json"), projects::class.java)
+        println(projectsJson)
 
     }
 }
