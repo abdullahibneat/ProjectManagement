@@ -1,7 +1,7 @@
 import java.io.File
 import com.google.gson.GsonBuilder
 
-class taskJSON(
+class TaskJSON(
         var name: String,
         var PreviousTasks: List<String>,
         var nextTasks: List<String>,
@@ -10,19 +10,19 @@ class taskJSON(
 )
 
 
-class projectJSON(
+class ProjectJSON(
         val name: String,
-        var taskList: List<taskJSON>
+        var taskList: List<TaskJSON>
 )
 
 
 
-fun Task.toJSON() = taskJSON(name, previousTasks.map { t -> t.name }, nextTasks.map { t -> t.name }, duration, lag)
-fun Project.toJSON() = projectJSON(name, tasks.map { t -> t.toJSON() } )
+fun Task.toJSON() = TaskJSON(name, previousTasks.map { t -> t.name }, nextTasks.map { t -> t.name }, duration, lag)
+fun Project.toJSON() = ProjectJSON(name, tasks.map { t -> t.toJSON() } )
 
 object Persistence{
 
-    var ProjectList = mutableListOf<projectJSON>()
+    var ProjectList = mutableListOf<ProjectJSON>()
 
     open fun addJSON(projects: Project) {
 
