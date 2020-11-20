@@ -47,7 +47,7 @@ public class MainMenu {
         JPanel TeamsBasePanel = new JPanel();
         JTextField TeamNameField = new JTextField(5);
         JTextField TeamLeaderField = new JTextField(5);
-        JComboBox Projectlist = new JComboBox();
+        JComboBox ProjectListComboBox = new JComboBox();
 
         TeamsBasePanel.setLayout(layout0x2);
         TeamsBasePanel.add(new JLabel("Team Name:"));
@@ -55,7 +55,7 @@ public class MainMenu {
         TeamsBasePanel.add(new JLabel("Team Leader:"));
         TeamsBasePanel.add(TeamLeaderField);
         TeamsBasePanel.add(new JLabel("Project:"));
-        TeamsBasePanel.add(Projectlist);
+        TeamsBasePanel.add(ProjectListComboBox);
 
 
         ProjectsAddButton.addActionListener(new ActionListener() {
