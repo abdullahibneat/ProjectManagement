@@ -55,7 +55,7 @@ object Persistence{
 
         val jsonOutput: String = jsonFormatted.toJson(projects.toList())
 
-        File("Data.json").writeText(jsonOutput)
+        File("data.json").writeText(jsonOutput)
 
     }
 }
