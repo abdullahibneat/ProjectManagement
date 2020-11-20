@@ -1,7 +1,12 @@
-import java.io.File
-import com.google.gson.GsonBuilder
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import java.io.BufferedReader
+import java.io.File
 import java.io.FileReader
+
 
 fun main() {
     val team = Team("0+0=0")
@@ -47,7 +52,7 @@ data class TeamJSON(
 )
 
 fun Task.toJSON() = TaskJSON(name, previousTasks.map { t -> t.name }, nextTasks.map { t -> t.name }, duration, lag)
-fun Project.toJSON() = ProjectJSON(name, team?.name ?: "", tasks.map { t -> t.toJSON() } )
+fun Project.toJSON() = ProjectJSON(name, team?.name ?: "", tasks.map { t -> t.toJSON() })
 fun Team.toJSON() = TeamJSON(name, members.map { m -> m.name })
 
 object Persistence{
@@ -97,13 +102,24 @@ object Persistence{
 
     }
 
-    fun load(){
 
-        val json = File("data.json").toString()
+
+    fun load(){
+        val mapper = jacksonObjectMapper()
+        mapper.registerKotlinModule()
+        mapper.registerModule(JavaTimeModule())
+
+        val json =  File("data.json").readText()
+
+        val type = json
+        // mapper.readValue(json, projects::class.java)
+
+        val br = BufferedReader(FileReader("data.json"))
+        val sample: Project = Gson().fromJson(br, Project::class.java)
 
         val gson = Gson()
-        val projectsJson = gson.fromJson(FileReader("data.json"), projects::class.java)
-        println(projectsJson)
+        //        val projectsJson = gson.fromJson(FileReader("data.json"), projects::class.java)
+        println(sample)
 
     }
 }
