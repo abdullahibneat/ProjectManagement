@@ -1,5 +1,5 @@
+import com.google.gson.Gson
 import java.io.File
-import com.google.gson.GsonBuilder
 
 fun main() {
     val team = Team("0+0=0")
@@ -123,11 +123,9 @@ object Persistence{
     }
 
     fun save() {
-        val jsonFormatted = GsonBuilder().setPrettyPrinting().create()
-
         val toOutput = Data(projects.map { it.toJSON() }, members.map { it.toJSON() }, teams.map { it.toJSON() })
 
-        val jsonOutput: String = jsonFormatted.toJson(toOutput)
+        val jsonOutput: String = Gson().toJson(toOutput)
 
         File("data.json").writeText(jsonOutput)
 
