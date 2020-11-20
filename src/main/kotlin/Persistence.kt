@@ -44,9 +44,15 @@ object Persistence{
     val members = mutableListOf<Member>()
     val teams = mutableListOf<Team>()
 
-    fun addProject(project: Project) = projects.add(project.toJSON())
+    fun addProject(project: Project) {
+        projects.add(project.toJSON())
+        save()
+    }
 
-    fun updateProject(project: Project) = projects.forEachIndexed { i, p -> if(p.name == project.name) projects[i] = project.toJSON() }
+    fun updateProject(project: Project) {
+        projects.forEachIndexed { i, p -> if(p.name == project.name) projects[i] = project.toJSON() }
+        save()
+    }
 
     fun save() {
 
