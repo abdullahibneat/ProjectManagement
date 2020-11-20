@@ -92,6 +92,11 @@ object Persistence{
     val members = mutableListOf<Member>()
     val teams = mutableListOf<Team>()
 
+    fun load() {
+        val file = File("data.json").readText()
+        val data = Gson().fromJson(file, Data::class.java)
+    }
+
     fun addProject(project: Project) {
         projects.add(project)
         save()
