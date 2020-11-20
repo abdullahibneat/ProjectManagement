@@ -17,6 +17,8 @@ public class Projects extends JFrame{
     private JLabel DueLabel;
     private JLabel TasksLabel;
     private JButton AddTask;
+    private JButton HomeButton;
+    private JPanel NavigationPanel;
 
     private static JFrame frame;
 
@@ -110,9 +112,16 @@ public class Projects extends JFrame{
 
             }
         });
+        HomeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new MainMenu(frame);
+            }
+        });
     }
 
-    public Projects(JFrame frame){
+    public Projects(JFrame mainFrame){
+        frame = mainFrame;
         frame.setContentPane(new Projects().BasePanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();

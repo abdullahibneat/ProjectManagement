@@ -16,6 +16,8 @@ public class Teams {
     private JLabel TaskLabel;
     private JLabel MemebersLabel;
     private JButton button1;
+    private JButton HomeButton;
+    private JPanel NavigationPanel;
 
     private static JFrame frame;
 
@@ -78,6 +80,12 @@ public Teams(){
             if (result == JOptionPane.OK_OPTION) {
                 System.out.println("Task Name: " + TeamLeaderField.getText());
             }
+        }
+    });
+    HomeButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new MainMenu(frame);
         }
     });
 }
