@@ -20,6 +20,8 @@ fun Project.toJSON() = ProjectJSON(name, tasks.map { t -> t.toJSON() } )
 object Persistence{
 
     val projects = mutableListOf<ProjectJSON>()
+    val members = mutableListOf<Member>()
+    val teams = mutableListOf<Team>()
 
     open fun addJSON(projects: Project) {
 
