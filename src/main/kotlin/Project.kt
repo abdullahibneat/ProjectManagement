@@ -1,9 +1,15 @@
-class Project(projectName: String, val team: Team? = null) {
+class Project(projectName: String, projectTeam: Team? = null) {
     // Make sure name is never empty
     var name = ""
         set(value) {
             if(value.trim().isEmpty()) throw Exception("Name cannot be empty.")
             field = value.trim()
+        }
+
+    var team = projectTeam
+        set(value) {
+            field = value
+            Persistence.updateProject(this)
         }
 
     val tasks = mutableSetOf<Task>()

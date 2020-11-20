@@ -15,6 +15,8 @@ fun main() {
     project2.addTask("c 2", 7, "a 2")
     project2.addTask("d 2", 3, "c 2")
     project2.addTask("e 2", 2, "b 2", "d 2")
+
+    project.team = Team("Sample team")
 }
 
 data class TaskJSON(
