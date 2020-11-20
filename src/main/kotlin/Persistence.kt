@@ -23,14 +23,14 @@ object Persistence{
     val members = mutableListOf<Member>()
     val teams = mutableListOf<Team>()
 
-    open fun addJSON(projects: Project) {
+    fun addJSON(projects: Project) {
 
         this.projects.add(projects.toJSON())
 
 
     }
 
-    open fun saveJSON(){
+    fun saveJSON(){
 
         val jsonFormatted = GsonBuilder().setPrettyPrinting().create()
 
