@@ -27,7 +27,7 @@ data class TaskJSON(
 
 data class ProjectJSON(
         val name: String,
-        val taskList: List<TaskJSON>
+        val tasks: List<TaskJSON>
 )
 
 fun Task.toJSON() = TaskJSON(name, previousTasks.map { t -> t.name }, nextTasks.map { t -> t.name }, duration, lag)
