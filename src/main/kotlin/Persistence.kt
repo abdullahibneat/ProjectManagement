@@ -16,8 +16,8 @@ fun main() {
     project2.addTask("d 2", 3, "c 2")
     project2.addTask("e 2", 2, "b 2", "d 2")
 
-    Persistence.addJSON(project)
-    Persistence.addJSON(project2)
+    Persistence.addProject(project)
+    Persistence.addProject(project2)
 
     Persistence.saveJSON()
 }
@@ -44,12 +44,7 @@ object Persistence{
     val members = mutableListOf<Member>()
     val teams = mutableListOf<Team>()
 
-    fun addJSON(projects: Project) {
-
-        this.projects.add(projects.toJSON())
-
-
-    }
+    fun addProject(project: Project) = projects.add(project.toJSON())
 
     fun saveJSON(){
 
