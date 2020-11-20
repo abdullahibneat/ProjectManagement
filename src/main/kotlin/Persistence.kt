@@ -21,6 +21,8 @@ fun main() {
     project2.addTask("c 2", 7, "a 2")
     project2.addTask("d 2", 3, "c 2")
     project2.addTask("e 2", 2, "b 2", "d 2")
+
+    Persistence.load()
 }
 
 data class TaskJSON(
@@ -90,6 +92,15 @@ object Persistence{
         val jsonOutput: String = jsonFormatted.toJson(toOutput)
 
         File("data.json").writeText(jsonOutput)
+
+    }
+
+    fun load(){
+
+
+//        val project = Gson().fromJson("data.json", projects::class.java)
+
+//        println(project)
 
     }
 }
