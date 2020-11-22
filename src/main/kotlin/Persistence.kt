@@ -21,6 +21,8 @@ fun main() {
     project2.addTask("c 2", 7, "a 2")
     project2.addTask("d 2", 3, "c 2")
     project2.addTask("e 2", 2, "b 2", "d 2")
+    Persistence.load()
+
 }
 
 class TaskJSON() {
@@ -37,6 +39,8 @@ class TaskJSON() {
         this.duration = duration
         this.lag = lag
     }
+
+
 }
 
 class ProjectJSON() {
@@ -49,6 +53,7 @@ class ProjectJSON() {
         this.team = team
         this.tasks = tasks
     }
+
 }
 
 class TeamJSON() {
@@ -59,6 +64,7 @@ class TeamJSON() {
         this.name = name
         this.members = members
     }
+
 }
 
 class MemberJSON() {
@@ -67,12 +73,26 @@ class MemberJSON() {
     constructor(name: String): this() {
         this.name = name
     }
+
 }
 
 fun Task.toJSON() = TaskJSON(name, previousTasks.map { t -> t.name }, nextTasks.map { t -> t.name }, duration, lag)
 fun Project.toJSON() = ProjectJSON(name, team?.name ?: "", tasks.map { t -> t.toJSON() } )
 fun Team.toJSON() = TeamJSON(name, members.map { m -> m.name })
 fun Member.toJSON() = MemberJSON(name)
+
+fun MemberJSON.asMember() = Member(name)
+
+fun TeamJSON.asTeam(teams: TeamJSON): Team{
+    var team = Team(teams.name)
+        for (j in Persistence.members) {
+            team.addMember(j)
+        }
+    return team
+}
+
+fun TaskJSON.asTask() = Task(name, duration)
+fun ProjectJSON.asProject() = Project(name, null)
 
 class Data() {
     var projects: List<ProjectJSON> = listOf()
@@ -91,10 +111,20 @@ object Persistence{
     val projects = mutableListOf<Project>()
     val members = mutableListOf<Member>()
     val teams = mutableListOf<Team>()
+    var loading = false
 
     fun load() {
+        loading = true
+
         val file = File("data.json").readText()
         val data = Gson().fromJson(file, Data::class.java)
+
+        data.members.forEach { m -> members.add(m.asMember()) }
+        print(Persistence.members)
+        data.teams.forEach { m -> teams.add(m.asTeam(m)) }
+        print(Persistence.teams)
+
+        loading = false
     }
 
     fun addProject(project: Project) {
@@ -128,11 +158,13 @@ object Persistence{
     }
 
     fun save() {
-        val toOutput = Data(projects.map { it.toJSON() }, members.map { it.toJSON() }, teams.map { it.toJSON() })
 
-        val jsonOutput: String = Gson().toJson(toOutput)
+        if (!loading) {
+            val toOutput = Data(projects.map { it.toJSON() }, members.map { it.toJSON() }, teams.map { it.toJSON() })
 
-        File("data.json").writeText(jsonOutput)
+            val jsonOutput: String = Gson().toJson(toOutput)
 
+            File("data.json").writeText(jsonOutput)
+        }
     }
 }
