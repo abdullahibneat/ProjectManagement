@@ -1,12 +1,5 @@
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import java.io.BufferedReader
 import java.io.File
-import java.io.FileReader
-
 
 fun main() {
     val team = Team("0+0=0")
@@ -28,38 +21,81 @@ fun main() {
     project2.addTask("c 2", 7, "a 2")
     project2.addTask("d 2", 3, "c 2")
     project2.addTask("e 2", 2, "b 2", "d 2")
-
-    Persistence.load()
 }
 
-data class TaskJSON(
-        val name: String,
-        val previousTasks: List<String>,
-        val nextTasks: List<String>,
-        val duration: Int,
-        val lag: Int
-)
+class TaskJSON() {
+    var name: String = ""
+    var previousTasks: List<String> = listOf()
+    var nextTasks: List<String> = listOf()
+    var duration: Int = 0
+    var lag: Int = 0
 
-data class ProjectJSON(
-        val name: String,
-        val team: String,
-        val tasks: List<TaskJSON>
-)
+    constructor(name: String, previousTasks: List<String>, nextTasks: List<String>, duration: Int, lag: Int): this() {
+        this.name = name
+        this.previousTasks = previousTasks
+        this.nextTasks = nextTasks
+        this.duration = duration
+        this.lag = lag
+    }
+}
 
-data class TeamJSON(
-        val name: String,
-        val members: List<String>
-)
+class ProjectJSON() {
+    var name: String = ""
+    var team: String= ""
+    var tasks: List<TaskJSON> = listOf()
+
+    constructor(name: String, team: String, tasks: List<TaskJSON>): this() {
+        this.name = name
+        this.team = team
+        this.tasks = tasks
+    }
+}
+
+class TeamJSON() {
+    var name: String = ""
+    var members: List<String> = listOf()
+
+    constructor(name: String, members: List<String>): this() {
+        this.name = name
+        this.members = members
+    }
+}
+
+class MemberJSON() {
+    var name: String = ""
+
+    constructor(name: String): this() {
+        this.name = name
+    }
+}
 
 fun Task.toJSON() = TaskJSON(name, previousTasks.map { t -> t.name }, nextTasks.map { t -> t.name }, duration, lag)
-fun Project.toJSON() = ProjectJSON(name, team?.name ?: "", tasks.map { t -> t.toJSON() })
+fun Project.toJSON() = ProjectJSON(name, team?.name ?: "", tasks.map { t -> t.toJSON() } )
 fun Team.toJSON() = TeamJSON(name, members.map { m -> m.name })
+fun Member.toJSON() = MemberJSON(name)
+
+class Data() {
+    var projects: List<ProjectJSON> = listOf()
+    var members: List<MemberJSON> = listOf()
+    var teams: List<TeamJSON> = listOf()
+
+    constructor(projects: List<ProjectJSON>, members: List<MemberJSON>, teams: List<TeamJSON>): this() {
+        this.projects = projects
+        this.members = members
+        this.teams = teams
+    }
+}
 
 object Persistence{
 
     val projects = mutableListOf<Project>()
     val members = mutableListOf<Member>()
     val teams = mutableListOf<Team>()
+
+    fun load() {
+        val file = File("data.json").readText()
+        val data = Gson().fromJson(file, Data::class.java)
+    }
 
     fun addProject(project: Project) {
         projects.add(project)
@@ -92,34 +128,11 @@ object Persistence{
     }
 
     fun save() {
-        val jsonFormatted = GsonBuilder().setPrettyPrinting().create()
+        val toOutput = Data(projects.map { it.toJSON() }, members.map { it.toJSON() }, teams.map { it.toJSON() })
 
-        val toOutput = mapOf("projects" to projects.map { it.toJSON() }, "members" to members, "teams" to teams.map { it.toJSON() })
-
-        val jsonOutput: String = jsonFormatted.toJson(toOutput)
+        val jsonOutput: String = Gson().toJson(toOutput)
 
         File("data.json").writeText(jsonOutput)
-
-    }
-
-
-
-    fun load(){
-        val mapper = jacksonObjectMapper()
-        mapper.registerKotlinModule()
-        mapper.registerModule(JavaTimeModule())
-
-        val json =  File("data.json").readText()
-
-        val type = json
-        // mapper.readValue(json, projects::class.java)
-
-        val br = BufferedReader(FileReader("data.json"))
-        val sample: Project = Gson().fromJson(br, Project::class.java)
-
-        val gson = Gson()
-        //        val projectsJson = gson.fromJson(FileReader("data.json"), projects::class.java)
-        println(sample)
 
     }
 }
