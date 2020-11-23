@@ -76,9 +76,17 @@ public Teams(){
         @Override
         public void actionPerformed(ActionEvent e) {
             int result = JOptionPane.showConfirmDialog(null, BaseScrollPane,
-                    "Please Enter X and Y Values", JOptionPane.OK_CANCEL_OPTION);
+                    "Edit Team", JOptionPane.OK_CANCEL_OPTION);
             if (result == JOptionPane.OK_OPTION) {
-                System.out.println("Task Name: " + TeamLeaderField.getText());
+                if (TeamLeaderField.getText().trim().isEmpty()) {
+                    System.out.println("PLEAE FILL ALL FIELDS");
+                    TeamLeaderField.setText("");
+                }else{
+                    System.out.println("Task Name: " + TeamLeaderField.getText());
+
+                }
+            }else{
+                System.out.println("CANCEL");
             }
         }
     });

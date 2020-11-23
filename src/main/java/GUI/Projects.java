@@ -53,8 +53,8 @@ public class Projects extends JFrame{
         AddTaskPanel.add(ProjectDependentComboBox);
         ProjectDependentComboBox.setEnabled(false);
 
-        AddTaskPanel.add(Box.createHorizontalStrut(5)); // a spacer
-        AddTaskPanel.add(Box.createHorizontalStrut(5)); // a spacer
+//        AddTaskPanel.add(Box.createHorizontalStrut(5)); // a spacer
+//        AddTaskPanel.add(Box.createHorizontalStrut(5)); // a spacer
 
         AddTaskPanel.add(new JLabel("Working Team:"));
         AddTaskPanel.add(WorkingTeamComboBox);
@@ -62,13 +62,14 @@ public class Projects extends JFrame{
 //        AddTaskPanel.add(Box.createHorizontalStrut(5)); // a spacer
 //        AddTaskPanel.add(Box.createHorizontalStrut(5)); // a spacer
 
-        AddTaskPanel.add(AddWorkingTeamembersButton);
-        AddTaskPanel.add(Box.createHorizontalStrut(5)); // a spacer
+//        AddTaskPanel.add(AddWorkingTeamembersButton);
+//        AddTaskPanel.add(Box.createHorizontalStrut(5)); // a spacer
 
         BaseScrollPane = new JScrollPane(AddTaskPanel);
         BaseScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         BaseScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-        BaseScrollPane.setPreferredSize(new Dimension(400 ,200));
+//        BaseScrollPane.setPreferredSize(new Dimension(400 ,200));
+        BaseScrollPane.setPreferredSize(new Dimension(400 ,110));
 
         DependentCheckBox.addActionListener(new ActionListener() {
             @Override
@@ -84,20 +85,20 @@ public class Projects extends JFrame{
             }
         });
 
-        AddWorkingTeamembersButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                count++;
-                WorkingTeamMemberComboBox = new JComboBox();
-                WorkingTeamComboBox.setName(WorkingTeamMemeber + count);
-                AddTaskPanel.add(new JLabel(WorkingTeamMemeber + count));
-                AddTaskPanel.add(WorkingTeamMemberComboBox);
-                AddTaskPanel.revalidate();
-                AddTaskPanel.repaint();
-                System.out.println("pressed");
-
-            }
-        });
+//        AddWorkingTeamembersButton.addActionListener(new ActionListener() { //  FOR ADDING TEAM MEMBERS
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                count++;
+//                WorkingTeamMemberComboBox = new JComboBox();
+//                WorkingTeamComboBox.setName(WorkingTeamMemeber + count);
+//                AddTaskPanel.add(new JLabel(WorkingTeamMemeber + count));
+//                AddTaskPanel.add(WorkingTeamMemberComboBox);
+//                AddTaskPanel.revalidate();
+//                AddTaskPanel.repaint();
+//                System.out.println("Team Member added");
+//
+//            }
+//        });
 
         AddTask.addActionListener(new ActionListener() {
             @Override
@@ -106,10 +107,19 @@ public class Projects extends JFrame{
                 int result = JOptionPane.showConfirmDialog(null, BaseScrollPane,
                         "New Task", JOptionPane.OK_CANCEL_OPTION);
                 if (result == JOptionPane.OK_OPTION) {
-                    System.out.println("Task Name: " + TaskNameField.getText());
-                    System.out.println("Task Duration: " + TaskDurationField.getText());
+                    if(TaskDurationField.getText().trim().isEmpty() || TaskNameField.getText().trim().isEmpty() || ProjectDependentComboBox.getSelectedIndex() == 0){
+                        System.out.println("Please Fill All Fields");
+                        TaskNameField.setText("");
+                        TaskDurationField.setText("");
+                        ProjectDependentComboBox.setSelectedIndex(0);
+                    }else {
+                        System.out.println("Project Dependent of:" + ProjectDependentComboBox.getSelectedIndex());
+                        System.out.println("Task Name: " + TaskNameField.getText());
+                        System.out.println("Task Duration: " + TaskDurationField.getText());
+                    }
+                }else{
+                    System.out.println("CANCEL");
                 }
-
             }
         });
         HomeButton.addActionListener(new ActionListener() {

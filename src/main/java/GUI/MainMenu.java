@@ -40,8 +40,9 @@ public class MainMenu {
         projectFieldsPanel.add(new JLabel("Project Title:"));
         projectFieldsPanel.add(projectTitleField);
 //        myPanel.add(Box.createHorizontalStrut(15)); // a spacer
-        projectFieldsPanel.add(new JLabel("Project Duration:"));
-        projectFieldsPanel.add(projectDurationField);
+//        projectFieldsPanel.add(new JLabel("Project Duration:"));
+//        projectFieldsPanel.add(projectDurationField);
+
 
         //JPanel for Teams Fields
         JPanel TeamsBasePanel = new JPanel();
@@ -54,8 +55,8 @@ public class MainMenu {
         TeamsBasePanel.add(TeamNameField);
         TeamsBasePanel.add(new JLabel("Team Leader:"));
         TeamsBasePanel.add(TeamLeaderField);
-        TeamsBasePanel.add(new JLabel("Project:"));
-        TeamsBasePanel.add(ProjectListComboBox);
+//        TeamsBasePanel.add(new JLabel("Project:"));
+//        TeamsBasePanel.add(ProjectListComboBox);
 
 
         ProjectsAddButton.addActionListener(new ActionListener() {
@@ -65,7 +66,7 @@ public class MainMenu {
                         "Import",};
                 int n = JOptionPane.showOptionDialog(frame,
                         "Please select an option",
-                        "",
+                        "Project Type",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.INFORMATION_MESSAGE,
                         null,
@@ -77,10 +78,14 @@ public class MainMenu {
                     int result = JOptionPane.showConfirmDialog(null, projectFieldsPanel,
                             "New Project", JOptionPane.OK_CANCEL_OPTION);
                     if (result == JOptionPane.OK_OPTION) {
-                        System.out.println("Project Title: " + projectTitleField.getText());
-                        System.out.println("Project Duration: " + projectDurationField.getText());
+                        if (projectTitleField.getText().trim().isEmpty()){
+                            System.out.println("Please Fill all Fields");
+                        }else {
+                            System.out.println("Project Title: " + projectTitleField.getText());
+//                        System.out.println("Project Duration: " + projectDurationField.getText());
 
-                        new Projects(frame);
+                            new Projects(frame);
+                        }
                     }
 
                 } else{
@@ -94,14 +99,21 @@ public class MainMenu {
             public void actionPerformed(ActionEvent e) {
 
                 int result = JOptionPane.showConfirmDialog(null, TeamsBasePanel,
-                        "Please Enter X and Y Values", JOptionPane.OK_CANCEL_OPTION);
+                        "New Team", JOptionPane.OK_CANCEL_OPTION);
                 if (result == JOptionPane.OK_OPTION) {
-                    System.out.println("Team Name: " + TeamNameField.getText());
-                    System.out.println("Team Leader: " + TeamLeaderField.getText());
+
+                    if (TeamNameField.getText().trim().isEmpty() || TeamLeaderField.getText().trim().isEmpty()){
+                        System.out.println("Please Fill all Fields");
+                        TeamNameField.setText("");
+                        TeamLeaderField.setText("");
+                    }else{
+                    System.out.println("Team Name: " + TeamNameField.getText().trim());
+                    System.out.println("Team Leader: " + TeamLeaderField.getText().trim());
+                    new Teams(frame);
+                    }
+                }else {
+                    System.out.println("Cancel");
                 }
-
-                new Teams(frame);
-
             }
         });
     }
