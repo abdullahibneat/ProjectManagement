@@ -2,26 +2,26 @@ import com.google.gson.Gson
 import java.io.File
 
 fun main() {
-    val team = Team("0+0=0")
-    team.addMember(Member("Haren"))
-
-    val project = Project("Sample Project", team)
-    project.addTask("a", 6)
-    project.addTask("b", 11, "a")
-    project.addTask("c", 7, "a")
-    project.addTask("d", 3, "c")
-
-    team.addMember(Member("Abdullah"))
-
-    project.addTask("e", 2, "b", "d")
-
-    val project2 = Project("Sample Project 2")
-    project2.addTask("a 2", 6)
-    project2.addTask("b 2", 11, "a 2")
-    project2.addTask("c 2", 7, "a 2")
-    project2.addTask("d 2", 3, "c 2")
-    project2.addTask("e 2", 2, "b 2", "d 2")
-    Persistence.load()
+//    val team = Team("0+0=0")
+//    team.addMember(Member("Haren"))
+//
+//    val project = Project("Sample Project", team)
+//    project.addTask("a", 6)
+//    project.addTask("b", 11, "a")
+//    project.addTask("c", 7, "a")
+//    project.addTask("d", 3, "c")
+//
+//    team.addMember(Member("Abdullah"))
+//
+//    project.addTask("e", 2, "b", "d")
+//
+//    val project2 = Project("Sample Project 2")
+//    project2.addTask("a 2", 6)
+//    project2.addTask("b 2", 11, "a 2")
+//    project2.addTask("c 2", 7, "a 2")
+//    project2.addTask("d 2", 3, "c 2")
+//    project2.addTask("e 2", 2, "b 2", "d 2")
+   Persistence.load()
 
 }
 
@@ -31,6 +31,7 @@ class TaskJSON() {
     var nextTasks: List<String> = listOf()
     var duration: Int = 0
     var lag: Int = 0
+//    var temp: MutableSet<Task>
 
     constructor(name: String, previousTasks: List<String>, nextTasks: List<String>, duration: Int, lag: Int): this() {
         this.name = name
@@ -83,16 +84,38 @@ fun Member.toJSON() = MemberJSON(name)
 
 fun MemberJSON.asMember() = Member(name)
 
-fun TeamJSON.asTeam(teams: TeamJSON): Team{
-    var team = Team(teams.name)
-        for (j in Persistence.members) {
-            team.addMember(j)
-        }
+fun TeamJSON.asTeam(): Team {
+    val team = Team(name)
+    members.forEach { name ->
+        val member = Persistence.members.find { it.name == name }
+        if(member !== null) team.addMember(member)
+        else println("Member $name in team ${this.name} not found.")
+        print(Persistence.teams)
+    }
     return team
 }
 
-fun TaskJSON.asTask() = Task(name, duration)
-fun ProjectJSON.asProject() = Project(name, null)
+
+//fun TaskJSON.asTask() = Task(name, duration, temp, lag)
+
+//fun ProjectJSON.asProject(): Project{
+//    val project = Project(name,null)
+//
+//    tasks.forEach {taskName ->
+//        println(taskName.previousTasks.toString())
+//        project.addTask(taskName.name, taskName.duration, taskName.previousTasks.toString())
+//    }
+//    return project
+//}
+
+fun ProjectJSON.asProject(): Project {
+    val projectTeam = Persistence.teams.find { it.name == team }
+    val project = Project(name, projectTeam)
+    tasks.forEach { project.addTask(it.name, it.duration, *it.previousTasks.toTypedArray()) }
+    return project
+}
+
+
 
 class Data() {
     var projects: List<ProjectJSON> = listOf()
@@ -121,8 +144,10 @@ object Persistence{
 
         data.members.forEach { m -> members.add(m.asMember()) }
         print(Persistence.members)
-        data.teams.forEach { m -> teams.add(m.asTeam(m)) }
+        data.teams.forEach { m -> teams.add(m.asTeam()) }
         print(Persistence.teams)
+        data.projects.forEach { m -> projects.add(m.asProject())}
+        print(Persistence.projects)
 
         loading = false
     }
