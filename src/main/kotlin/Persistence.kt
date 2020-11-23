@@ -31,7 +31,6 @@ class TaskJSON() {
     var nextTasks: List<String> = listOf()
     var duration: Int = 0
     var lag: Int = 0
-//    var temp: MutableSet<Task>
 
     constructor(name: String, previousTasks: List<String>, nextTasks: List<String>, duration: Int, lag: Int): this() {
         this.name = name
@@ -90,23 +89,9 @@ fun TeamJSON.asTeam(): Team {
         val member = Persistence.members.find { it.name == name }
         if(member !== null) team.addMember(member)
         else println("Member $name in team ${this.name} not found.")
-        print(Persistence.teams)
     }
     return team
 }
-
-
-//fun TaskJSON.asTask() = Task(name, duration, temp, lag)
-
-//fun ProjectJSON.asProject(): Project{
-//    val project = Project(name,null)
-//
-//    tasks.forEach {taskName ->
-//        println(taskName.previousTasks.toString())
-//        project.addTask(taskName.name, taskName.duration, taskName.previousTasks.toString())
-//    }
-//    return project
-//}
 
 fun ProjectJSON.asProject(): Project {
     val projectTeam = Persistence.teams.find { it.name == team }
@@ -114,8 +99,6 @@ fun ProjectJSON.asProject(): Project {
     tasks.forEach { project.addTask(it.name, it.duration, *it.previousTasks.toTypedArray()) }
     return project
 }
-
-
 
 class Data() {
     var projects: List<ProjectJSON> = listOf()
@@ -142,12 +125,9 @@ object Persistence{
         val file = File("data.json").readText()
         val data = Gson().fromJson(file, Data::class.java)
 
-        data.members.forEach { m -> members.add(m.asMember()) }
-        print(Persistence.members)
-        data.teams.forEach { m -> teams.add(m.asTeam()) }
-        print(Persistence.teams)
-        data.projects.forEach { m -> projects.add(m.asProject())}
-        print(Persistence.projects)
+        data.members.forEach { it.asMember() }
+        data.teams.forEach { it.asTeam() }
+        data.projects.forEach { it.asProject() }
 
         loading = false
     }
