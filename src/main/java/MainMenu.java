@@ -62,18 +62,18 @@ public class MainMenu {
         ProjectsAddButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Object[] options = {"New",
-                        "Import",};
-                int n = JOptionPane.showOptionDialog(frame,
-                        "Please select an option",
-                        "Project Type",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.INFORMATION_MESSAGE,
-                        null,
-                        options,
-                        options[0]);
-                if (n == 0){                                            // NEED TO CONTINUE THE IF STATEMENT
-                    System.out.println("NEW");
+//                Object[] options = {"New",
+//                        "Import",};
+//                int n = JOptionPane.showOptionDialog(frame,
+//                        "Please select an option",
+//                        "Project Type",
+//                        JOptionPane.YES_NO_OPTION,
+//                        JOptionPane.INFORMATION_MESSAGE,
+//                        null,
+//                        options,
+//                        options[0]);
+//                if (n == 0){                                            // NEED TO CONTINUE THE IF STATEMENT
+//                    System.out.println("NEW");
 
                     int result = JOptionPane.showConfirmDialog(null, projectFieldsPanel,
                             "New Project", JOptionPane.OK_CANCEL_OPTION);
@@ -83,17 +83,17 @@ public class MainMenu {
                         }else {
                             System.out.println("Project Title: " + projectTitleField.getText());
 //                        System.out.println("Project Duration: " + projectDurationField.getText());
+                            Project p = new Project(projectTitleField.getText().trim(),null);
+                            Persistence.INSTANCE.addProject(p);
+                            System.out.println(Persistence.INSTANCE);
 
-                            Persistence.INSTANCE.addProject(new Project(projectTitleField.getText().trim(),null));
-
-
-                            new Projects(frame);
+                            new Projects(frame,p);
                         }
                     }
 
-                } else{
-                    System.out.println("IMPORT");
-                }
+//                } else{
+//                    System.out.println("IMPORT");
+//                }
 
             }
         });
@@ -112,7 +112,16 @@ public class MainMenu {
                     }else{
                     System.out.println("Team Name: " + TeamNameField.getText().trim());
                     System.out.println("Team Leader: " + TeamLeaderField.getText().trim());
-                    new Teams(frame);
+
+                    System.out.println(Persistence.INSTANCE);
+                    Team t = new Team(TeamNameField.getText().trim());
+
+                    t.addMember(new Member(TeamLeaderField.getText().trim()));
+                    System.out.println(Persistence.INSTANCE);
+
+
+
+                    new Teams(frame,t);
                     }
                 }else {
                     System.out.println("Cancel");

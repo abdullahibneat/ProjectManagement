@@ -1,7 +1,10 @@
+import Persistence.Persistence;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class Teams {
     private JPanel BasePanel;
@@ -23,10 +26,95 @@ public class Teams {
     private JTextField TeamMemberField;
     private String TeamMember;
     private JScrollPane BaseScrollPane;
+    private ArrayList<JTextField> newmembers = new ArrayList();
 
+    private Team team;
 
-public Teams(){
-//ADD TEAM MEMBERS JOPTION
+//public Teams(){
+////ADD TEAM MEMBERS JOPTION
+//    GridLayout layout0x2 = new GridLayout(0,2);
+//
+//    count = 0;
+//    TeamMember = "Team Member #";
+//
+//    JPanel AddTeamMemebersPannel = new JPanel();
+//    JTextField TeamLeaderField = new JTextField(5);
+//    JButton AddTeamMembersButton = new JButton("Add Team Members");
+//
+//    AddTeamMemebersPannel.setLayout(layout0x2);
+////        AddTaskPanel.setPreferredSize(new Dimension(300 ,300));
+//    AddTeamMemebersPannel.add(new JLabel("Team Leader:"));
+//    AddTeamMemebersPannel.add(TeamLeaderField);
+//
+//    AddTeamMemebersPannel.add(Box.createHorizontalStrut(5)); // a spacer
+//    AddTeamMemebersPannel.add(Box.createHorizontalStrut(5)); // a spacer
+//
+//
+//    AddTeamMemebersPannel.add(AddTeamMembersButton);
+//    AddTeamMemebersPannel.add(Box.createHorizontalStrut(5)); // a spacer
+//
+//
+//
+//    BaseScrollPane = new JScrollPane(AddTeamMemebersPannel);
+//    BaseScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+//    BaseScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+//    BaseScrollPane.setPreferredSize(new Dimension(400 , 80));
+//
+//    AddTeamMembersButton.addActionListener(new ActionListener() {
+//        @Override
+//        public void actionPerformed(ActionEvent e) {
+//            count++;
+//            TeamMemberField = new JTextField();
+//            TeamMemberField.setName(TeamMember + count);
+//            AddTeamMemebersPannel.add(new JLabel(TeamMember + count));
+//            AddTeamMemebersPannel.add(TeamMemberField);
+//            AddTeamMemebersPannel.revalidate();
+//            AddTeamMemebersPannel.repaint();
+//            System.out.println("New Member Field Added");
+//            newmembers.add(TeamMemberField);
+//
+//        }
+//    });
+//
+//    button1.addActionListener(new ActionListener() {
+//        @Override
+//        public void actionPerformed(ActionEvent e) {
+//            System.out.println(team);
+//            int result = JOptionPane.showConfirmDialog(null, BaseScrollPane,
+//                    "Edit Team", JOptionPane.OK_CANCEL_OPTION);
+//            if (result == JOptionPane.OK_OPTION) {
+//                if (TeamLeaderField.getText().trim().isEmpty()) {
+//                    System.out.println("PLEASE FILL ALL FIELDS");
+//                    TeamLeaderField.setText("");
+//                }else{
+//                    System.out.println("Task Name: " + TeamLeaderField.getText());
+////                    System.out.println(team.getName());
+//                    for (JTextField field: newmembers ) {
+//                        System.out.println(field.getText());
+//                        team.addMember(new Member(field.getText().trim()));
+//
+//                    }
+//                    System.out.println(Persistence.INSTANCE);
+//                }
+//            }else{
+//                System.out.println("CANCEL");
+//            }
+//        }
+//    });
+//    HomeButton.addActionListener(new ActionListener() {
+//        @Override
+//        public void actionPerformed(ActionEvent e) {
+//            new MainMenu(frame);
+//        }
+//    });
+//}
+
+public Teams(JFrame mainFrame, Team currentTeam){
+    frame = mainFrame;
+//    System.out.println(currentTeam);
+    team = currentTeam;
+
+    //ADD TEAM MEMBERS JOPTION
     GridLayout layout0x2 = new GridLayout(0,2);
 
     count = 0;
@@ -66,6 +154,7 @@ public Teams(){
             AddTeamMemebersPannel.revalidate();
             AddTeamMemebersPannel.repaint();
             System.out.println("New Member Field Added");
+            newmembers.add(TeamMemberField);
 
         }
     });
@@ -73,15 +162,25 @@ public Teams(){
     button1.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
+            System.out.println(team);
             int result = JOptionPane.showConfirmDialog(null, BaseScrollPane,
                     "Edit Team", JOptionPane.OK_CANCEL_OPTION);
             if (result == JOptionPane.OK_OPTION) {
                 if (TeamLeaderField.getText().trim().isEmpty()) {
-                    System.out.println("PLEAE FILL ALL FIELDS");
+                    System.out.println("PLEASE FILL ALL FIELDS");
                     TeamLeaderField.setText("");
                 }else{
                     System.out.println("Task Name: " + TeamLeaderField.getText());
+//                    System.out.println(team.getName());
+                    for (JTextField field: newmembers ) {
+                        System.out.println(field.getText());
+                        team.addMember(new Member(field.getText().trim()));
 
+                    }
+
+
+                    newmembers.clear();
+                    System.out.println(Persistence.INSTANCE);
                 }
             }else{
                 System.out.println("CANCEL");
@@ -94,23 +193,21 @@ public Teams(){
             new MainMenu(frame);
         }
     });
-}
 
-public Teams(JFrame mainFrame){
-    frame = mainFrame;
-    frame.setContentPane(new Teams().BasePanel);
+    frame.setContentPane(BasePanel);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.pack();
     frame.setVisible(true);
     frame.setLocationRelativeTo(null);
+    System.out.println("TEAMS.JAVA: " + team);
 }
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Teams");
-        frame.setContentPane(new Teams().BasePanel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-        frame.setLocationRelativeTo(null);
-    }
+//    public static void main(String[] args) {
+//        JFrame frame = new JFrame("Teams");
+//        frame.setContentPane(new Teams().BasePanel);
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.pack();
+//        frame.setVisible(true);
+//        frame.setLocationRelativeTo(null);
+//    }
 }

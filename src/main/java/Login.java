@@ -1,4 +1,4 @@
-import GUI.Testing;
+//import GUI.Testing;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -16,7 +16,7 @@ public class Login {
 
     private static JFrame frame;
 
-    private Testing t = new Testing(); // *TESTING*
+//    private Testing t = new Testing(); // *TESTING*
 
     public Login() {
         LoginButton.addActionListener(new ActionListener() {
