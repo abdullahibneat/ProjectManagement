@@ -23,87 +23,10 @@ fun main() {
     project2.addTask("e 2", 2, "b 2", "d 2")
 }
 
-class TaskJSON() {
-    var name: String = ""
-    var previousTasks: List<String> = listOf()
-    var nextTasks: List<String> = listOf()
-    var duration: Int = 0
-    var lag: Int = 0
-
-    constructor(name: String, previousTasks: List<String>, nextTasks: List<String>, duration: Int, lag: Int): this() {
-        this.name = name
-        this.previousTasks = previousTasks
-        this.nextTasks = nextTasks
-        this.duration = duration
-        this.lag = lag
-    }
-}
-
-class ProjectJSON() {
-    var name: String = ""
-    var team: String= ""
-    var tasks: List<TaskJSON> = listOf()
-
-    constructor(name: String, team: String, tasks: List<TaskJSON>): this() {
-        this.name = name
-        this.team = team
-        this.tasks = tasks
-    }
-}
-
-class TeamJSON() {
-    var name: String = ""
-    var members: List<String> = listOf()
-
-    constructor(name: String, members: List<String>): this() {
-        this.name = name
-        this.members = members
-    }
-}
-
-class MemberJSON() {
-    var name: String = ""
-
-    constructor(name: String): this() {
-        this.name = name
-    }
-}
-
 fun Task.toJSON() = TaskJSON(name, previousTasks.map { t -> t.name }, nextTasks.map { t -> t.name }, duration, lag)
 fun Project.toJSON() = ProjectJSON(name, team?.name ?: "", tasks.map { t -> t.toJSON() } )
 fun Team.toJSON() = TeamJSON(name, members.map { m -> m.name })
 fun Member.toJSON() = MemberJSON(name)
-
-fun MemberJSON.asMember() = Member(name)
-
-fun TeamJSON.asTeam(): Team {
-    val team = Team(name)
-    members.forEach { name ->
-        val member = Persistence.members.find { it.name == name }
-        if(member !== null) team.addMember(member)
-        else println("Member $name in team ${this.name} not found.")
-    }
-    return team
-}
-
-fun ProjectJSON.asProject(): Project {
-    val projectTeam = Persistence.teams.find { it.name == team }
-    val project = Project(name, projectTeam)
-    tasks.forEach { project.addTask(it.name, it.duration, *it.previousTasks.toTypedArray()) }
-    return project
-}
-
-class Data() {
-    var projects: List<ProjectJSON> = listOf()
-    var members: List<MemberJSON> = listOf()
-    var teams: List<TeamJSON> = listOf()
-
-    constructor(projects: List<ProjectJSON>, members: List<MemberJSON>, teams: List<TeamJSON>): this() {
-        this.projects = projects
-        this.members = members
-        this.teams = teams
-    }
-}
 
 object Persistence{
     val projects = mutableListOf<Project>()
