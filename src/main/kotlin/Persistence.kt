@@ -34,15 +34,20 @@ object Persistence{
     val teams = mutableListOf<Team>()
     private var loading = true
 
+    // Load data from JSON file if it exists
     init {
         val file = File("data.json")
         if(file.exists()) {
             try {
                 val data = Gson().fromJson(file.readText(), Data::class.java)
+                // Load data into lists. Using as*() methods adds them to Persistence directly
+                // (refer to Member, Team and Project constructors)
                 data.members.forEach { it.asMember() }
                 data.teams.forEach { it.asTeam() }
                 data.projects.forEach { it.asProject() }
             } catch (e: Exception) {
+                // If any error is encountered, clear all lists and throw exception.
+                // E.g. couldn't parse JSON file
                 members.clear()
                 teams.clear()
                 projects.clear()
@@ -79,11 +84,12 @@ object Persistence{
     }
 
     fun updateMember(name: String, member: Member) {
+        // Find the member by its name, and replace it in the list
         members.forEachIndexed { i, m -> if(m.name == name) members[i] = member }
         save()
     }
 
-    fun save() {
+    private fun save() {
         if (!loading) {
             val toOutput = Data(projects.map { it.toJSON() }, members.map { it.toJSON() }, teams.map { it.toJSON() })
 
