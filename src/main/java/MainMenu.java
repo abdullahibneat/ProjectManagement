@@ -1,4 +1,4 @@
-package GUI;
+import Persistence.Persistence;
 
 import javax.swing.*;
 import java.awt.*;
@@ -83,6 +83,9 @@ public class MainMenu {
                         }else {
                             System.out.println("Project Title: " + projectTitleField.getText());
 //                        System.out.println("Project Duration: " + projectDurationField.getText());
+
+                            Persistence.INSTANCE.addProject(new Project(projectTitleField.getText().trim(),null));
+
 
                             new Projects(frame);
                         }

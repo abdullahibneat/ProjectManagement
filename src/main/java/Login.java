@@ -1,4 +1,4 @@
-package GUI;
+import GUI.Testing;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
