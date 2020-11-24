@@ -119,7 +119,7 @@ object Persistence{
     val teams = mutableListOf<Team>()
     var loading = false
 
-    fun load() {
+    init {
         loading = true
 
         val file = File("data.json").readText()
