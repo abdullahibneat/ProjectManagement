@@ -1,3 +1,7 @@
+package Persistence
+
+import Member
+
 class MemberJSON() {
     var name: String = ""
 

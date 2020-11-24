@@ -1,3 +1,9 @@
+package Persistence
+
+import Member
+import Project
+import Task
+import Team
 import com.google.gson.Gson
 import java.io.File
 
@@ -24,7 +30,7 @@ fun main() {
 }
 
 fun Task.toJSON() = TaskJSON(name, previousTasks.map { t -> t.name }, nextTasks.map { t -> t.name }, duration, lag)
-fun Project.toJSON() = ProjectJSON(name, team?.name ?: "", tasks.map { t -> t.toJSON() } )
+fun Project.toJSON() = ProjectJSON(name, team?.name ?: "", tasks.map { t -> t.toJSON() })
 fun Team.toJSON() = TeamJSON(name, members.map { m -> m.name })
 fun Member.toJSON() = MemberJSON(name)
 
@@ -40,7 +46,7 @@ object Persistence{
         if(file.exists()) {
             try {
                 val data = Gson().fromJson(file.readText(), Data::class.java)
-                // Load data into lists. Using as*() methods adds them to Persistence directly
+                // Load data into lists. Using as*() methods adds them to Persistence.Persistence directly
                 // (refer to Member, Team and Project constructors)
                 data.members.forEach { it.asMember() }
                 data.teams.forEach { it.asTeam() }

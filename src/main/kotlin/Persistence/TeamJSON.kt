@@ -1,3 +1,7 @@
+package Persistence
+
+import Team
+
 class TeamJSON() {
     var name: String = ""
     var members: List<String> = listOf()

@@ -1,3 +1,5 @@
+package Persistence
+
 class TaskJSON() {
     var name: String = ""
     var previousTasks: List<String> = listOf()

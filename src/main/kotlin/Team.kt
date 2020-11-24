@@ -1,3 +1,5 @@
+import Persistence.Persistence
+
 class Team(teamName: String) {
     // Make sure name is never empty
     var name = ""

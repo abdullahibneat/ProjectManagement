@@ -1,3 +1,5 @@
+import Persistence.Persistence
+
 class Project(projectName: String, var team: Team? = null) {
     // Make sure name is never empty
     var name = ""

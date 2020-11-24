@@ -1,3 +1,7 @@
+package Persistence
+
+import Project
+
 class ProjectJSON() {
     var name: String = ""
     var team: String= ""

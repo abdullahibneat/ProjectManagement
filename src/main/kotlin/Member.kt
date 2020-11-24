@@ -1,3 +1,5 @@
+import Persistence.Persistence
+
 class Member(memberName: String){
     // Make sure name is never empty
     var name = ""

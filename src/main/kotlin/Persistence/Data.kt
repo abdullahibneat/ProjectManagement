@@ -1,3 +1,5 @@
+package Persistence
+
 class Data() {
     var projects: List<ProjectJSON> = listOf()
     var members: List<MemberJSON> = listOf()
