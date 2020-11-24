@@ -3,9 +3,9 @@ class Team(teamName: String) {
     var name = ""
         set(value) {
             if (value.trim().isEmpty()) throw Exception("Name cannot be empty.")
-            val oldName = name
+            if(value.trim() !== name && Persistence.teams.find { it.name == value.trim() } !== null) throw Exception("Team name already in use.")
             field = value.trim()
-            Persistence.updateTeam(oldName, this)
+            Persistence.save()
         }
 
     val members = mutableListOf<Member>()
@@ -17,9 +17,6 @@ class Team(teamName: String) {
 
     fun addMember(member: Member) {
         if(members.contains(member)) throw Exception("Member is already part of $name team")
-        else {
-            members.add(member)
-            Persistence.updateTeam(name, this)
-        }
+        else members.add(member)
     }
 }

@@ -63,33 +63,19 @@ object Persistence{
         save()
     }
 
-    fun updateProject(name: String, project: Project) {
-        projects.forEachIndexed { i, p -> if(p.name == name) projects[i] = project }
-        save()
-    }
-
     fun addTeam(team: Team) {
+        if(teams.find { it.name == team.name } !== null) throw Exception("Team name already in use.")
         teams.add(team)
         save()
     }
 
-    fun updateTeam(name: String, team: Team) {
-        teams.forEachIndexed { i, t -> if(t.name == name) teams[i] = team }
-        save()
-    }
-
     fun addMember(member: Member) {
+        if(members.find { it.name == member.name } !== null) throw Exception("Member exists already.")
         members.add(member)
         save()
     }
 
-    fun updateMember(name: String, member: Member) {
-        // Find the member by its name, and replace it in the list
-        members.forEachIndexed { i, m -> if(m.name == name) members[i] = member }
-        save()
-    }
-
-    private fun save() {
+    fun save() {
         if (!loading) {
             val toOutput = Data(projects.map { it.toJSON() }, members.map { it.toJSON() }, teams.map { it.toJSON() })
 

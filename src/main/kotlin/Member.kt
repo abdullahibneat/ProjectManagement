@@ -3,9 +3,9 @@ class Member(memberName: String){
     var name = ""
         set(value) {
             if (value.trim().isEmpty()) throw Exception("Name cannot be empty.")
-            val oldName = name
+            if(value.trim() !== name && Persistence.members.find { it.name == value.trim() } !== null) throw Exception("Member with this name exists already.")
             field = value.trim()
-            Persistence.updateMember(oldName, this)
+            Persistence.save()
         }
 
     init {

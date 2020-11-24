@@ -1,17 +1,10 @@
-class Project(projectName: String, projectTeam: Team? = null) {
+class Project(projectName: String, var team: Team? = null) {
     // Make sure name is never empty
     var name = ""
         set(value) {
             if(value.trim().isEmpty()) throw Exception("Name cannot be empty.")
-            val oldName = name
             field = value.trim()
-            Persistence.updateProject(oldName, this)
-        }
-
-    var team = projectTeam
-        set(value) {
-            field = value
-            Persistence.updateProject(name, this)
+            Persistence.save()
         }
 
     val tasks = mutableSetOf<Task>()
@@ -22,9 +15,7 @@ class Project(projectName: String, projectTeam: Team? = null) {
     }
 
     fun addTask(name: String, duration: Int, vararg previousTasks: String) {
-        var newTask = Task(name, duration) // Create task here to perform error checking
-
-        if(tasks.find { t -> t.name === newTask.name } !== null)
+        if(tasks.find { t -> t.name === name } !== null)
             throw Exception("Task name must be unique")
 
         val dependencies = tasks.filter { t -> previousTasks.contains(t.name) }
@@ -32,10 +23,10 @@ class Project(projectName: String, projectTeam: Team? = null) {
         if(dependencies.size != previousTasks.size)
             throw Exception("Some or all dependent tasks do not exist")
 
-        newTask = Task(name, duration, dependencies.toMutableSet())
+        val newTask = Task(name, duration, dependencies.toMutableSet())
 
         tasks.add(newTask)
-        Persistence.updateProject(name, this)
+        Persistence.save()
     }
 
     fun editTask(name: String, newName: String? = null, newDuration: Int? = null) {
@@ -47,23 +38,11 @@ class Project(projectName: String, projectTeam: Team? = null) {
         val task = tasks.find { t -> t.name === trimmedName }
                 ?: throw Exception("Task does not exist")
 
-        // If changing name, check if name is already in use
-        if(newName !== null && tasks.find { t -> t.name == newName.trim() } !== null)
-            throw Exception("Task name must be unique")
+        // Change properties if they have been set
+        if(newName !== null) task.name = newName
+        if(newDuration !== null) task.duration = newDuration
 
-        val originalName = task.name
-        val originalDuration = task.duration
-
-        // Try setting new values, if exception occurs revert changes.
-        try {
-            if(newName !== null) task.name = newName
-            if(newDuration !== null) task.duration = newDuration
-        } catch (e: Exception) {
-            task.name = originalName
-            task.duration = originalDuration
-            throw Exception("Invalid name or duration.")
-        }
-        Persistence.updateProject(name, this)
+        Persistence.save()
     }
 
     fun deleteTask(name: String) {
@@ -81,6 +60,6 @@ class Project(projectName: String, projectTeam: Team? = null) {
         task.previousTasks.forEach { t -> t.nextTasks.remove(task) }
 
         tasks.remove(task)
-        Persistence.updateProject(name, this)
+        Persistence.save()
     }
 }
