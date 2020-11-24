@@ -29,7 +29,7 @@ class Project(projectName: String, var team: Team? = null) {
         Persistence.save()
     }
 
-    fun editTask(name: String, newName: String? = null, newDuration: Int? = null) {
+    fun editTask(name: String, newName: String? = null, newDuration: Int? = null, newLag: Int? = null) {
         val trimmedName = name.trim()
 
         if(trimmedName.isEmpty())
@@ -41,6 +41,7 @@ class Project(projectName: String, var team: Team? = null) {
         // Change properties if they have been set
         if(newName !== null) task.name = newName
         if(newDuration !== null) task.duration = newDuration
+        if(newLag !== null) task.lag = newLag
 
         Persistence.save()
     }
