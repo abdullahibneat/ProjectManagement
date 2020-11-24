@@ -1,21 +1,21 @@
-class Project(projectName: String) {
+class Project(projectName: String, var team: Team? = null) {
     // Make sure name is never empty
     var name = ""
         set(value) {
             if(value.trim().isEmpty()) throw Exception("Name cannot be empty.")
             field = value.trim()
+            Persistence.save()
         }
 
     val tasks = mutableSetOf<Task>()
 
     init {
         name = projectName
+        Persistence.addProject(this)
     }
 
-    fun addTask(name: String, duration: Int, vararg previousTasks: String, lag: Int = 0) {
-        var newTask = Task(name, duration, lag=lag) // Create task here to perform error checking
-
-        if(tasks.find { t -> t.name === newTask.name } !== null)
+    fun addTask(name: String, duration: Int, vararg previousTasks: String) {
+        if(tasks.find { t -> t.name === name } !== null)
             throw Exception("Task name must be unique")
 
         val dependencies = tasks.filter { t -> previousTasks.contains(t.name) }
@@ -23,9 +23,10 @@ class Project(projectName: String) {
         if(dependencies.size != previousTasks.size)
             throw Exception("Some or all dependent tasks do not exist")
 
-        newTask = Task(name, duration, dependencies.toMutableSet(), lag)
+        val newTask = Task(name, duration, dependencies.toMutableSet())
 
         tasks.add(newTask)
+        Persistence.save()
     }
 
     fun editTask(name: String, newName: String? = null, newDuration: Int? = null) {
@@ -37,22 +38,11 @@ class Project(projectName: String) {
         val task = tasks.find { t -> t.name === trimmedName }
                 ?: throw Exception("Task does not exist")
 
-        // If changing name, check if name is already in use
-        if(newName !== null && tasks.find { t -> t.name == newName.trim() } !== null)
-            throw Exception("Task name must be unique")
+        // Change properties if they have been set
+        if(newName !== null) task.name = newName
+        if(newDuration !== null) task.duration = newDuration
 
-        val originalName = task.name
-        val originalDuration = task.duration
-
-        // Try setting new values, if exception occurs revert changes.
-        try {
-            if(newName !== null) task.name = newName
-            if(newDuration !== null) task.duration = newDuration
-        } catch (e: Exception) {
-            task.name = originalName
-            task.duration = originalDuration
-            throw Exception("Invalid name or duration.")
-        }
+        Persistence.save()
     }
 
     fun deleteTask(name: String) {
@@ -70,5 +60,6 @@ class Project(projectName: String) {
         task.previousTasks.forEach { t -> t.nextTasks.remove(task) }
 
         tasks.remove(task)
+        Persistence.save()
     }
 }

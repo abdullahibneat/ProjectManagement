@@ -186,6 +186,7 @@ class ProjectTest {
         assertThrows<Exception> { project.editTask("a", " ") }
     }
 
+
     @Test
     fun `Task duration cannot be changed to be less than 1`() {
         val project = Project("Sample Project")
