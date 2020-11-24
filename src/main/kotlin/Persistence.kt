@@ -117,18 +117,24 @@ object Persistence{
     val projects = mutableListOf<Project>()
     val members = mutableListOf<Member>()
     val teams = mutableListOf<Team>()
-    var loading = false
+    private var loading = true
 
     init {
-        loading = true
-
-        val file = File("data.json").readText()
-        val data = Gson().fromJson(file, Data::class.java)
-
-        data.members.forEach { it.asMember() }
-        data.teams.forEach { it.asTeam() }
-        data.projects.forEach { it.asProject() }
-
+        val file = File("data.json")
+        if(file.exists()) {
+            try {
+                val data = Gson().fromJson(file.readText(), Data::class.java)
+                data.members.forEach { it.asMember() }
+                data.teams.forEach { it.asTeam() }
+                data.projects.forEach { it.asProject() }
+            } catch (e: Exception) {
+                members.clear()
+                teams.clear()
+                projects.clear()
+                loading = false
+                throw Exception("Couldn't load data from disk, file could be corrupted.")
+            }
+        }
         loading = false
     }
 
