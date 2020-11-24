@@ -172,4 +172,10 @@ object Persistence{
             File("data.json").writeText(jsonOutput)
         }
     }
+
+    override fun toString() = """
+        Members: ${members.map { it.name }}
+        Teams: ${teams.map { it.name }}
+        Projects: ${projects.map { "${it.name}, team: ${it.team?.name ?: "No team"}, tasks: [${it.tasks.map { t -> t.name }}]" }}
+    """.trimIndent()
 }
