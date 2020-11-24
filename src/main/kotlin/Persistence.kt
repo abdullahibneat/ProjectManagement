@@ -2,27 +2,25 @@ import com.google.gson.Gson
 import java.io.File
 
 fun main() {
-//    val team = Team("0+0=0")
-//    team.addMember(Member("Haren"))
-//
-//    val project = Project("Sample Project", team)
-//    project.addTask("a", 6)
-//    project.addTask("b", 11, "a")
-//    project.addTask("c", 7, "a")
-//    project.addTask("d", 3, "c")
-//
-//    team.addMember(Member("Abdullah"))
-//
-//    project.addTask("e", 2, "b", "d")
-//
-//    val project2 = Project("Sample Project 2")
-//    project2.addTask("a 2", 6)
-//    project2.addTask("b 2", 11, "a 2")
-//    project2.addTask("c 2", 7, "a 2")
-//    project2.addTask("d 2", 3, "c 2")
-//    project2.addTask("e 2", 2, "b 2", "d 2")
-   Persistence.load()
+    val team = Team("0+0=0")
+    team.addMember(Member("Haren"))
 
+    val project = Project("Sample Project", team)
+    project.addTask("a", 6)
+    project.addTask("b", 11, "a")
+    project.addTask("c", 7, "a")
+    project.addTask("d", 3, "c")
+
+    team.addMember(Member("Abdullah"))
+
+    project.addTask("e", 2, "b", "d")
+
+    val project2 = Project("Sample Project 2")
+    project2.addTask("a 2", 6)
+    project2.addTask("b 2", 11, "a 2")
+    project2.addTask("c 2", 7, "a 2")
+    project2.addTask("d 2", 3, "c 2")
+    project2.addTask("e 2", 2, "b 2", "d 2")
 }
 
 class TaskJSON() {
