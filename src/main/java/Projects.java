@@ -3,6 +3,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class Projects extends JFrame{
     protected JPanel BasePanel;
@@ -238,19 +239,18 @@ public class Projects extends JFrame{
                         ProjectDependentComboBox.setSelectedIndex(0);
                     }else {
                         if (DependentCheckBox.isSelected()) {
-                            System.out.println("Project Dependent of:" + ProjectDependentComboBox.getSelectedItem().toString());
-                            System.out.println("Working Team: " + WorkingTeamMemberComboBox.getSelectedItem().toString());
                             System.out.println("Task Name: " + TaskNameField.getText());
                             System.out.println("Task Duration: " + TaskDurationField.getText());
                             System.out.println("Task Lag: " + OptionLagField.getText());
-
-                            project.addTask(TaskNameField.getText().trim(), Integer.parseInt(TaskDurationField.getText().trim()),Integer.parseInt(OptionLagField.getText().trim()),ProjectDependentComboBox.getSelectedItem().toString(),WorkingTeamComboBox.getSelectedItem().toString());
+                            System.out.println("Project Dependent of:" + ProjectDependentComboBox.getSelectedItem().toString());
+//                            System.out.println("Working Team: " + WorkingTeamMemberComboBox.getSelectedItem().toString());
+                            project.addTask(TaskNameField.getText().trim(), Integer.parseInt(TaskDurationField.getText().trim()),Integer.parseInt(OptionLagField.getText().trim()),ProjectDependentComboBox.getSelectedItem().toString());
                         }else{
                             System.out.println("Task Name: " + TaskNameField.getText());
                             System.out.println("Task Duration: " + TaskDurationField.getText());
                             System.out.println("Task Lag: " + OptionLagField.getText());
-                            System.out.println("Working Team: " + WorkingTeamMemberComboBox.getSelectedItem().toString());
-                            project.addTask(TaskNameField.getText().trim(), Integer.parseInt(TaskDurationField.getText().trim()),Integer.parseInt(OptionLagField.getText().trim()),WorkingTeamComboBox.getSelectedItem().toString());
+//                            System.out.println("Working Team: " + WorkingTeamMemberComboBox.getSelectedItem().toString());
+                            project.addTask(TaskNameField.getText().trim(), Integer.parseInt(TaskDurationField.getText().trim()),Integer.parseInt(OptionLagField.getText().trim()));
 
                         }
 
@@ -288,27 +288,35 @@ public class Projects extends JFrame{
         // TODO: place custom component creation code here
 
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Tasks");
-        DefaultMutableTreeNode testing1 = new DefaultMutableTreeNode("Critical Path");
-        DefaultMutableTreeNode testing2 = new DefaultMutableTreeNode("Non-Critical Path");
-        DefaultMutableTreeNode testing3 = new DefaultMutableTreeNode("CR TASK");
-        DefaultMutableTreeNode testing4 = new DefaultMutableTreeNode("NON-CR TASK");
 
-        root.add(testing1);
-        root.add(testing2);
-        testing2.add(testing3);
-        testing2.add(new DefaultMutableTreeNode("CR TASK 2"));
-        testing1.add(testing4);
+        ArrayList<DefaultMutableTreeNode> tasks = new ArrayList();
+
+        for(Task t: project.getTasks()){
+            if (t.getPreviousTasks().isEmpty()){
+//                tasks.add(t);
+                DefaultMutableTreeNode an = new DefaultMutableTreeNode(t.getName());
+                tasks.add(an);
+                root.add(an);
+
+            }
+        }
+
+
+//        DefaultMutableTreeNode testing1 = new DefaultMutableTreeNode("Critical Path");
+//        DefaultMutableTreeNode testing2 = new DefaultMutableTreeNode("Non-Critical Path");
+//        DefaultMutableTreeNode testing3 = new DefaultMutableTreeNode("CR TASK");
+//        DefaultMutableTreeNode testing4 = new DefaultMutableTreeNode("NON-CR TASK");
+//
+//        root.add(testing1);
+//        root.add(testing2);
+//        testing2.add(testing3);
+//        testing2.add(new DefaultMutableTreeNode("CR TASK 2"));
+//        testing1.add(testing4);
 
 
         TasksTree = new JTree(root);
 
-//        ProjectProgressLabel = new JLabel("");
-//        TimeLeftLabel = new JLabel("");
-//        DueLabel = new JLabel("");
-//
-//        DueLabel.setText("Due: " + "02/08/1892");
-//        TimeLeftLabel.setText("Hello cdsfsfdsg"); // no change
-//        ProjectProgressLabel.setText("Hidgffdsgdsg");
+
 
 
     }

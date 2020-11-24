@@ -25,6 +25,7 @@ public class MainMenu {
     private JLabel GreetingLabel;
     private JLabel TimeLabel;
     private JLabel DateLabel;
+    private JPanel projectjpanel;
 
     private static JFrame frame;
 
@@ -57,7 +58,6 @@ public class MainMenu {
         TeamsBasePanel.add(TeamLeaderField);
 //        TeamsBasePanel.add(new JLabel("Project:"));
 //        TeamsBasePanel.add(ProjectListComboBox);
-
 
         ProjectsAddButton.addActionListener(new ActionListener() {
             @Override
@@ -163,6 +163,19 @@ public class MainMenu {
         });
         timer.setInitialDelay(0);
         timer.start();
+
+        ProjectsScrollPane = new JScrollPane();
+
+        projectjpanel = new JPanel();
+
+        for(Project p: Persistence.INSTANCE.getProjects()){
+            JButton b = new JButton(p.getName());
+            b.addActionListener(e -> {
+                new Projects(frame, p);
+            });
+            projectjpanel.add(b);
+        }
+
 
     }
 }

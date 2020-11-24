@@ -8,14 +8,14 @@ import java.util.ArrayList;
 
 public class Teams {
     private JPanel BasePanel;
-    private JList TeamsList;
+    private JTextArea TeamsList;
     private JPanel TeamsPanel;
     private JPanel TeamsSubPanel;
     private JPanel TopPanel;
     private JLabel TeamLabel;
     private JLabel TeamLeaderLabel;
     private JLabel TaskLabel;
-    private JLabel MemebersLabel;
+    private JLabel MembersLabel;
     private JButton button1;
     private JButton HomeButton;
     private JPanel NavigationPanel;
@@ -126,15 +126,17 @@ public Teams(JFrame mainFrame, Team currentTeam){
 
     AddTeamMemebersPannel.setLayout(layout0x2);
 //        AddTaskPanel.setPreferredSize(new Dimension(300 ,300));
-    AddTeamMemebersPannel.add(new JLabel("Team Leader:"));
-    AddTeamMemebersPannel.add(TeamLeaderField);
+//    AddTeamMemebersPannel.add(new JLabel("Team Leader:"));
+//    AddTeamMemebersPannel.add(TeamLeaderField);
 
-    AddTeamMemebersPannel.add(Box.createHorizontalStrut(5)); // a spacer
-    AddTeamMemebersPannel.add(Box.createHorizontalStrut(5)); // a spacer
+//    AddTeamMemebersPannel.add(Box.createHorizontalStrut(5)); // a spacer
+//    AddTeamMemebersPannel.add(Box.createHorizontalStrut(5)); // a spacer
 
 
     AddTeamMemebersPannel.add(AddTeamMembersButton);
     AddTeamMemebersPannel.add(Box.createHorizontalStrut(5)); // a spacer
+
+    TeamsList.setEditable(false);
 
 
 
@@ -175,9 +177,11 @@ public Teams(JFrame mainFrame, Team currentTeam){
                     for (JTextField field: newmembers ) {
                         System.out.println(field.getText());
                         team.addMember(new Member(field.getText().trim()));
-
+//                        TeamsList.add(new JLabel(field.getText()));
+                        TeamsList.append(field.getText() + "\n");
                     }
 
+                    MembersLabel.setText("Members:" + team.getMembers().size());
 
                     newmembers.clear();
                     System.out.println(Persistence.INSTANCE);
