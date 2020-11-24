@@ -39,7 +39,11 @@ class Project(projectName: String, var team: Team? = null) {
                 ?: throw Exception("Task does not exist")
 
         // Change properties if they have been set
-        if(newName !== null) task.name = newName
+        if(newName !== null) {
+            if(tasks.find { it.name == newName.trim() } !== null)
+                throw Exception("Another task is using this name already.")
+            task.name = newName
+        }
         if(newDuration !== null) task.duration = newDuration
         if(newLag !== null) task.lag = newLag
 
