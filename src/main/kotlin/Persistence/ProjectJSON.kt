@@ -12,7 +12,7 @@ class ProjectJSON() {
     fun asProject(): Project {
         val projectTeam = Persistence.teams.find { it.name == team }
         val project = Project(name, projectTeam)
-        tasks.forEach { project.addTask(it.name, it.duration, *it.previousTasks.toTypedArray()) }
+        tasks.forEach { project.addTask(it.name, it.duration, it.lag, *it.previousTasks.toTypedArray()) }
         return project
     }
 }

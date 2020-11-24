@@ -14,7 +14,7 @@ class Project(projectName: String, var team: Team? = null) {
         Persistence.addProject(this)
     }
 
-    fun addTask(name: String, duration: Int, vararg previousTasks: String) {
+    fun addTask(name: String, duration: Int, lag: Int = 0, vararg previousTasks: String) {
         if(tasks.find { t -> t.name === name } !== null)
             throw Exception("Task name must be unique")
 
@@ -23,7 +23,7 @@ class Project(projectName: String, var team: Team? = null) {
         if(dependencies.size != previousTasks.size)
             throw Exception("Some or all dependent tasks do not exist")
 
-        val newTask = Task(name, duration, dependencies.toMutableSet())
+        val newTask = Task(name, duration, dependencies.toMutableSet(), lag)
 
         tasks.add(newTask)
         Persistence.save()
