@@ -26,6 +26,8 @@ public class MainMenu {
     private JLabel TimeLabel;
     private JLabel DateLabel;
     private JPanel projectjpanel;
+    private JPanel ProjectsScrollPaneBasePanel;
+    private JPanel TeamsScrollPaneBasePanel;
 
     private static JFrame frame;
 
@@ -164,17 +166,40 @@ public class MainMenu {
         timer.setInitialDelay(0);
         timer.start();
 
-        ProjectsScrollPane = new JScrollPane();
 
-        projectjpanel = new JPanel();
+//       //PROJECTS SCROLL PANEL
+        ProjectsScrollPaneBasePanel = new JPanel();
+//        ProjectsScrollPaneBasePanel.setBackground(Color.red);
+        ProjectsScrollPaneBasePanel.setLayout(new GridLayout(1 ,0));
+
 
         for(Project p: Persistence.INSTANCE.getProjects()){
-            JButton b = new JButton(p.getName());
+            JButton b = new JButton("View");
             b.addActionListener(e -> {
                 new Projects(frame, p);
             });
-            projectjpanel.add(b);
+
+            JPanel projectTile = new JPanel();
+            projectTile.setLayout(new GridLayout(0,1));
+            projectTile.setBorder(BorderFactory.createLineBorder(Color.black));
+
+            ProjectsScrollPaneBasePanel.add(projectTile);
+            projectTile.add(new JLabel(p.getName()));
+            projectTile.add(Box.createHorizontalStrut(5));
+            projectTile.add(new JLabel("PROGRESS/TEAM?"));
+            projectTile.add(Box.createHorizontalStrut(5));
+            projectTile.add(new JLabel("DUE DATE"));
+            projectTile.add(Box.createHorizontalStrut(5));
+            projectTile.add(b);
+//            ProjectsScrollPaneBasePanel.add(Box.createHorizontalStrut(1));//Spacer
         }
+        ProjectsScrollPane = new JScrollPane(ProjectsScrollPaneBasePanel);
+
+//      TEAMS SCROLL PANE
+        TeamsScrollPaneBasePanel = new JPanel();
+
+        TeamsScrollPane = new JScrollPane(TeamsScrollPaneBasePanel);
+
 
 
     }
