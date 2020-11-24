@@ -37,8 +37,6 @@ class TaskJSON() {
         this.duration = duration
         this.lag = lag
     }
-
-
 }
 
 class ProjectJSON() {
@@ -51,7 +49,6 @@ class ProjectJSON() {
         this.team = team
         this.tasks = tasks
     }
-
 }
 
 class TeamJSON() {
@@ -62,7 +59,6 @@ class TeamJSON() {
         this.name = name
         this.members = members
     }
-
 }
 
 class MemberJSON() {
@@ -71,7 +67,6 @@ class MemberJSON() {
     constructor(name: String): this() {
         this.name = name
     }
-
 }
 
 fun Task.toJSON() = TaskJSON(name, previousTasks.map { t -> t.name }, nextTasks.map { t -> t.name }, duration, lag)
@@ -111,7 +106,6 @@ class Data() {
 }
 
 object Persistence{
-
     val projects = mutableListOf<Project>()
     val members = mutableListOf<Member>()
     val teams = mutableListOf<Team>()
@@ -167,7 +161,6 @@ object Persistence{
     }
 
     fun save() {
-
         if (!loading) {
             val toOutput = Data(projects.map { it.toJSON() }, members.map { it.toJSON() }, teams.map { it.toJSON() })
 
