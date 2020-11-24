@@ -41,6 +41,32 @@ class ProjectTest {
     }
 
     @Test
+    fun `Sample Project D is created successfully`() {
+        val project = Project("Sample Project D")
+        assertDoesNotThrow { project.addTask("a", 5) }
+        assertDoesNotThrow { project.addTask("b", 12, "a") }
+        assertDoesNotThrow { project.addTask("c", 6, "a") }
+        assertDoesNotThrow { project.addTask("d", 7, "c", lag = 4) }
+        assertDoesNotThrow { project.addTask("e", 2, "b") }
+        assertDoesNotThrow { project.addTask("f", 3, "e", "d") }
+    }
+
+    @Test
+    fun `Sample Project E is created successfully`() {
+        val project = Project("Sample Project E")
+        assertDoesNotThrow { project.addTask("a", 2) }
+        assertDoesNotThrow { project.addTask("b", 4, "a") }
+        assertDoesNotThrow { project.addTask("c", 11, "b", lag = 5) }
+        assertDoesNotThrow { project.addTask("d", 7) }
+        assertDoesNotThrow { project.addTask("e", 13, "d", lag = 4) }
+        assertDoesNotThrow { project.addTask("f", 9, "e") }
+        assertDoesNotThrow { project.addTask("g", 2, "d") }
+        assertDoesNotThrow { project.addTask("h", 5, "g", lag = 3) }
+        assertDoesNotThrow { project.addTask("i", 6, "g") }
+        assertDoesNotThrow { project.addTask("j", 2, "c", "f", "h", "i") }
+    }
+
+    @Test
     fun `A project with no name cannot be created`() {
         assertThrows<Exception> { Project("") }
         assertThrows<Exception> { Project(" ") }
