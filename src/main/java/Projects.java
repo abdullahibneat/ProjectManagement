@@ -1,5 +1,6 @@
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,7 +27,9 @@ public class Projects extends JFrame{
     private String WorkingTeamMemeber;
     private JScrollPane BaseScrollPane;
 
+    private ArrayList<DefaultMutableTreeNode> taskNodes = new ArrayList();
     private Project project;
+    DefaultMutableTreeNode root;
 
 //    public Projects(){
 //        //ADD TASK JOPTION
@@ -148,8 +151,15 @@ public class Projects extends JFrame{
 //    }
 
     public Projects(JFrame mainFrame,Project currentProject){
+        System.out.println("projects constr");
         frame = mainFrame;
         project = currentProject;
+
+        // Add tasks to JTree
+        // Project can have multiple starting nodes, so add each of them to JTree
+        project.getTasks().stream().filter(t -> t.getPreviousTasks().isEmpty()).forEach(t -> root.add(populateTree(t, new DefaultMutableTreeNode(t.getName()))));
+        DefaultTreeModel model = (DefaultTreeModel) TasksTree.getModel();
+        model.reload(root); // Reload JTree so tasks are displayed
 
         //ADD TASK JOPTION
         GridLayout layout0x2 = new GridLayout(0,2);
@@ -275,49 +285,13 @@ public class Projects extends JFrame{
         System.out.println("PROJECT.JAVA PROJECT: " + project);
     }
 
-//    public static void main(String[] args) {
-//        frame = new JFrame("Projects");
-//        frame.setContentPane(new Projects().BasePanel);
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.pack();
-//        frame.setVisible(true);
-//        frame.setLocationRelativeTo(null);
-//    }
+    public DefaultMutableTreeNode populateTree(Task currentTask, DefaultMutableTreeNode currentNode) {
+        currentTask.getNextTasks().forEach(t -> currentNode.add(populateTree(t, new DefaultMutableTreeNode(t.getName()))));
+        return currentNode;
+    }
 
     private void createUIComponents() {
-        // TODO: place custom component creation code here
-
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Tasks");
-
-        ArrayList<DefaultMutableTreeNode> tasks = new ArrayList();
-
-        for(Task t: project.getTasks()){
-            if (t.getPreviousTasks().isEmpty()){
-//                tasks.add(t);
-                DefaultMutableTreeNode an = new DefaultMutableTreeNode(t.getName());
-                tasks.add(an);
-                root.add(an);
-
-            }
-        }
-
-
-//        DefaultMutableTreeNode testing1 = new DefaultMutableTreeNode("Critical Path");
-//        DefaultMutableTreeNode testing2 = new DefaultMutableTreeNode("Non-Critical Path");
-//        DefaultMutableTreeNode testing3 = new DefaultMutableTreeNode("CR TASK");
-//        DefaultMutableTreeNode testing4 = new DefaultMutableTreeNode("NON-CR TASK");
-//
-//        root.add(testing1);
-//        root.add(testing2);
-//        testing2.add(testing3);
-//        testing2.add(new DefaultMutableTreeNode("CR TASK 2"));
-//        testing1.add(testing4);
-
-
+        root = new DefaultMutableTreeNode("Tasks");
         TasksTree = new JTree(root);
-
-
-
-
     }
 }
