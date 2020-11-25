@@ -30,7 +30,7 @@ public class Projects extends JFrame{
     private String WorkingTeamMemeber;
     private JScrollPane BaseScrollPane;
 
-    private ArrayList<DefaultMutableTreeNode> taskNodes = new ArrayList();
+    private ArrayList<DefaultMutableTreeNode> treeNodes = new ArrayList();
     private Project project;
     DefaultMutableTreeNode root;
 
@@ -287,6 +287,7 @@ public class Projects extends JFrame{
 
     public DefaultMutableTreeNode populateTree(Task currentTask, DefaultMutableTreeNode currentNode) {
         currentTask.getNextTasks().forEach(t -> currentNode.add(populateTree(t, new DefaultMutableTreeNode(t))));
+        treeNodes.add(currentNode);
         return currentNode;
     }
 
