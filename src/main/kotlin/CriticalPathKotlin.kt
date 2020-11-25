@@ -11,7 +11,7 @@ fun main() {
 }
 
 object CriticalPathKotlin: CriticalPath {
-    fun forwardBackwardPass(tasks: Set<Task>): HashMap<Task, CriticalCalculations> {
+    override fun forwardBackwardPass(tasks: Set<Task>): HashMap<Task, CriticalCalculations> {
         val numberOfTasks = tasks.size
         val computed = HashMap<Task, CriticalCalculations>()
         val toCompute = tasks.toMutableList()
