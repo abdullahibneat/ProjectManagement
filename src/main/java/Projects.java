@@ -40,6 +40,7 @@ public class Projects extends JFrame{
     private ArrayList<DefaultMutableTreeNode> treeNodes = new ArrayList();
     private Map<Task, CriticalCalculations> criticalCalculations;
     private Project project;
+    private CriticalPath criticalPath = CriticalPathKotlin.INSTANCE;
     DefaultMutableTreeNode root;
 
 //    public Projects(){
@@ -323,22 +324,12 @@ public class Projects extends JFrame{
                 if (CriticalPathComboBox.getSelectedIndex() == 1){
                     //CALCULATE KOTLIN
                     System.out.println("Kotlin Selected");
-                    criticalCalculations = CriticalPathKotlin.INSTANCE.forwardBackwardPass(project.getTasks());
-                    for (Task t : CriticalPathKotlin.INSTANCE.findCriticalPath(project.getTasks())) {
-                        System.out.println(t.getName() + " is critical");
-                        setNodeAsCritical(t.getName());
-                    }
+                    criticalPath = CriticalPathKotlin.INSTANCE;
                 }else{
                     //CALCULATE SCALA
                     System.out.println("Scala Selected");
-                    criticalCalculations = CriticalPathScala.forwardBackwardPass(project.getTasks());
-                    for (Task t : CriticalPathScala.findCriticalPath(project.getTasks())) {
-                        System.out.println(t.getName() + " is critical");
-                        setNodeAsCritical(t.getName());
-                    }
+                    criticalPath = CriticalPathScala$.MODULE$;
                 }
-                DefaultTreeModel model = (DefaultTreeModel) TasksTree.getModel();
-                model.reload(root); // Reload JTree so tasks are updated
             }
         });
 
@@ -350,6 +341,13 @@ public class Projects extends JFrame{
         System.out.println("PROJECT.JAVA PROJECT: " + project);
 
 
+    }
+
+    private void runCriticalPath() {
+        criticalCalculations = criticalPath.forwardBackwardPass(project.getTasks());
+        for (Task t : criticalPath.findCriticalPath(project.getTasks())) setNodeAsCritical(t.getName());
+        DefaultTreeModel model = (DefaultTreeModel) TasksTree.getModel();
+        model.reload(root); // Reload JTree so tasks are updated
     }
 
     private void setNodeAsCritical(String name) {
@@ -376,6 +374,7 @@ public class Projects extends JFrame{
         project.getTasks().stream().filter(t -> t.getPreviousTasks().isEmpty()).forEach(t -> root.add(populateTree(t, new DefaultMutableTreeNode(new Node(t, false)))));
         DefaultTreeModel model = (DefaultTreeModel) TasksTree.getModel();
         model.reload(root); // Reload JTree so tasks are displayed
+        runCriticalPath();
     }
 
     private void createUIComponents() {
