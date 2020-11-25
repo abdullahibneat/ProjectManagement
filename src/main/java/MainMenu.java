@@ -86,7 +86,6 @@ public class MainMenu {
                             System.out.println("Project Title: " + projectTitleField.getText());
 //                        System.out.println("Project Duration: " + projectDurationField.getText());
                             Project p = new Project(projectTitleField.getText().trim(),null);
-                            Persistence.INSTANCE.addProject(p);
                             System.out.println(Persistence.INSTANCE);
 
                             new Projects(frame,p);
