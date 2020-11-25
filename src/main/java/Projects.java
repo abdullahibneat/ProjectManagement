@@ -195,7 +195,7 @@ public class Projects extends JFrame{
 //        JButton AddWorkingTeamembersButton = new JButton("Add Team Members");
         JTextField OptionLagField = new JTextField(5);
 
-
+        ProjectProgressLabel.setText("Project Name: " + currentProject.getName());
 
         for (Task t: currentProject.getTasks()){
             ProjectDependentComboBox.addItem(t);
@@ -269,26 +269,38 @@ public class Projects extends JFrame{
                 int result = JOptionPane.showConfirmDialog(null, BaseScrollPane,
                         "New Task", JOptionPane.OK_CANCEL_OPTION);
                 if (result == JOptionPane.OK_OPTION) {
-                    if(TaskDurationField.getText().trim().isEmpty() || TaskNameField.getText().trim().isEmpty() || ProjectDependentComboBox.getSelectedIndex() == 0){
+                    if(TaskDurationField.getText().trim().isEmpty() || TaskNameField.getText().trim().isEmpty() || OptionLagField.getText().trim().isEmpty() ){
                         System.out.println("Please Fill All Fields");
                         TaskNameField.setText("");
                         TaskDurationField.setText("");
+                        OptionLagField.setText("");
                         ProjectDependentComboBox.setSelectedIndex(0);
+                        ProjectDependentComboBox.setEnabled(false);
+                        DependentCheckBox.setSelected(false);
                     }else {
                         if (DependentCheckBox.isSelected()) {
                             System.out.println("Task Name: " + TaskNameField.getText());
                             System.out.println("Task Duration: " + TaskDurationField.getText());
                             System.out.println("Task Lag: " + OptionLagField.getText());
                             System.out.println("Project Dependent of:" + ProjectDependentComboBox.getSelectedItem().toString());
-//                            System.out.println("Working Team: " + WorkingTeamMemberComboBox.getSelectedItem().toString());
                             project.addTask(TaskNameField.getText().trim(), Integer.parseInt(TaskDurationField.getText().trim()),Integer.parseInt(OptionLagField.getText().trim()),ProjectDependentComboBox.getSelectedItem().toString());
+                            populateTree();
+                            TaskNameField.setText("");
+                            TaskDurationField.setText("");
+                            OptionLagField.setText("");
+                            ProjectDependentComboBox.setSelectedIndex(0);
+                            ProjectDependentComboBox.setEnabled(false);
+                            DependentCheckBox.setSelected(false);
+
                         }else{
                             System.out.println("Task Name: " + TaskNameField.getText());
                             System.out.println("Task Duration: " + TaskDurationField.getText());
                             System.out.println("Task Lag: " + OptionLagField.getText());
-//                            System.out.println("Working Team: " + WorkingTeamMemberComboBox.getSelectedItem().toString());
-                            project.addTask(TaskNameField.getText().trim(), Integer.parseInt(TaskDurationField.getText().trim()),Integer.parseInt(OptionLagField.getText().trim()));
+                            project.addTask(TaskNameField.getText().trim(), Integer.parseInt(TaskDurationField.getText().trim()),Integer.parseInt(OptionLagField.getText().trim()),null);
                             populateTree(); // Update tree
+                            TaskNameField.setText("");
+                            TaskDurationField.setText("");
+                            OptionLagField.setText("");
                         }
 
                     }

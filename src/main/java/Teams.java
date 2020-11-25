@@ -132,12 +132,27 @@ public Teams(JFrame mainFrame, Team currentTeam){
 //    AddTeamMemebersPannel.add(Box.createHorizontalStrut(5)); // a spacer
 //    AddTeamMemebersPannel.add(Box.createHorizontalStrut(5)); // a spacer
 
+    MembersLabel.setText("Members:"+ currentTeam.getMembers().size());
+
+    TeamLabel.setText("Team Name: " + currentTeam.getName());
+
+    for (Member m:currentTeam.getMembers()){
+        if (count >= 1) {
+            break;
+        }else{
+            TeamLeaderLabel.setText("Team Leader:" + m.getName());
+            count++;
+        }
+    }
+    count=0;
+    System.out.println("Team Leader Set" + "\n" + "count:" + count);
+
+    TaskLabel.setText("Project:");
 
     AddTeamMemebersPannel.add(AddTeamMembersButton);
     AddTeamMemebersPannel.add(Box.createHorizontalStrut(5)); // a spacer
 
     TeamsList.setEditable(false);
-
 
 
     BaseScrollPane = new JScrollPane(AddTeamMemebersPannel);
