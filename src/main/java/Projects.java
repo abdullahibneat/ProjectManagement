@@ -159,10 +159,7 @@ public class Projects extends JFrame{
         project = currentProject;
 
         // Add tasks to JTree
-        // Project can have multiple starting nodes, so add each of them to JTree
-        project.getTasks().stream().filter(t -> t.getPreviousTasks().isEmpty()).forEach(t -> root.add(populateTree(t, new DefaultMutableTreeNode(t))));
-        DefaultTreeModel model = (DefaultTreeModel) TasksTree.getModel();
-        model.reload(root); // Reload JTree so tasks are displayed
+        populateTree();
 
         //ADD TASK JOPTION
         GridLayout layout0x2 = new GridLayout(0,2);
@@ -264,7 +261,7 @@ public class Projects extends JFrame{
                             System.out.println("Task Lag: " + OptionLagField.getText());
 //                            System.out.println("Working Team: " + WorkingTeamMemberComboBox.getSelectedItem().toString());
                             project.addTask(TaskNameField.getText().trim(), Integer.parseInt(TaskDurationField.getText().trim()),Integer.parseInt(OptionLagField.getText().trim()));
-
+                            populateTree(); // Update tree
                         }
 
                     }
@@ -291,6 +288,15 @@ public class Projects extends JFrame{
     public DefaultMutableTreeNode populateTree(Task currentTask, DefaultMutableTreeNode currentNode) {
         currentTask.getNextTasks().forEach(t -> currentNode.add(populateTree(t, new DefaultMutableTreeNode(t))));
         return currentNode;
+    }
+
+    private void populateTree() {
+        root.removeAllChildren();
+        // Add nodes to JTree
+        // Project can have multiple starting nodes, so add each of them to JTree
+        project.getTasks().stream().filter(t -> t.getPreviousTasks().isEmpty()).forEach(t -> root.add(populateTree(t, new DefaultMutableTreeNode(t))));
+        DefaultTreeModel model = (DefaultTreeModel) TasksTree.getModel();
+        model.reload(root); // Reload JTree so tasks are displayed
     }
 
     private void createUIComponents() {
