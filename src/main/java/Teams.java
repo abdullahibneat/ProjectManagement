@@ -168,16 +168,16 @@ public Teams(JFrame mainFrame, Team currentTeam){
             int result = JOptionPane.showConfirmDialog(null, BaseScrollPane,
                     "Edit Team", JOptionPane.OK_CANCEL_OPTION);
             if (result == JOptionPane.OK_OPTION) {
-                if (TeamLeaderField.getText().trim().isEmpty()) {
-                    System.out.println("PLEASE FILL ALL FIELDS");
-                    TeamLeaderField.setText("");
-                }else{
+//                if (TeamLeaderField.getText().trim().isEmpty()) {
+//                    System.out.println("PLEASE FILL ALL FIELDS");
+//                    TeamLeaderField.setText("");
+//                }else{
                     System.out.println("Task Name: " + TeamLeaderField.getText());
 //                    System.out.println(team.getName());
                     for (JTextField field: newmembers ) {
                         System.out.println(field.getText());
                         team.addMember(new Member(field.getText().trim()));
-//                        TeamsList.add(new JLabel(field.getText()));
+                        TeamsList.add(new JLabel(field.getText()));
                         TeamsList.append(field.getText() + "\n");
                     }
 
@@ -185,7 +185,7 @@ public Teams(JFrame mainFrame, Team currentTeam){
 
                     newmembers.clear();
                     System.out.println(Persistence.INSTANCE);
-                }
+//                }
             }else{
                 System.out.println("CANCEL");
             }

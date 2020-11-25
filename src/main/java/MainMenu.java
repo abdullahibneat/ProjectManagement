@@ -196,8 +196,29 @@ public class MainMenu {
 
 //      TEAMS SCROLL PANE
         TeamsScrollPaneBasePanel = new JPanel();
+        TeamsScrollPaneBasePanel.setLayout(new GridLayout(1,0));
 
-        TeamsScrollPane = new JScrollPane(TeamsScrollPaneBasePanel);
+        for(Team t: Persistence.INSTANCE.getTeams()) {
+            JButton b = new JButton("View");
+            b.addActionListener(e -> {
+                new Teams(frame, t);
+            });
+
+            JPanel teamTile = new JPanel();
+            teamTile.setLayout(new GridLayout(0, 1));
+            teamTile.setBorder(BorderFactory.createLineBorder(Color.black));
+
+            TeamsScrollPaneBasePanel.add(teamTile);
+            teamTile.add(new JLabel(t.getName()));
+            teamTile.add(Box.createHorizontalStrut(5));
+            teamTile.add(new JLabel("PROGRESS/TEAM?"));
+            teamTile.add(Box.createHorizontalStrut(5));
+            teamTile.add(new JLabel("Members:" + t.getMembers().size()));
+            teamTile.add(Box.createHorizontalStrut(5));
+            teamTile.add(b);
+
+            TeamsScrollPane = new JScrollPane(TeamsScrollPaneBasePanel);
+        }
 
 
 
