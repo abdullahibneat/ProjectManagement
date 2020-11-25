@@ -190,7 +190,8 @@ public class Projects extends JFrame{
         JTextField TaskNameField = new JTextField(5);
         JTextField TaskDurationField = new JTextField(5);
         JCheckBox DependentCheckBox = new JCheckBox("Dependent:");
-        JComboBox ProjectDependentComboBox = new JComboBox();
+        System.out.println("Checked? "+  DependentCheckBox.isSelected());
+        JComboBox<String> ProjectDependentComboBox = new JComboBox<>();
 //        JComboBox WorkingTeamComboBox = new JComboBox();
 //        JButton AddWorkingTeamembersButton = new JButton("Add Team Members");
         JTextField OptionLagField = new JTextField(5);
@@ -198,7 +199,7 @@ public class Projects extends JFrame{
         ProjectProgressLabel.setText("Project Name: " + currentProject.getName());
 
         for (Task t: currentProject.getTasks()){
-            ProjectDependentComboBox.addItem(t);
+            ProjectDependentComboBox.addItem(t.getName());
         }
 
 
@@ -278,11 +279,11 @@ public class Projects extends JFrame{
                         ProjectDependentComboBox.setEnabled(false);
                         DependentCheckBox.setSelected(false);
                     }else {
-                        if (DependentCheckBox.isSelected()) {
+                        if (DependentCheckBox.isSelected() && ProjectDependentComboBox.getSelectedItem() != null) {
                             System.out.println("Task Name: " + TaskNameField.getText());
                             System.out.println("Task Duration: " + TaskDurationField.getText());
                             System.out.println("Task Lag: " + OptionLagField.getText());
-                            System.out.println("Project Dependent of:" + ProjectDependentComboBox.getSelectedItem().toString());
+                            System.out.println("Project Dependent of:" + ProjectDependentComboBox.getSelectedItem());
                             project.addTask(TaskNameField.getText().trim(), Integer.parseInt(TaskDurationField.getText().trim()),Integer.parseInt(OptionLagField.getText().trim()),ProjectDependentComboBox.getSelectedItem().toString());
                             populateTree();
                             TaskNameField.setText("");
@@ -296,7 +297,7 @@ public class Projects extends JFrame{
                             System.out.println("Task Name: " + TaskNameField.getText());
                             System.out.println("Task Duration: " + TaskDurationField.getText());
                             System.out.println("Task Lag: " + OptionLagField.getText());
-                            project.addTask(TaskNameField.getText().trim(), Integer.parseInt(TaskDurationField.getText().trim()),Integer.parseInt(OptionLagField.getText().trim()),null);
+                            project.addTask(TaskNameField.getText().trim(), Integer.parseInt(TaskDurationField.getText().trim()),Integer.parseInt(OptionLagField.getText().trim()));
                             populateTree(); // Update tree
                             TaskNameField.setText("");
                             TaskDurationField.setText("");
