@@ -285,6 +285,17 @@ public class Projects extends JFrame{
         System.out.println("PROJECT.JAVA PROJECT: " + project);
     }
 
+    private void setNodeAsCritical(String name) {
+        for(DefaultMutableTreeNode n: treeNodes) {
+            if(n.getUserObject().getClass() == Node.class) {
+                Node node = (Node) n.getUserObject();
+                if(node.getTask().getName().equals(name)) {
+                    node.setCritical(true);
+                }
+            }
+        }
+    }
+
     private DefaultMutableTreeNode populateTree(Task currentTask, DefaultMutableTreeNode currentNode) {
         currentTask.getNextTasks().forEach(t -> currentNode.add(populateTree(t, new DefaultMutableTreeNode(new Node(t, false)))));
         treeNodes.add(currentNode);
