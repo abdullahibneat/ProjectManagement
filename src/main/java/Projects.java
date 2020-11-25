@@ -296,10 +296,20 @@ public class Projects extends JFrame{
                 if (CriticalPathComboBox.getSelectedIndex() == 1){
                     //CALCULATE KOTLIN
                     System.out.println("Kotlin Selected");
+                    for (Task t : CriticalPathKotlin.INSTANCE.findCriticalPath(project.getTasks())) {
+                        System.out.println(t.getName() + " is critical");
+                        setNodeAsCritical(t.getName());
+                    }
                 }else{
                     //CALCULATE SCALA
                     System.out.println("Scala Selected");
+                    for (Task t : CriticalPathScala.findCriticalPath(project.getTasks())) {
+                        System.out.println(t.getName() + " is critical");
+                        setNodeAsCritical(t.getName());
+                    }
                 }
+                DefaultTreeModel model = (DefaultTreeModel) TasksTree.getModel();
+                model.reload(root); // Reload JTree so tasks are updated
             }
         });
 
