@@ -114,6 +114,10 @@ public Teams(JFrame mainFrame, Team currentTeam){
 //    System.out.println(currentTeam);
     team = currentTeam;
 
+    for (Member m:currentTeam.getMembers()){
+        TeamsList.append(m.getName() + "\n");
+    }
+
     //ADD TEAM MEMBERS JOPTION
     GridLayout layout0x2 = new GridLayout(0,2);
 
@@ -187,17 +191,18 @@ public Teams(JFrame mainFrame, Team currentTeam){
 //                    System.out.println("PLEASE FILL ALL FIELDS");
 //                    TeamLeaderField.setText("");
 //                }else{
-                    System.out.println("Task Name: " + TeamLeaderField.getText());
+//                    System.out.println("Task Name: " + TeamLeaderField.getText());
 //                    System.out.println(team.getName());
                     for (JTextField field: newmembers ) {
                         System.out.println(field.getText());
                         team.addMember(new Member(field.getText().trim()));
-                        TeamsList.add(new JLabel(field.getText()));
+//                        TeamsList.add(new JLabel(field.getText()));
                         TeamsList.append(field.getText() + "\n");
                     }
 
-                    MembersLabel.setText("Members:" + team.getMembers().size());
+                System.out.println(team.getMembers());
 
+                    MembersLabel.setText("Members:" + team.getMembers().size());
                     newmembers.clear();
                 for (Component c : AddTeamMemebersPannel.getComponents()) {
                     if(c.getClass() == JLabel.class || c.getClass() == JTextField.class) AddTeamMemebersPannel.remove(c);
