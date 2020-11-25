@@ -4,6 +4,8 @@ import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public class Projects extends JFrame{
@@ -157,7 +159,7 @@ public class Projects extends JFrame{
 
         // Add tasks to JTree
         // Project can have multiple starting nodes, so add each of them to JTree
-        project.getTasks().stream().filter(t -> t.getPreviousTasks().isEmpty()).forEach(t -> root.add(populateTree(t, new DefaultMutableTreeNode(t.getName()))));
+        project.getTasks().stream().filter(t -> t.getPreviousTasks().isEmpty()).forEach(t -> root.add(populateTree(t, new DefaultMutableTreeNode(t))));
         DefaultTreeModel model = (DefaultTreeModel) TasksTree.getModel();
         model.reload(root); // Reload JTree so tasks are displayed
 
@@ -286,12 +288,24 @@ public class Projects extends JFrame{
     }
 
     public DefaultMutableTreeNode populateTree(Task currentTask, DefaultMutableTreeNode currentNode) {
-        currentTask.getNextTasks().forEach(t -> currentNode.add(populateTree(t, new DefaultMutableTreeNode(t.getName()))));
+        currentTask.getNextTasks().forEach(t -> currentNode.add(populateTree(t, new DefaultMutableTreeNode(t))));
         return currentNode;
     }
 
     private void createUIComponents() {
         root = new DefaultMutableTreeNode("Tasks");
         TasksTree = new JTree(root);
+        TasksTree.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    DefaultMutableTreeNode node = (DefaultMutableTreeNode) TasksTree.getLastSelectedPathComponent();
+                    if (node != null && node.getUserObject().getClass() == Task.class) {
+                        Task t = (Task) node.getUserObject();
+                        System.out.println("Double-clicked on task \"" + t.getName() + "\" with duration " + t.getDuration());
+                    }
+                }
+            }
+        });
     }
 }
