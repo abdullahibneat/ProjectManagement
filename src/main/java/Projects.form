@@ -35,7 +35,7 @@
               </grid>
             </constraints>
             <properties>
-              <text value="Time Left: 2 Days, 4 Hours"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="82ae5" class="javax.swing.JLabel" binding="DueLabel">

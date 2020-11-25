@@ -166,6 +166,15 @@ public class Projects extends JFrame{
         frame = mainFrame;
         project = currentProject;
 
+        // Use Kotlin critical path by default
+        criticalCalculations = CriticalPathKotlin.INSTANCE.forwardBackwardPass(project.getTasks());
+        int maxTime = 0;
+        for (Map.Entry<Task, CriticalCalculations> c: criticalCalculations.entrySet()) {
+            int earlyFinish = c.getValue().getEarlyFinish();
+            if(earlyFinish > maxTime) maxTime = earlyFinish;
+        }
+        if(maxTime > 0) TimeLeftLabel.setText("Project duration: " + maxTime + " days");
+
         // Add tasks to JTree
         populateTree();
 
