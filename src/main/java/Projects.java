@@ -9,6 +9,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Projects extends JFrame{
     protected JPanel BasePanel;
@@ -36,6 +38,7 @@ public class Projects extends JFrame{
     private JScrollPane BaseScrollPane;
 
     private ArrayList<DefaultMutableTreeNode> treeNodes = new ArrayList();
+    private Map<Task, CriticalCalculations> criticalCalculations;
     private Project project;
     DefaultMutableTreeNode root;
 
@@ -296,6 +299,7 @@ public class Projects extends JFrame{
                 if (CriticalPathComboBox.getSelectedIndex() == 1){
                     //CALCULATE KOTLIN
                     System.out.println("Kotlin Selected");
+                    criticalCalculations = CriticalPathKotlin.INSTANCE.forwardBackwardPass(project.getTasks());
                     for (Task t : CriticalPathKotlin.INSTANCE.findCriticalPath(project.getTasks())) {
                         System.out.println(t.getName() + " is critical");
                         setNodeAsCritical(t.getName());
@@ -303,6 +307,7 @@ public class Projects extends JFrame{
                 }else{
                     //CALCULATE SCALA
                     System.out.println("Scala Selected");
+                    criticalCalculations = CriticalPathScala.forwardBackwardPass(project.getTasks());
                     for (Task t : CriticalPathScala.findCriticalPath(project.getTasks())) {
                         System.out.println(t.getName() + " is critical");
                         setNodeAsCritical(t.getName());
@@ -364,6 +369,17 @@ public class Projects extends JFrame{
                         System.out.println("Double-clicked on task \"" + t.getName() + "\" with duration " + t.getDuration());
                         String prevTasks = "[";
                         String nextTasks = "[";
+                        String criticalDetails = "";
+                        if(criticalCalculations != null) {
+                            CriticalCalculations c = criticalCalculations.get(t);
+                            if(c != null) {
+                                criticalDetails = "\n\n" +
+                                        "The earliest this task can start is day " + c.getEarlyStart() + ", and will finish on day " + c.getEarlyFinish() + "\n" +
+                                        "The latest this task can start is day " + c.getLateStart() + ", and will finish on day " + c.getLateFinish();
+
+                                if(c.getFloat() != null && c.getFloat() > 0) criticalDetails += "\nThis task can be started " + c.getFloat() + " day(s) late without affecting the overall duration of this project.";
+                            }
+                        }
                         for(Task prevt: t.getPreviousTasks()) prevTasks = prevTasks + prevt.getName() + ", ";
                         for(Task nextt: t.getNextTasks()) nextTasks = nextTasks + nextt.getName()  + ", ";
                         prevTasks = prevTasks + "]";
@@ -372,7 +388,8 @@ public class Projects extends JFrame{
                                 "Duration: " + t.getDuration() + "\n" +
                                 "Lag: " + t.getLag() + "\n" +
                                 "Previous Tasks: " + prevTasks + "\n" +
-                                "Next Tasks: " + nextTasks);
+                                "Next Tasks: " + nextTasks +
+                                criticalDetails);
                     }
                 }
             }
