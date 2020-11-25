@@ -24,4 +24,6 @@ class Team(teamName: String) {
             Persistence.save()
         }
     }
+
+    override fun toString() = name + ""
 }
