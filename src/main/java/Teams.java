@@ -151,7 +151,7 @@ public Teams(JFrame mainFrame, Team currentTeam){
     count=0;
     System.out.println("Team Leader Set" + "\n" + "count:" + count);
 
-    TaskLabel.setText("Project:");
+    TaskLabel.setText("");
 
     AddTeamMemebersPannel.add(AddTeamMembersButton);
     AddTeamMemebersPannel.add(Box.createHorizontalStrut(5)); // a spacer

@@ -38,10 +38,19 @@ public class MainMenu {
         JPanel projectFieldsPanel = new JPanel();
         JTextField projectTitleField = new JTextField(5);
         JTextField projectDurationField = new JTextField(5);
+        JComboBox teamNames = new JComboBox<>();
+
+        teamNames.addItem("N/A");
 
         projectFieldsPanel.setLayout(layout0x2);
         projectFieldsPanel.add(new JLabel("Project Title:"));
         projectFieldsPanel.add(projectTitleField);
+        projectFieldsPanel.add(new JLabel(("Team:")));
+        projectFieldsPanel.add(teamNames);
+
+        for (Team t:Persistence.INSTANCE.getTeams()){
+            teamNames.addItem(t);
+        }
 //        myPanel.add(Box.createHorizontalStrut(15)); // a spacer
 //        projectFieldsPanel.add(new JLabel("Project Duration:"));
 //        projectFieldsPanel.add(projectDurationField);
@@ -85,7 +94,7 @@ public class MainMenu {
                         }else {
                             System.out.println("Project Title: " + projectTitleField.getText());
 //                        System.out.println("Project Duration: " + projectDurationField.getText());
-                            Project p = new Project(projectTitleField.getText().trim(),null);
+                            Project p = new Project(projectTitleField.getText().trim(),(Team) teamNames.getSelectedItem());
                             System.out.println(Persistence.INSTANCE);
 
                             new Projects(frame,p);
@@ -142,7 +151,7 @@ public class MainMenu {
 
 
     public static void main(String[] args) {
-        frame = new JFrame("MainMenu");
+        frame = new JFrame("Project Management");
         frame.setContentPane(new MainMenu().BasePanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
@@ -183,14 +192,19 @@ public class MainMenu {
             projectTile.setBorder(BorderFactory.createLineBorder(Color.black));
 
             ProjectsScrollPaneBasePanel.add(projectTile);
-            projectTile.add(new JLabel(p.getName()));
-            projectTile.add(Box.createHorizontalStrut(5));
-            projectTile.add(new JLabel("PROGRESS/TEAM?"));
-            projectTile.add(Box.createHorizontalStrut(5));
-            projectTile.add(new JLabel("DUE DATE"));
-            projectTile.add(Box.createHorizontalStrut(5));
+            projectTile.add(new JLabel("Project:"+ p.getName()));
+
+//            projectTile.add(Box.createHorizontalStrut(5));//SPACER
+
+            if (p.getTeam() == null) {
+                projectTile.add(new JLabel("Team Assigned:" + "N/A"));
+            }else{
+                projectTile.add(new JLabel("Team Assigned:" + p.getTeam().toString()));
+            }
+
+//            projectTile.add(Box.createHorizontalStrut(5));// SPACER
+
             projectTile.add(b);
-//            ProjectsScrollPaneBasePanel.add(Box.createHorizontalStrut(1));//Spacer
         }
         ProjectsScrollPane = new JScrollPane(ProjectsScrollPaneBasePanel);
 
@@ -210,11 +224,13 @@ public class MainMenu {
 
             TeamsScrollPaneBasePanel.add(teamTile);
             teamTile.add(new JLabel(t.getName()));
-            teamTile.add(Box.createHorizontalStrut(5));
-            teamTile.add(new JLabel("PROGRESS/TEAM?"));
-            teamTile.add(Box.createHorizontalStrut(5));
+
+//            teamTile.add(Box.createHorizontalStrut(5));// SPACER
+
             teamTile.add(new JLabel("Members:" + t.getMembers().size()));
-            teamTile.add(Box.createHorizontalStrut(5));
+
+//            teamTile.add(Box.createHorizontalStrut(5));// SPACER
+
             teamTile.add(b);
 
             TeamsScrollPane = new JScrollPane(TeamsScrollPaneBasePanel);

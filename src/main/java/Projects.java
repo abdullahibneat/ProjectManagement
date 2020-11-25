@@ -168,6 +168,8 @@ public class Projects extends JFrame{
         project = currentProject;
 
         ProjectProgressLabel.setText(project.getName());
+        DueLabel.setText("");
+
 
         // Use Kotlin critical path by default
         criticalCalculations = CriticalPathKotlin.INSTANCE.forwardBackwardPass(project.getTasks());
