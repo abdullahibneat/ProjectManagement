@@ -285,7 +285,7 @@ public class Projects extends JFrame{
         System.out.println("PROJECT.JAVA PROJECT: " + project);
     }
 
-    public DefaultMutableTreeNode populateTree(Task currentTask, DefaultMutableTreeNode currentNode) {
+    private DefaultMutableTreeNode populateTree(Task currentTask, DefaultMutableTreeNode currentNode) {
         currentTask.getNextTasks().forEach(t -> currentNode.add(populateTree(t, new DefaultMutableTreeNode(new Node(t, false)))));
         treeNodes.add(currentNode);
         return currentNode;
