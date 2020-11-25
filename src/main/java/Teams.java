@@ -184,6 +184,10 @@ public Teams(JFrame mainFrame, Team currentTeam){
                     MembersLabel.setText("Members:" + team.getMembers().size());
 
                     newmembers.clear();
+                for (Component c : AddTeamMemebersPannel.getComponents()) {
+                    if(c.getClass() == JLabel.class || c.getClass() == JTextField.class) AddTeamMemebersPannel.remove(c);
+                }
+                count = 0;
                     System.out.println(Persistence.INSTANCE);
 //                }
             }else{

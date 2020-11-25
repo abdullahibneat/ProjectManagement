@@ -1,3 +1,5 @@
+import Persistence.Persistence;
+
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -22,6 +24,9 @@ public class Projects extends JFrame{
     private JButton HomeButton;
     private JPanel NavigationPanel;
     private JTextPane TaskDetails;
+    private JComboBox CriticalPathComboBox;
+    private JLabel Criticalpathlabel;
+    private JButton CriticalPathCalculateButton;
 
     private static JFrame frame;
 
@@ -172,9 +177,17 @@ public class Projects extends JFrame{
         JTextField TaskDurationField = new JTextField(5);
         JCheckBox DependentCheckBox = new JCheckBox("Dependent:");
         JComboBox ProjectDependentComboBox = new JComboBox();
-        JComboBox WorkingTeamComboBox = new JComboBox();
+//        JComboBox WorkingTeamComboBox = new JComboBox();
 //        JButton AddWorkingTeamembersButton = new JButton("Add Team Members");
         JTextField OptionLagField = new JTextField(5);
+
+
+
+        for (Task t: currentProject.getTasks()){
+            ProjectDependentComboBox.addItem(t);
+        }
+
+
 
         AddTaskPanel.setLayout(layout0x2);
 //        AddTaskPanel.setPreferredSize(new Dimension(300 ,300));
@@ -191,8 +204,8 @@ public class Projects extends JFrame{
 //        AddTaskPanel.add(Box.createHorizontalStrut(5)); // a spacer
 //        AddTaskPanel.add(Box.createHorizontalStrut(5)); // a spacer
 
-        AddTaskPanel.add(new JLabel("Working Team:"));
-        AddTaskPanel.add(WorkingTeamComboBox);
+//        AddTaskPanel.add(new JLabel("Working Team:"));
+//        AddTaskPanel.add(WorkingTeamComboBox);
 
 //        AddTaskPanel.add(Box.createHorizontalStrut(5)); // a spacer
 //        AddTaskPanel.add(Box.createHorizontalStrut(5)); // a spacer
@@ -277,12 +290,27 @@ public class Projects extends JFrame{
             }
         });
 
+        CriticalPathCalculateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (CriticalPathComboBox.getSelectedIndex() == 1){
+                    //CALCULATE KOTLIN
+                    System.out.println("Kotlin Selected");
+                }else{
+                    //CALCULATE SCALA
+                    System.out.println("Scala Selected");
+                }
+            }
+        });
+
         frame.setContentPane(BasePanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
         System.out.println("PROJECT.JAVA PROJECT: " + project);
+
+
     }
 
     private void setNodeAsCritical(String name) {
