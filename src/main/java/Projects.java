@@ -306,7 +306,7 @@ public class Projects extends JFrame{
         root.removeAllChildren();
         // Add nodes to JTree
         // Project can have multiple starting nodes, so add each of them to JTree
-        project.getTasks().stream().filter(t -> t.getPreviousTasks().isEmpty()).forEach(t -> root.add(populateTree(t, new DefaultMutableTreeNode(t))));
+        project.getTasks().stream().filter(t -> t.getPreviousTasks().isEmpty()).forEach(t -> root.add(populateTree(t, new DefaultMutableTreeNode(new Node(t, false)))));
         DefaultTreeModel model = (DefaultTreeModel) TasksTree.getModel();
         model.reload(root); // Reload JTree so tasks are displayed
     }
