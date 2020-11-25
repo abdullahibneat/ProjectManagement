@@ -21,6 +21,7 @@ public class Projects extends JFrame{
     private JButton AddTask;
     private JButton HomeButton;
     private JPanel NavigationPanel;
+    private JTextPane TaskDetails;
 
     private static JFrame frame;
 
@@ -303,6 +304,17 @@ public class Projects extends JFrame{
                     if (node != null && node.getUserObject().getClass() == Task.class) {
                         Task t = (Task) node.getUserObject();
                         System.out.println("Double-clicked on task \"" + t.getName() + "\" with duration " + t.getDuration());
+                        String prevTasks = "[";
+                        String nextTasks = "[";
+                        for(Task prevt: t.getPreviousTasks()) prevTasks = prevTasks + prevt.getName() + ", ";
+                        for(Task nextt: t.getNextTasks()) nextTasks = nextTasks + nextt.getName()  + ", ";
+                        prevTasks = prevTasks + "]";
+                        nextTasks = nextTasks + "]";
+                        TaskDetails.setText("Name: " + t.getName() + "\n" +
+                                "Duration: " + t.getDuration() + "\n" +
+                                "Lag: " + t.getLag() + "\n" +
+                                "Previous Tasks: " + prevTasks + "\n" +
+                                "Next Tasks: " + nextTasks);
                     }
                 }
             }
