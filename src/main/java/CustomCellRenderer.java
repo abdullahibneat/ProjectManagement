@@ -15,7 +15,7 @@ public class CustomCellRenderer extends DefaultTreeCellRenderer {
         if(node.getUserObject().getClass() == Node.class) {
             Node data = (Node)node.getUserObject();
             if(data.isCritical()){
-                c.setForeground(Color.blue);
+                c.setForeground(Color.red);
             }
         }
         return c;
