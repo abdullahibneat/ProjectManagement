@@ -19,6 +19,9 @@ class Team(teamName: String) {
 
     fun addMember(member: Member) {
         if(members.contains(member)) throw Exception("Member is already part of $name team")
-        else members.add(member)
+        else {
+            members.add(member)
+            Persistence.save()
+        }
     }
 }
