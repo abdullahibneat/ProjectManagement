@@ -90,7 +90,7 @@ object CriticalPathScala extends CriticalPath {
         else currentTaskCalculations ++ task.getPreviousTasks.asScala.map(t => backwardPass(calculations ++ currentTaskCalculations, t)).reduce(_ ++ _)
     }
 
-    def forwardBackwardPass(tasks: JSet[Task]): JMap[Task, CriticalCalculations] = {
+    override def forwardBackwardPass(tasks: JSet[Task]): JMap[Task, CriticalCalculations] = {
         // Forward and backward passes must be computed for all starting and ending tasks
         // in case a project has multiple starting and/or ending tasks (e.g. SampleProjectC)
         val forward = tasks.asScala
