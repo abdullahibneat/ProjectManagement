@@ -303,6 +303,7 @@ public class Projects extends JFrame{
     private void createUIComponents() {
         root = new DefaultMutableTreeNode("Tasks");
         TasksTree = new JTree(root);
+        TasksTree.setCellRenderer(new CustomCellRenderer());
         TasksTree.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
