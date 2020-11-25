@@ -166,6 +166,8 @@ public class Projects extends JFrame{
         frame = mainFrame;
         project = currentProject;
 
+        ProjectProgressLabel.setText(project.getName());
+
         // Use Kotlin critical path by default
         criticalCalculations = CriticalPathKotlin.INSTANCE.forwardBackwardPass(project.getTasks());
         int maxTime = 0;
