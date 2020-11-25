@@ -286,7 +286,7 @@ public class Projects extends JFrame{
     }
 
     public DefaultMutableTreeNode populateTree(Task currentTask, DefaultMutableTreeNode currentNode) {
-        currentTask.getNextTasks().forEach(t -> currentNode.add(populateTree(t, new DefaultMutableTreeNode(t))));
+        currentTask.getNextTasks().forEach(t -> currentNode.add(populateTree(t, new DefaultMutableTreeNode(new Node(t, false)))));
         treeNodes.add(currentNode);
         return currentNode;
     }
@@ -308,8 +308,9 @@ public class Projects extends JFrame{
             public void mousePressed(MouseEvent e) {
                 if (e.getClickCount() == 2) {
                     DefaultMutableTreeNode node = (DefaultMutableTreeNode) TasksTree.getLastSelectedPathComponent();
-                    if (node != null && node.getUserObject().getClass() == Task.class) {
-                        Task t = (Task) node.getUserObject();
+                    if (node != null && node.getUserObject().getClass() == Node.class) {
+                        Node n = (Node) node.getUserObject();
+                        Task t = n.getTask();
                         System.out.println("Double-clicked on task \"" + t.getName() + "\" with duration " + t.getDuration());
                         String prevTasks = "[";
                         String nextTasks = "[";
