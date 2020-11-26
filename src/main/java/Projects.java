@@ -307,6 +307,12 @@ public class Projects extends JFrame{
                             OptionLagField.setText("");
                         }
 
+                        // Reset ProjectDependentComboBox
+                        ProjectDependentComboBox.removeAllItems();
+                        for (Task t: currentProject.getTasks()){
+                            ProjectDependentComboBox.addItem(t.getName());
+                        }
+
                     }
                 }else{
                     System.out.println("CANCEL");
