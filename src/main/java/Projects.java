@@ -270,6 +270,11 @@ public class Projects extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println(project);
+                // Reset ProjectDependentComboBox
+                ProjectDependentComboBox.removeAllItems();
+                for (Task t: currentProject.getTasks()){
+                    ProjectDependentComboBox.addItem(t.getName());
+                }
                 int result = JOptionPane.showConfirmDialog(null, BaseScrollPane,
                         "New Task", JOptionPane.OK_CANCEL_OPTION);
                 if (result == JOptionPane.OK_OPTION) {
@@ -307,11 +312,7 @@ public class Projects extends JFrame{
                             OptionLagField.setText("");
                         }
 
-                        // Reset ProjectDependentComboBox
-                        ProjectDependentComboBox.removeAllItems();
-                        for (Task t: currentProject.getTasks()){
-                            ProjectDependentComboBox.addItem(t.getName());
-                        }
+                        dependentTasks.removeAll();
 
                     }
                 }else{
