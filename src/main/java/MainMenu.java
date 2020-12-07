@@ -94,7 +94,12 @@ public class MainMenu {
                         }else {
                             System.out.println("Project Title: " + projectTitleField.getText());
 //                        System.out.println("Project Duration: " + projectDurationField.getText());
-                            Project p = new Project(projectTitleField.getText().trim(),(Team) teamNames.getSelectedItem());
+
+                            // Try to check if team is selected, otherwise set to null
+                            Team team = null;
+                            try { team = (Team) teamNames.getSelectedItem(); } catch (Exception ignored) {}
+
+                            Project p = new Project(projectTitleField.getText().trim(), team);
                             System.out.println(Persistence.INSTANCE);
 
                             new Projects(frame,p);
