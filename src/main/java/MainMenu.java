@@ -232,9 +232,8 @@ public class MainMenu {
 //            teamTile.add(Box.createHorizontalStrut(5));// SPACER
 
             teamTile.add(b);
-
-            TeamsScrollPane = new JScrollPane(TeamsScrollPaneBasePanel);
         }
+        TeamsScrollPane = new JScrollPane(TeamsScrollPaneBasePanel);
 
 
 
