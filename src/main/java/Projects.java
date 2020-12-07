@@ -196,7 +196,7 @@ public class Projects extends JFrame{
         ProjectDependentComboBox.addItem("Select a task");
 //        JComboBox WorkingTeamComboBox = new JComboBox();
 //        JButton AddWorkingTeamembersButton = new JButton("Add Team Members");
-        JTextField OptionLagField = new JTextField(5);
+        JTextField OptionLagField = new JTextField("0", 5);
 
         ProjectProgressLabel.setText("Project Name: " + currentProject.getName());
 
@@ -344,7 +344,7 @@ public class Projects extends JFrame{
                             populateTree(); // Update tree
                             TaskNameField.setText("");
                             TaskDurationField.setText("");
-                            OptionLagField.setText("");
+                            OptionLagField.setText("0");
                         }
 
                         dependentTasks.removeAll();
