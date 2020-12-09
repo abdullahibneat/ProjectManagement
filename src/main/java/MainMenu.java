@@ -36,7 +36,7 @@ public class MainMenu {
         //JPanel for Project Fields
         JPanel projectFieldsPanel = new JPanel();
         JTextField projectTitleField = new JTextField(5);
-        JComboBox teamNames = new JComboBox<>();
+        JComboBox<Object> teamNames = new JComboBox<>();
 
         teamNames.addItem("N/A");
 

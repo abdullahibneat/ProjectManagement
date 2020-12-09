@@ -24,7 +24,7 @@ public class Teams {
     private JTextField TeamMemberField;
     private final String TeamMember;
     private final JScrollPane BaseScrollPane;
-    private final ArrayList<JTextField> newmembers = new ArrayList();
+    private final ArrayList<JTextField> newmembers = new ArrayList<>();
 
     private final Team team;
 

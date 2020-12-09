@@ -22,11 +22,11 @@ public class Projects extends JFrame {
     private JButton HomeButton;
     private JPanel NavigationPanel;
     private JTextPane TaskDetails;
-    private JComboBox CriticalPathComboBox;
+    private JComboBox<String> CriticalPathComboBox;
     private JLabel Criticalpathlabel;
     private JButton CriticalPathCalculateButton;
     private final JScrollPane BaseScrollPane;
-    private final ArrayList<DefaultMutableTreeNode> treeNodes = new ArrayList();
+    private final ArrayList<DefaultMutableTreeNode> treeNodes = new ArrayList<>();
     private Map<Task, CriticalCalculations> criticalCalculations;
     private final Project project;
     private CriticalPath criticalPath = CriticalPathKotlin.INSTANCE;
