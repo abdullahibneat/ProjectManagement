@@ -17,6 +17,12 @@ class Team(teamName: String) {
         Persistence.addTeam(this)
     }
 
+    /**
+     * Add a member to this team
+     *
+     * @param member The member to be added
+     * @throws Exception if member is already part of the team.
+     */
     fun addMember(member: Member) {
         if(members.contains(member)) throw Exception("Member is already part of $name team")
         else {

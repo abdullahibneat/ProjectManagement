@@ -16,6 +16,15 @@ class Project(projectName: String, var team: Team? = null) {
         Persistence.addProject(this)
     }
 
+    /**
+     * Creates and adds a new task to this project.
+     * Previous tasks is an optional vararg (you can leave it out if a task has no dependencies).
+     *
+     * @param name The name of this task
+     * @param duration The duration of this task
+     * @param lag An optional lag to delay the start of this task
+     * @throws Exception if the task name is not unique to this project, or dependencies that you specify don't exists.
+     */
     fun addTask(name: String, duration: Int, lag: Int = 0, vararg previousTasks: String) {
         if(tasks.find { t -> t.name === name } !== null)
             throw Exception("Task name must be unique")
@@ -31,6 +40,15 @@ class Project(projectName: String, var team: Team? = null) {
         Persistence.save()
     }
 
+    /**
+     * Edit a task. Pass "null" to properties that should not be changed.
+     *
+     * @param name The name of the existing task
+     * @param newName Set a new name for this task
+     * @param newDuration Set a new duration for this task
+     * @param newLag Set a new lag for this task
+     * @throws Exception if: task does not exist; newName is empty or not unique; duration/lag are less than 0
+     */
     fun editTask(name: String, newName: String? = null, newDuration: Int? = null, newLag: Int? = null) {
         val trimmedName = name.trim()
 
@@ -52,6 +70,12 @@ class Project(projectName: String, var team: Team? = null) {
         Persistence.save()
     }
 
+    /**
+     * Deletes a task by its name.
+     *
+     * @param name The name of the task to be deleted
+     * @throws Exception if task doesn't exist or task has successor tasks.
+     */
     fun deleteTask(name: String) {
         val trimmedName = name.trim()
 
