@@ -176,12 +176,12 @@ public class MainMenu {
             projectTile.setBorder(BorderFactory.createLineBorder(Color.black));
 
             ProjectsScrollPaneBasePanel.add(projectTile);
-            projectTile.add(new JLabel("Project:" + p.getName()));
+            projectTile.add(new JLabel( p.getName()));
 
             if (p.getTeam() == null) {
-                projectTile.add(new JLabel("Team Assigned:" + "N/A"));
+                projectTile.add(new JLabel("Team Assigned: " + "N/A"));
             } else {
-                projectTile.add(new JLabel("Team Assigned:" + p.getTeam().toString()));
+                projectTile.add(new JLabel("Team Assigned: " + p.getTeam().toString()));
             }
 
             projectTile.add(b);
@@ -204,7 +204,7 @@ public class MainMenu {
 
             TeamsScrollPaneBasePanel.add(teamTile);
             teamTile.add(new JLabel(t.getName()));
-            teamTile.add(new JLabel("Members:" + t.getMembers().size()));
+            teamTile.add(new JLabel("Members: " + t.getMembers().size()));
             teamTile.add(b);
         }
         TeamsScrollPane = new JScrollPane(TeamsScrollPaneBasePanel);
