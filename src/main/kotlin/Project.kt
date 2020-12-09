@@ -26,7 +26,7 @@ class Project(projectName: String, var team: Team? = null) {
      * @throws Exception if the task name is not unique to this project, or dependencies that you specify don't exists.
      */
     fun addTask(name: String, duration: Int, lag: Int = 0, vararg previousTasks: String) {
-        if(tasks.find { t -> t.name === name } !== null)
+        if(tasks.find { t -> t.name == name } !== null)
             throw Exception("Task name must be unique")
 
         val dependencies = tasks.filter { t -> previousTasks.contains(t.name) }
