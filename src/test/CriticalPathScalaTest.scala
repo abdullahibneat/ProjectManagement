@@ -1,6 +1,5 @@
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import scala.jdk.CollectionConverters.CollectionHasAsScala
 
 class CriticalPathScalaTest {
     @Test

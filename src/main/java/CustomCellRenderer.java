@@ -1,7 +1,9 @@
-import javax.swing.*;
+import javax.swing.JTree;
+import javax.swing.JComponent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Color;
 
 public class CustomCellRenderer extends DefaultTreeCellRenderer {
 
