@@ -38,7 +38,7 @@ public class Teams {
         //ADD TEAM MEMBERS JOPTION
         GridLayout layout0x2 = new GridLayout(0, 2);
 
-        count = 0;
+        count = currentTeam.getMembers().size();
         TeamMember = "Team Member #";
 
         JPanel AddTeamMemebersPannel = new JPanel();
@@ -46,19 +46,12 @@ public class Teams {
 
         AddTeamMemebersPannel.setLayout(layout0x2);
 
-        MembersLabel.setText("Members:" + currentTeam.getMembers().size());
+        MembersLabel.setText("Members: " + currentTeam.getMembers().size());
 
         TeamLabel.setText("Team Name: " + currentTeam.getName());
 
-        for (Member m : currentTeam.getMembers()) {
-            if (count >= 1) {
-                break;
-            } else {
-                TeamLeaderLabel.setText("Team Leader:" + m.getName());
-                count++;
-            }
-        }
-        count = 0;
+        TeamLeaderLabel.setText("Team Leader: " + currentTeam.getMembers().get(0).getName());
+
         System.out.println("Team Leader Set" + "\n" + "count:" + count);
 
         TaskLabel.setText("");
