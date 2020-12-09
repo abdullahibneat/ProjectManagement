@@ -25,7 +25,6 @@ public class Projects extends JFrame {
     private JComboBox CriticalPathComboBox;
     private JLabel Criticalpathlabel;
     private JButton CriticalPathCalculateButton;
-    private JComboBox WorkingTeamMemberComboBox;
     private final JScrollPane BaseScrollPane;
     private final ArrayList<DefaultMutableTreeNode> treeNodes = new ArrayList();
     private Map<Task, CriticalCalculations> criticalCalculations;
