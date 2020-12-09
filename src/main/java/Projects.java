@@ -1,17 +1,15 @@
-import Persistence.Persistence;
-
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 
-public class Projects extends JFrame{
+public class Projects extends JFrame {
+    private static JFrame frame;
     protected JPanel BasePanel;
+    DefaultMutableTreeNode root;
     private JTree TasksTree;
     private JPanel TasksPanel;
     private JPanel TasksSubPanel;
@@ -27,140 +25,17 @@ public class Projects extends JFrame{
     private JComboBox CriticalPathComboBox;
     private JLabel Criticalpathlabel;
     private JButton CriticalPathCalculateButton;
-
-    private static JFrame frame;
-
-    private int count;
+    private final int count;
     private JComboBox WorkingTeamMemberComboBox;
-    private String WorkingTeamMemeber;
-    private JScrollPane BaseScrollPane;
-
-    private ArrayList<DefaultMutableTreeNode> treeNodes = new ArrayList();
+    private final String WorkingTeamMemeber;
+    private final JScrollPane BaseScrollPane;
+    private final ArrayList<DefaultMutableTreeNode> treeNodes = new ArrayList();
     private Map<Task, CriticalCalculations> criticalCalculations;
-    private Project project;
+    private final Project project;
     private CriticalPath criticalPath = CriticalPathKotlin.INSTANCE;
-    DefaultMutableTreeNode root;
 
-//    public Projects(){
-//        //ADD TASK JOPTION
-//        GridLayout layout0x2 = new GridLayout(0,2);
-//
-//        count = 0;
-//        WorkingTeamMemeber = "Team Member #";
-//
-//        JPanel AddTaskPanel = new JPanel();
-//        JTextField TaskNameField = new JTextField(5);
-//        JTextField TaskDurationField = new JTextField(5);
-//        JCheckBox DependentCheckBox = new JCheckBox("Dependent:");
-//        JComboBox ProjectDependentComboBox = new JComboBox();
-//        JComboBox WorkingTeamComboBox = new JComboBox();
-////        JButton AddWorkingTeamembersButton = new JButton("Add Team Members");
-//        JTextField OptionLagField = new JTextField(5);
-//
-//        AddTaskPanel.setLayout(layout0x2);
-////        AddTaskPanel.setPreferredSize(new Dimension(300 ,300));
-//        AddTaskPanel.add(new JLabel("Task Name:"));
-//        AddTaskPanel.add(TaskNameField);
-//        AddTaskPanel.add(new JLabel("Task Duration:"));
-//        AddTaskPanel.add(TaskDurationField);
-//        AddTaskPanel.add(new JLabel("Lag"));
-//        AddTaskPanel.add(OptionLagField);
-//        AddTaskPanel.add(DependentCheckBox);
-//        AddTaskPanel.add(ProjectDependentComboBox);
-//        ProjectDependentComboBox.setEnabled(false);
-//
-////        AddTaskPanel.add(Box.createHorizontalStrut(5)); // a spacer
-////        AddTaskPanel.add(Box.createHorizontalStrut(5)); // a spacer
-//
-//        AddTaskPanel.add(new JLabel("Working Team:"));
-//        AddTaskPanel.add(WorkingTeamComboBox);
-//
-////        AddTaskPanel.add(Box.createHorizontalStrut(5)); // a spacer
-////        AddTaskPanel.add(Box.createHorizontalStrut(5)); // a spacer
-//
-////        AddTaskPanel.add(AddWorkingTeamembersButton);
-////        AddTaskPanel.add(Box.createHorizontalStrut(5)); // a spacer
-//
-//        BaseScrollPane = new JScrollPane(AddTaskPanel);
-//        BaseScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-//        BaseScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-////        BaseScrollPane.setPreferredSize(new Dimension(400 ,200));
-//        BaseScrollPane.setPreferredSize(new Dimension(400 ,110));
-//
-//        DependentCheckBox.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                if (DependentCheckBox.isSelected()) {
-//                    ProjectDependentComboBox.setEnabled(true);
-//                    System.out.println("Project is a Dependent");
-//                }else {
-//                    ProjectDependentComboBox.setEnabled(false);
-//                    System.out.println("Project is not a Dependent");
-//                }
-//
-//            }
-//        });
-//
-////        AddWorkingTeamembersButton.addActionListener(new ActionListener() { //  FOR ADDING TEAM MEMBERS
-////            @Override
-////            public void actionPerformed(ActionEvent e) {
-////                count++;
-////                WorkingTeamMemberComboBox = new JComboBox();
-////                WorkingTeamComboBox.setName(WorkingTeamMemeber + count);
-////                AddTaskPanel.add(new JLabel(WorkingTeamMemeber + count));
-////                AddTaskPanel.add(WorkingTeamMemberComboBox);
-////                AddTaskPanel.revalidate();
-////                AddTaskPanel.repaint();
-////                System.out.println("Team Member added");
-////
-////            }
-////        });
-//
-//        AddTask.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                System.out.println(project);
-//                int result = JOptionPane.showConfirmDialog(null, BaseScrollPane,
-//                        "New Task", JOptionPane.OK_CANCEL_OPTION);
-//                if (result == JOptionPane.OK_OPTION) {
-//                    if(TaskDurationField.getText().trim().isEmpty() || TaskNameField.getText().trim().isEmpty() || ProjectDependentComboBox.getSelectedIndex() == 0){
-//                        System.out.println("Please Fill All Fields");
-//                        TaskNameField.setText("");
-//                        TaskDurationField.setText("");
-//                        ProjectDependentComboBox.setSelectedIndex(0);
-//                    }else {
-//                        if (DependentCheckBox.isSelected()) {
-//                            System.out.println("Project Dependent of:" + ProjectDependentComboBox.getSelectedItem().toString());
-//                            System.out.println("Working Team: " + WorkingTeamMemberComboBox.getSelectedItem().toString());
-//                            System.out.println("Task Name: " + TaskNameField.getText());
-//                            System.out.println("Task Duration: " + TaskDurationField.getText());
-//                            System.out.println("Task Lag: " + OptionLagField.getText());
-//
-//                            project.addTask(TaskNameField.getText().trim(), Integer.parseInt(TaskDurationField.getText().trim()),Integer.parseInt(OptionLagField.getText().trim()),ProjectDependentComboBox.getSelectedItem().toString(),WorkingTeamComboBox.getSelectedItem().toString());
-//                        }else{
-//                            System.out.println("Task Name: " + TaskNameField.getText());
-//                            System.out.println("Task Duration: " + TaskDurationField.getText());
-//                            System.out.println("Task Lag: " + OptionLagField.getText());
-//                            System.out.println("Working Team: " + WorkingTeamMemberComboBox.getSelectedItem().toString());
-//                            project.addTask(TaskNameField.getText().trim(), Integer.parseInt(TaskDurationField.getText().trim()),Integer.parseInt(OptionLagField.getText().trim()),WorkingTeamComboBox.getSelectedItem().toString());
-//
-//                        }
-//
-//                    }
-//                }else{
-//                    System.out.println("CANCEL");
-//                }
-//            }
-//        });
-//        HomeButton.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                new MainMenu(frame);
-//            }
-//        });
-//    }
 
-    public Projects(JFrame mainFrame,Project currentProject){
+    public Projects(JFrame mainFrame, Project currentProject) {
         System.out.println("projects constr");
         frame = mainFrame;
         project = currentProject;
@@ -172,17 +47,17 @@ public class Projects extends JFrame{
         // Use Kotlin critical path by default
         criticalCalculations = CriticalPathKotlin.INSTANCE.forwardBackwardPass(project.getTasks());
         int maxTime = 0;
-        for (Map.Entry<Task, CriticalCalculations> c: criticalCalculations.entrySet()) {
+        for (Map.Entry<Task, CriticalCalculations> c : criticalCalculations.entrySet()) {
             int earlyFinish = c.getValue().getEarlyFinish();
-            if(earlyFinish > maxTime) maxTime = earlyFinish;
+            if (earlyFinish > maxTime) maxTime = earlyFinish;
         }
-        if(maxTime > 0) TimeLeftLabel.setText("Project duration: " + maxTime + " days");
+        if (maxTime > 0) TimeLeftLabel.setText("Project duration: " + maxTime + " days");
 
         // Add tasks to JTree
         populateTree();
 
         //ADD TASK JOPTION
-        GridLayout layout0x2 = new GridLayout(0,2);
+        GridLayout layout0x2 = new GridLayout(0, 2);
 
         count = 0;
         WorkingTeamMemeber = "Team Member #";
@@ -191,23 +66,22 @@ public class Projects extends JFrame{
         JTextField TaskNameField = new JTextField(5);
         JTextField TaskDurationField = new JTextField(5);
         JCheckBox DependentCheckBox = new JCheckBox("Dependent:");
-        System.out.println("Checked? "+  DependentCheckBox.isSelected());
+        System.out.println("Checked? " + DependentCheckBox.isSelected());
         JComboBox<String> ProjectDependentComboBox = new JComboBox<>(new DefaultComboBoxModel<>());
         ProjectDependentComboBox.addItem("Select a task");
-//        JComboBox WorkingTeamComboBox = new JComboBox();
-//        JButton AddWorkingTeamembersButton = new JButton("Add Team Members");
+
         JTextField OptionLagField = new JTextField("0", 5);
 
         ProjectProgressLabel.setText("Project Name: " + currentProject.getName());
 
-        for (Task t: currentProject.getTasks()){
+        for (Task t : currentProject.getTasks()) {
             ProjectDependentComboBox.addItem(t.getName());
         }
 
         JPanel dependentTasks = new JPanel();
 
         AddTaskPanel.setLayout(layout0x2);
-//        AddTaskPanel.setPreferredSize(new Dimension(300 ,300));
+
         AddTaskPanel.add(new JLabel("Task Name:"));
         AddTaskPanel.add(TaskNameField);
         AddTaskPanel.add(new JLabel("Task Duration:"));
@@ -219,23 +93,10 @@ public class Projects extends JFrame{
         AddTaskPanel.add(dependentTasks);
         ProjectDependentComboBox.setEnabled(false);
 
-//        AddTaskPanel.add(Box.createHorizontalStrut(5)); // a spacer
-//        AddTaskPanel.add(Box.createHorizontalStrut(5)); // a spacer
-
-//        AddTaskPanel.add(new JLabel("Working Team:"));
-//        AddTaskPanel.add(WorkingTeamComboBox);
-
-//        AddTaskPanel.add(Box.createHorizontalStrut(5)); // a spacer
-//        AddTaskPanel.add(Box.createHorizontalStrut(5)); // a spacer
-
-//        AddTaskPanel.add(AddWorkingTeamembersButton);
-//        AddTaskPanel.add(Box.createHorizontalStrut(5)); // a spacer
-
         BaseScrollPane = new JScrollPane(AddTaskPanel);
         BaseScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         BaseScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-//        BaseScrollPane.setPreferredSize(new Dimension(400 ,200));
-        BaseScrollPane.setPreferredSize(new Dimension(400 ,110));
+        BaseScrollPane.setPreferredSize(new Dimension(400, 110));
 
         DependentCheckBox.addActionListener(new ActionListener() {
             @Override
@@ -243,7 +104,7 @@ public class Projects extends JFrame{
                 if (DependentCheckBox.isSelected()) {
                     ProjectDependentComboBox.setEnabled(true);
                     System.out.println("Project is a Dependent");
-                }else {
+                } else {
                     ProjectDependentComboBox.setEnabled(false);
                     System.out.println("Project is not a Dependent");
                 }
@@ -254,10 +115,10 @@ public class Projects extends JFrame{
         final boolean[] deleting = {false};
 
         ProjectDependentComboBox.addItemListener(e -> {
-            if(DependentCheckBox.isSelected() && !deleting[0] && e.getStateChange() == ItemEvent.SELECTED) {
+            if (DependentCheckBox.isSelected() && !deleting[0] && e.getStateChange() == ItemEvent.SELECTED) {
                 String selected = e.getItem().toString();
                 System.out.println("selected " + selected);
-                if(!selected.equals("Select a task")) {
+                if (!selected.equals("Select a task")) {
                     deleting[0] = true;
                     ProjectDependentComboBox.removeItemAt(ProjectDependentComboBox.getSelectedIndex());
                     ProjectDependentComboBox.setSelectedIndex(0);
@@ -277,21 +138,6 @@ public class Projects extends JFrame{
             }
         });
 
-//        AddWorkingTeamembersButton.addActionListener(new ActionListener() { //  FOR ADDING TEAM MEMBERS
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                count++;
-//                WorkingTeamMemberComboBox = new JComboBox();
-//                WorkingTeamComboBox.setName(WorkingTeamMemeber + count);
-//                AddTaskPanel.add(new JLabel(WorkingTeamMemeber + count));
-//                AddTaskPanel.add(WorkingTeamMemberComboBox);
-//                AddTaskPanel.revalidate();
-//                AddTaskPanel.repaint();
-//                System.out.println("Team Member added");
-//
-//            }
-//        });
-
         AddTask.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -300,13 +146,13 @@ public class Projects extends JFrame{
                 dependentTasks.removeAll();
                 ProjectDependentComboBox.removeAllItems();
                 ProjectDependentComboBox.addItem("Select a task");
-                for (Task t: currentProject.getTasks()){
+                for (Task t : currentProject.getTasks()) {
                     ProjectDependentComboBox.addItem(t.getName());
                 }
                 int result = JOptionPane.showConfirmDialog(null, BaseScrollPane,
                         "New Task", JOptionPane.OK_CANCEL_OPTION);
                 if (result == JOptionPane.OK_OPTION) {
-                    if(TaskDurationField.getText().trim().isEmpty() || TaskNameField.getText().trim().isEmpty() || OptionLagField.getText().trim().isEmpty() ){
+                    if (TaskDurationField.getText().trim().isEmpty() || TaskNameField.getText().trim().isEmpty() || OptionLagField.getText().trim().isEmpty()) {
                         System.out.println("Please Fill All Fields");
                         TaskNameField.setText("");
                         TaskDurationField.setText("");
@@ -314,20 +160,20 @@ public class Projects extends JFrame{
                         ProjectDependentComboBox.setSelectedIndex(0);
                         ProjectDependentComboBox.setEnabled(false);
                         DependentCheckBox.setSelected(false);
-                    }else {
+                    } else {
                         if (DependentCheckBox.isSelected() && dependentTasks.getComponents().length > 0) {
                             System.out.println("Task Name: " + TaskNameField.getText());
                             System.out.println("Task Duration: " + TaskDurationField.getText());
                             System.out.println("Task Lag: " + OptionLagField.getText());
                             ArrayList<String> dependencies = new ArrayList<>();
                             for (Component component : dependentTasks.getComponents()) {
-                                if(component.getClass() == JLabel.class) {
+                                if (component.getClass() == JLabel.class) {
                                     JLabel l = (JLabel) component;
                                     dependencies.add(l.getText());
                                 }
                             }
                             System.out.println("Project Dependent of:" + dependencies);
-                            project.addTask(TaskNameField.getText().trim(), Integer.parseInt(TaskDurationField.getText().trim()),Integer.parseInt(OptionLagField.getText().trim()), dependencies.toArray(new String[0]));
+                            project.addTask(TaskNameField.getText().trim(), Integer.parseInt(TaskDurationField.getText().trim()), Integer.parseInt(OptionLagField.getText().trim()), dependencies.toArray(new String[0]));
                             populateTree();
                             TaskNameField.setText("");
                             TaskDurationField.setText("");
@@ -336,11 +182,11 @@ public class Projects extends JFrame{
                             ProjectDependentComboBox.setEnabled(false);
                             DependentCheckBox.setSelected(false);
 
-                        }else{
+                        } else {
                             System.out.println("Task Name: " + TaskNameField.getText());
                             System.out.println("Task Duration: " + TaskDurationField.getText());
                             System.out.println("Task Lag: " + OptionLagField.getText());
-                            project.addTask(TaskNameField.getText().trim(), Integer.parseInt(TaskDurationField.getText().trim()),Integer.parseInt(OptionLagField.getText().trim()));
+                            project.addTask(TaskNameField.getText().trim(), Integer.parseInt(TaskDurationField.getText().trim()), Integer.parseInt(OptionLagField.getText().trim()));
                             populateTree(); // Update tree
                             TaskNameField.setText("");
                             TaskDurationField.setText("");
@@ -350,7 +196,7 @@ public class Projects extends JFrame{
                         dependentTasks.removeAll();
 
                     }
-                }else{
+                } else {
                     System.out.println("CANCEL");
                 }
             }
@@ -365,11 +211,11 @@ public class Projects extends JFrame{
         CriticalPathCalculateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (CriticalPathComboBox.getSelectedIndex() == 1){
+                if (CriticalPathComboBox.getSelectedIndex() == 1) {
                     //CALCULATE KOTLIN
                     System.out.println("Kotlin Selected");
                     criticalPath = CriticalPathKotlin.INSTANCE;
-                }else{
+                } else {
                     //CALCULATE SCALA
                     System.out.println("Scala Selected");
                     criticalPath = CriticalPathScala$.MODULE$;
@@ -395,10 +241,10 @@ public class Projects extends JFrame{
     }
 
     private void setNodeAsCritical(String name) {
-        for(DefaultMutableTreeNode n: treeNodes) {
-            if(n.getUserObject().getClass() == Node.class) {
+        for (DefaultMutableTreeNode n : treeNodes) {
+            if (n.getUserObject().getClass() == Node.class) {
                 Node node = (Node) n.getUserObject();
-                if(node.getTask().getName().equals(name)) {
+                if (node.getTask().getName().equals(name)) {
                     node.setCritical(true);
                 }
             }
@@ -437,18 +283,19 @@ public class Projects extends JFrame{
                         String prevTasks = "[";
                         String nextTasks = "[";
                         String criticalDetails = "";
-                        if(criticalCalculations != null) {
+                        if (criticalCalculations != null) {
                             CriticalCalculations c = criticalCalculations.get(t);
-                            if(c != null) {
+                            if (c != null) {
                                 criticalDetails = "\n\n" +
                                         "The earliest this task can start is day " + c.getEarlyStart() + ", and will finish on day " + c.getEarlyFinish() + "\n" +
                                         "The latest this task can start is day " + c.getLateStart() + ", and will finish on day " + c.getLateFinish();
 
-                                if(c.getFloat() != null && c.getFloat() > 0) criticalDetails += "\nThis task can be started " + c.getFloat() + " day(s) late without affecting the overall duration of this project.";
+                                if (c.getFloat() != null && c.getFloat() > 0)
+                                    criticalDetails += "\nThis task can be started " + c.getFloat() + " day(s) late without affecting the overall duration of this project.";
                             }
                         }
-                        for(Task prevt: t.getPreviousTasks()) prevTasks = prevTasks + prevt.getName() + ", ";
-                        for(Task nextt: t.getNextTasks()) nextTasks = nextTasks + nextt.getName()  + ", ";
+                        for (Task prevt : t.getPreviousTasks()) prevTasks = prevTasks + prevt.getName() + ", ";
+                        for (Task nextt : t.getNextTasks()) nextTasks = nextTasks + nextt.getName() + ", ";
                         prevTasks = prevTasks + "]";
                         nextTasks = nextTasks + "]";
                         TaskDetails.setText("Name: " + t.getName() + "\n" +

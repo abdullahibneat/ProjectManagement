@@ -10,6 +10,7 @@ import java.util.Date;
 
 
 public class MainMenu {
+    private static JFrame frame;
     private JPanel BasePanel;
     private JPanel GreetingPanel;
     private JPanel ProjectsPanel;
@@ -29,10 +30,8 @@ public class MainMenu {
     private JPanel ProjectsScrollPaneBasePanel;
     private JPanel TeamsScrollPaneBasePanel;
 
-    private static JFrame frame;
-
     public MainMenu() {
-        GridLayout layout0x2 = new GridLayout(0,2);
+        GridLayout layout0x2 = new GridLayout(0, 2);
 
         //JPanel for Project Fields
         JPanel projectFieldsPanel = new JPanel();
@@ -48,13 +47,9 @@ public class MainMenu {
         projectFieldsPanel.add(new JLabel(("Team:")));
         projectFieldsPanel.add(teamNames);
 
-        for (Team t:Persistence.INSTANCE.getTeams()){
+        for (Team t : Persistence.INSTANCE.getTeams()) {
             teamNames.addItem(t);
         }
-//        myPanel.add(Box.createHorizontalStrut(15)); // a spacer
-//        projectFieldsPanel.add(new JLabel("Project Duration:"));
-//        projectFieldsPanel.add(projectDurationField);
-
 
         //JPanel for Teams Fields
         JPanel TeamsBasePanel = new JPanel();
@@ -67,48 +62,33 @@ public class MainMenu {
         TeamsBasePanel.add(TeamNameField);
         TeamsBasePanel.add(new JLabel("Team Leader:"));
         TeamsBasePanel.add(TeamLeaderField);
-//        TeamsBasePanel.add(new JLabel("Project:"));
-//        TeamsBasePanel.add(ProjectListComboBox);
+
 
         ProjectsAddButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                Object[] options = {"New",
-//                        "Import",};
-//                int n = JOptionPane.showOptionDialog(frame,
-//                        "Please select an option",
-//                        "Project Type",
-//                        JOptionPane.YES_NO_OPTION,
-//                        JOptionPane.INFORMATION_MESSAGE,
-//                        null,
-//                        options,
-//                        options[0]);
-//                if (n == 0){                                            // NEED TO CONTINUE THE IF STATEMENT
-//                    System.out.println("NEW");
 
-                    int result = JOptionPane.showConfirmDialog(null, projectFieldsPanel,
-                            "New Project", JOptionPane.OK_CANCEL_OPTION);
-                    if (result == JOptionPane.OK_OPTION) {
-                        if (projectTitleField.getText().trim().isEmpty()){
-                            System.out.println("Please Fill all Fields");
-                        }else {
-                            System.out.println("Project Title: " + projectTitleField.getText());
-//                        System.out.println("Project Duration: " + projectDurationField.getText());
+                int result = JOptionPane.showConfirmDialog(null, projectFieldsPanel,
+                        "New Project", JOptionPane.OK_CANCEL_OPTION);
+                if (result == JOptionPane.OK_OPTION) {
+                    if (projectTitleField.getText().trim().isEmpty()) {
+                        System.out.println("Please Fill all Fields");
+                    } else {
+                        System.out.println("Project Title: " + projectTitleField.getText());
 
-                            // Try to check if team is selected, otherwise set to null
-                            Team team = null;
-                            try { team = (Team) teamNames.getSelectedItem(); } catch (Exception ignored) {}
-
-                            Project p = new Project(projectTitleField.getText().trim(), team);
-                            System.out.println(Persistence.INSTANCE);
-
-                            new Projects(frame,p);
+                        // Try to check if team is selected, otherwise set to null
+                        Team team = null;
+                        try {
+                            team = (Team) teamNames.getSelectedItem();
+                        } catch (Exception ignored) {
                         }
-                    }
 
-//                } else{
-//                    System.out.println("IMPORT");
-//                }
+                        Project p = new Project(projectTitleField.getText().trim(), team);
+                        System.out.println(Persistence.INSTANCE);
+
+                        new Projects(frame, p);
+                    }
+                }
 
             }
         });
@@ -120,32 +100,31 @@ public class MainMenu {
                         "New Team", JOptionPane.OK_CANCEL_OPTION);
                 if (result == JOptionPane.OK_OPTION) {
 
-                    if (TeamNameField.getText().trim().isEmpty() || TeamLeaderField.getText().trim().isEmpty()){
+                    if (TeamNameField.getText().trim().isEmpty() || TeamLeaderField.getText().trim().isEmpty()) {
                         System.out.println("Please Fill all Fields");
                         TeamNameField.setText("");
                         TeamLeaderField.setText("");
-                    }else{
-                    System.out.println("Team Name: " + TeamNameField.getText().trim());
-                    System.out.println("Team Leader: " + TeamLeaderField.getText().trim());
+                    } else {
+                        System.out.println("Team Name: " + TeamNameField.getText().trim());
+                        System.out.println("Team Leader: " + TeamLeaderField.getText().trim());
 
-                    System.out.println(Persistence.INSTANCE);
-                    Team t = new Team(TeamNameField.getText().trim());
+                        System.out.println(Persistence.INSTANCE);
+                        Team t = new Team(TeamNameField.getText().trim());
 
-                    t.addMember(new Member(TeamLeaderField.getText().trim()));
-                    System.out.println(Persistence.INSTANCE);
+                        t.addMember(new Member(TeamLeaderField.getText().trim()));
+                        System.out.println(Persistence.INSTANCE);
 
 
-
-                    new Teams(frame,t);
+                        new Teams(frame, t);
                     }
-                }else {
+                } else {
                     System.out.println("Cancel");
                 }
             }
         });
     }
 
-    public MainMenu(JFrame mainFrame){
+    public MainMenu(JFrame mainFrame) {
         frame = mainFrame;
         frame.setContentPane(new MainMenu().BasePanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -183,31 +162,27 @@ public class MainMenu {
 //       //PROJECTS SCROLL PANEL
         ProjectsScrollPaneBasePanel = new JPanel();
 //        ProjectsScrollPaneBasePanel.setBackground(Color.red);
-        ProjectsScrollPaneBasePanel.setLayout(new GridLayout(1 ,0));
+        ProjectsScrollPaneBasePanel.setLayout(new GridLayout(1, 0));
 
 
-        for(Project p: Persistence.INSTANCE.getProjects()){
+        for (Project p : Persistence.INSTANCE.getProjects()) {
             JButton b = new JButton("View");
             b.addActionListener(e -> {
                 new Projects(frame, p);
             });
 
             JPanel projectTile = new JPanel();
-            projectTile.setLayout(new GridLayout(0,1));
+            projectTile.setLayout(new GridLayout(0, 1));
             projectTile.setBorder(BorderFactory.createLineBorder(Color.black));
 
             ProjectsScrollPaneBasePanel.add(projectTile);
-            projectTile.add(new JLabel("Project:"+ p.getName()));
-
-//            projectTile.add(Box.createHorizontalStrut(5));//SPACER
+            projectTile.add(new JLabel("Project:" + p.getName()));
 
             if (p.getTeam() == null) {
                 projectTile.add(new JLabel("Team Assigned:" + "N/A"));
-            }else{
+            } else {
                 projectTile.add(new JLabel("Team Assigned:" + p.getTeam().toString()));
             }
-
-//            projectTile.add(Box.createHorizontalStrut(5));// SPACER
 
             projectTile.add(b);
         }
@@ -215,9 +190,9 @@ public class MainMenu {
 
 //      TEAMS SCROLL PANE
         TeamsScrollPaneBasePanel = new JPanel();
-        TeamsScrollPaneBasePanel.setLayout(new GridLayout(1,0));
+        TeamsScrollPaneBasePanel.setLayout(new GridLayout(1, 0));
 
-        for(Team t: Persistence.INSTANCE.getTeams()) {
+        for (Team t : Persistence.INSTANCE.getTeams()) {
             JButton b = new JButton("View");
             b.addActionListener(e -> {
                 new Teams(frame, t);
@@ -229,17 +204,10 @@ public class MainMenu {
 
             TeamsScrollPaneBasePanel.add(teamTile);
             teamTile.add(new JLabel(t.getName()));
-
-//            teamTile.add(Box.createHorizontalStrut(5));// SPACER
-
             teamTile.add(new JLabel("Members:" + t.getMembers().size()));
-
-//            teamTile.add(Box.createHorizontalStrut(5));// SPACER
-
             teamTile.add(b);
         }
         TeamsScrollPane = new JScrollPane(TeamsScrollPaneBasePanel);
-
 
 
     }
