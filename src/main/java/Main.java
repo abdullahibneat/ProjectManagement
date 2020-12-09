@@ -1,10 +1,7 @@
-import javax.swing.*;
+import javax.swing.JFrame;
 
 public class Main {
     public static void main(String[] args) {
-        JFrame j = new JFrame();
-        MainMenu mainmenu = new MainMenu(j);
+        new MainMenu(new JFrame("Project Management"));
     }
-
-
 }
