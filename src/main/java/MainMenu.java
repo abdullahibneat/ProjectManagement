@@ -36,7 +36,6 @@ public class MainMenu {
         //JPanel for Project Fields
         JPanel projectFieldsPanel = new JPanel();
         JTextField projectTitleField = new JTextField(5);
-        JTextField projectDurationField = new JTextField(5);
         JComboBox teamNames = new JComboBox<>();
 
         teamNames.addItem("N/A");
@@ -55,7 +54,6 @@ public class MainMenu {
         JPanel TeamsBasePanel = new JPanel();
         JTextField TeamNameField = new JTextField(5);
         JTextField TeamLeaderField = new JTextField(5);
-        JComboBox ProjectListComboBox = new JComboBox();
 
         TeamsBasePanel.setLayout(layout0x2);
         TeamsBasePanel.add(new JLabel("Team Name:"));
@@ -161,7 +159,6 @@ public class MainMenu {
 
 //       //PROJECTS SCROLL PANEL
         ProjectsScrollPaneBasePanel = new JPanel();
-//        ProjectsScrollPaneBasePanel.setBackground(Color.red);
         ProjectsScrollPaneBasePanel.setLayout(new GridLayout(1, 0));
 
 

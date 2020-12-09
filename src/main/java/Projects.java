@@ -25,9 +25,7 @@ public class Projects extends JFrame {
     private JComboBox CriticalPathComboBox;
     private JLabel Criticalpathlabel;
     private JButton CriticalPathCalculateButton;
-    private final int count;
     private JComboBox WorkingTeamMemberComboBox;
-    private final String WorkingTeamMemeber;
     private final JScrollPane BaseScrollPane;
     private final ArrayList<DefaultMutableTreeNode> treeNodes = new ArrayList();
     private Map<Task, CriticalCalculations> criticalCalculations;
@@ -58,9 +56,6 @@ public class Projects extends JFrame {
 
         //ADD TASK JOPTION
         GridLayout layout0x2 = new GridLayout(0, 2);
-
-        count = 0;
-        WorkingTeamMemeber = "Team Member #";
 
         JPanel AddTaskPanel = new JPanel();
         JTextField TaskNameField = new JTextField(5);

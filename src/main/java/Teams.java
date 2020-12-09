@@ -44,7 +44,6 @@ public class Teams {
         TeamMember = "Team Member #";
 
         JPanel AddTeamMemebersPannel = new JPanel();
-        JTextField TeamLeaderField = new JTextField(5);
         JButton AddTeamMembersButton = new JButton("Add Team Members");
 
         AddTeamMemebersPannel.setLayout(layout0x2);
