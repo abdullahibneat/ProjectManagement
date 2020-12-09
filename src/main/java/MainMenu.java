@@ -62,62 +62,56 @@ public class MainMenu {
         TeamsBasePanel.add(TeamLeaderField);
 
 
-        ProjectsAddButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        ProjectsAddButton.addActionListener(e -> {
 
-                int result = JOptionPane.showConfirmDialog(null, projectFieldsPanel,
-                        "New Project", JOptionPane.OK_CANCEL_OPTION);
-                if (result == JOptionPane.OK_OPTION) {
-                    if (projectTitleField.getText().trim().isEmpty()) {
-                        System.out.println("Please Fill all Fields");
-                    } else {
-                        System.out.println("Project Title: " + projectTitleField.getText());
-
-                        // Try to check if team is selected, otherwise set to null
-                        Team team = null;
-                        try {
-                            team = (Team) teamNames.getSelectedItem();
-                        } catch (Exception ignored) {
-                        }
-
-                        Project p = new Project(projectTitleField.getText().trim(), team);
-                        System.out.println(Persistence.INSTANCE);
-
-                        new Projects(frame, p);
-                    }
-                }
-
-            }
-        });
-        TeamsAddButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                int result = JOptionPane.showConfirmDialog(null, TeamsBasePanel,
-                        "New Team", JOptionPane.OK_CANCEL_OPTION);
-                if (result == JOptionPane.OK_OPTION) {
-
-                    if (TeamNameField.getText().trim().isEmpty() || TeamLeaderField.getText().trim().isEmpty()) {
-                        System.out.println("Please Fill all Fields");
-                        TeamNameField.setText("");
-                        TeamLeaderField.setText("");
-                    } else {
-                        System.out.println("Team Name: " + TeamNameField.getText().trim());
-                        System.out.println("Team Leader: " + TeamLeaderField.getText().trim());
-
-                        System.out.println(Persistence.INSTANCE);
-                        Team t = new Team(TeamNameField.getText().trim());
-
-                        t.addMember(new Member(TeamLeaderField.getText().trim()));
-                        System.out.println(Persistence.INSTANCE);
-
-
-                        new Teams(frame, t);
-                    }
+            int result = JOptionPane.showConfirmDialog(null, projectFieldsPanel,
+                    "New Project", JOptionPane.OK_CANCEL_OPTION);
+            if (result == JOptionPane.OK_OPTION) {
+                if (projectTitleField.getText().trim().isEmpty()) {
+                    System.out.println("Please Fill all Fields");
                 } else {
-                    System.out.println("Cancel");
+                    System.out.println("Project Title: " + projectTitleField.getText());
+
+                    // Try to check if team is selected, otherwise set to null
+                    Team team = null;
+                    try {
+                        team = (Team) teamNames.getSelectedItem();
+                    } catch (Exception ignored) {
+                    }
+
+                    Project p = new Project(projectTitleField.getText().trim(), team);
+                    System.out.println(Persistence.INSTANCE);
+
+                    new Projects(frame, p);
                 }
+            }
+
+        });
+        TeamsAddButton.addActionListener(e -> {
+
+            int result = JOptionPane.showConfirmDialog(null, TeamsBasePanel,
+                    "New Team", JOptionPane.OK_CANCEL_OPTION);
+            if (result == JOptionPane.OK_OPTION) {
+
+                if (TeamNameField.getText().trim().isEmpty() || TeamLeaderField.getText().trim().isEmpty()) {
+                    System.out.println("Please Fill all Fields");
+                    TeamNameField.setText("");
+                    TeamLeaderField.setText("");
+                } else {
+                    System.out.println("Team Name: " + TeamNameField.getText().trim());
+                    System.out.println("Team Leader: " + TeamLeaderField.getText().trim());
+
+                    System.out.println(Persistence.INSTANCE);
+                    Team t = new Team(TeamNameField.getText().trim());
+
+                    t.addMember(new Member(TeamLeaderField.getText().trim()));
+                    System.out.println(Persistence.INSTANCE);
+
+
+                    new Teams(frame, t);
+                }
+            } else {
+                System.out.println("Cancel");
             }
         });
     }
@@ -164,9 +158,7 @@ public class MainMenu {
 
         for (Project p : Persistence.INSTANCE.getProjects()) {
             JButton b = new JButton("View");
-            b.addActionListener(e -> {
-                new Projects(frame, p);
-            });
+            b.addActionListener(e -> new Projects(frame, p));
 
             JPanel projectTile = new JPanel();
             projectTile.setLayout(new GridLayout(0, 1));
@@ -191,9 +183,7 @@ public class MainMenu {
 
         for (Team t : Persistence.INSTANCE.getTeams()) {
             JButton b = new JButton("View");
-            b.addActionListener(e -> {
-                new Teams(frame, t);
-            });
+            b.addActionListener(e -> new Teams(frame, t));
 
             JPanel teamTile = new JPanel();
             teamTile.setLayout(new GridLayout(0, 1));
