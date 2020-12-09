@@ -260,8 +260,6 @@ public class Projects extends JFrame {
                         Node n = (Node) node.getUserObject();
                         Task t = n.getTask();
                         System.out.println("Double-clicked on task \"" + t.getName() + "\" with duration " + t.getDuration());
-                        String prevTasks = "[";
-                        String nextTasks = "[";
                         String criticalDetails = "";
                         if (criticalCalculations != null) {
                             CriticalCalculations c = criticalCalculations.get(t);
@@ -274,10 +272,11 @@ public class Projects extends JFrame {
                                     criticalDetails += "\nThis task can be started " + c.getFloat() + " day(s) late without affecting the overall duration of this project.";
                             }
                         }
-                        for (Task prevt : t.getPreviousTasks()) prevTasks = prevTasks + prevt.getName() + ", ";
-                        for (Task nextt : t.getNextTasks()) nextTasks = nextTasks + nextt.getName() + ", ";
-                        prevTasks = prevTasks + "]";
-                        nextTasks = nextTasks + "]";
+
+                        // Join prevTasks and nextTasks
+                        String prevTasks = String.join(", ", t.getPreviousTasks().stream().map(Task::getName).toArray(String[]::new));
+                        String nextTasks = String.join(", ", t.getNextTasks().stream().map(Task::getName).toArray(String[]::new));
+
                         TaskDetails.setText("Name: " + t.getName() + "\n" +
                                 "Duration: " + t.getDuration() + "\n" +
                                 "Lag: " + t.getLag() + "\n" +
