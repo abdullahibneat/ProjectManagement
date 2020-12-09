@@ -89,29 +89,28 @@ public class Teams {
 
         button1.addActionListener(e -> {
             System.out.println(team);
-            int result = JOptionPane.showConfirmDialog(null, BaseScrollPane,
-                    "Edit Team", JOptionPane.OK_CANCEL_OPTION);
+            int result = JOptionPane.showConfirmDialog(frame, BaseScrollPane, "Edit Team", JOptionPane.OK_CANCEL_OPTION);
             if (result == JOptionPane.OK_OPTION) {
+                try {
+                    for (JTextField field: newmembers) {
+                        System.out.println(field.getText());
+                        team.addMember(new Member(field.getText().trim()));
+                        TeamsList.append(field.getText() + "\n");
+                    }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage());
+                } finally {
+                    // Update number of members
+                    MembersLabel.setText("Members: " + team.getMembers().size());
 
-                for (JTextField field : newmembers) {
-                    System.out.println(field.getText());
-                    team.addMember(new Member(field.getText().trim()));
-                    TeamsList.append(field.getText() + "\n");
+                    // Reset input fields
+                    newmembers.clear();
+                    for (Component c : AddTeamMemebersPannel.getComponents()) {
+                        if (c.getClass() == JLabel.class || c.getClass() == JTextField.class)
+                            AddTeamMemebersPannel.remove(c);
+                    }
+                    count = 0;
                 }
-
-                System.out.println(team.getMembers());
-
-                MembersLabel.setText("Members:" + team.getMembers().size());
-                newmembers.clear();
-                for (Component c : AddTeamMemebersPannel.getComponents()) {
-                    if (c.getClass() == JLabel.class || c.getClass() == JTextField.class)
-                        AddTeamMemebersPannel.remove(c);
-                }
-                count = 0;
-                System.out.println(Persistence.INSTANCE);
-//                }
-            } else {
-                System.out.println("CANCEL");
             }
         });
         HomeButton.addActionListener(e -> new MainMenu(frame));

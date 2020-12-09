@@ -138,23 +138,18 @@ public class Projects extends JFrame {
             for (Task t : currentProject.getTasks()) {
                 ProjectDependentComboBox.addItem(t.getName());
             }
-            int result = JOptionPane.showConfirmDialog(null, BaseScrollPane,
+            int result = JOptionPane.showConfirmDialog(frame, BaseScrollPane,
                     "New Task", JOptionPane.OK_CANCEL_OPTION);
             if (result == JOptionPane.OK_OPTION) {
-                if (TaskDurationField.getText().trim().isEmpty() || TaskNameField.getText().trim().isEmpty() || OptionLagField.getText().trim().isEmpty()) {
-                    System.out.println("Please Fill All Fields");
-                    TaskNameField.setText("");
-                    TaskDurationField.setText("");
-                    OptionLagField.setText("");
-                    ProjectDependentComboBox.setSelectedIndex(0);
-                    ProjectDependentComboBox.setEnabled(false);
-                    DependentCheckBox.setSelected(false);
-                } else {
+                try {
+                    System.out.println("Task Name: " + TaskNameField.getText());
+                    System.out.println("Task Duration: " + TaskDurationField.getText());
+                    System.out.println("Task Lag: " + OptionLagField.getText());
+
+                    ArrayList<String> dependencies = new ArrayList<>();
+
+                    // If dependencies are selected
                     if (DependentCheckBox.isSelected() && dependentTasks.getComponents().length > 0) {
-                        System.out.println("Task Name: " + TaskNameField.getText());
-                        System.out.println("Task Duration: " + TaskDurationField.getText());
-                        System.out.println("Task Lag: " + OptionLagField.getText());
-                        ArrayList<String> dependencies = new ArrayList<>();
                         for (Component component : dependentTasks.getComponents()) {
                             if (component.getClass() == JLabel.class) {
                                 JLabel l = (JLabel) component;
@@ -162,31 +157,23 @@ public class Projects extends JFrame {
                             }
                         }
                         System.out.println("Project Dependent of:" + dependencies);
-                        project.addTask(TaskNameField.getText().trim(), Integer.parseInt(TaskDurationField.getText().trim()), Integer.parseInt(OptionLagField.getText().trim()), dependencies.toArray(new String[0]));
-                        populateTree();
-                        TaskNameField.setText("");
-                        TaskDurationField.setText("");
-                        OptionLagField.setText("");
-                        ProjectDependentComboBox.setSelectedIndex(0);
-                        ProjectDependentComboBox.setEnabled(false);
-                        DependentCheckBox.setSelected(false);
-
-                    } else {
-                        System.out.println("Task Name: " + TaskNameField.getText());
-                        System.out.println("Task Duration: " + TaskDurationField.getText());
-                        System.out.println("Task Lag: " + OptionLagField.getText());
-                        project.addTask(TaskNameField.getText().trim(), Integer.parseInt(TaskDurationField.getText().trim()), Integer.parseInt(OptionLagField.getText().trim()));
-                        populateTree(); // Update tree
-                        TaskNameField.setText("");
-                        TaskDurationField.setText("");
-                        OptionLagField.setText("0");
                     }
 
-                    dependentTasks.removeAll();
+                    project.addTask(TaskNameField.getText().trim(), Integer.parseInt(TaskDurationField.getText().trim()), Integer.parseInt(OptionLagField.getText().trim()), dependencies.toArray(new String[0]));
+                    populateTree();
 
+                    // Reset fields
+                    TaskNameField.setText("");
+                    TaskDurationField.setText("0");
+                    OptionLagField.setText("");
+                    ProjectDependentComboBox.setSelectedIndex(0);
+                    ProjectDependentComboBox.setEnabled(false);
+                    DependentCheckBox.setSelected(false);
+                } catch(NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Duration must be a number.");
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage());
                 }
-            } else {
-                System.out.println("CANCEL");
             }
         });
         HomeButton.addActionListener(e -> new MainMenu(frame));
@@ -196,10 +183,12 @@ public class Projects extends JFrame {
                 //CALCULATE KOTLIN
                 System.out.println("Kotlin Selected");
                 criticalPath = CriticalPathKotlin.INSTANCE;
+                JOptionPane.showMessageDialog(frame, "Kotlin critical path set successfully");
             } else {
                 //CALCULATE SCALA
                 System.out.println("Scala Selected");
                 criticalPath = CriticalPathScala$.MODULE$;
+                JOptionPane.showMessageDialog(frame, "Scala critical path set successfully");
             }
         });
 
