@@ -9,7 +9,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <kotlin.version>1.4.20-RC</kotlin.version>
+        <kotlin.version>1.4.20</kotlin.version>
         <scala.version>2.13.3</scala.version>
     </properties>
 
